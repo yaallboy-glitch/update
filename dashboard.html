@@ -667,6 +667,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       <button class="sb-link" type="button" data-view="guru"><span class="ic">👨‍🏫</span><span>Guru</span></button>
       <button class="sb-link" type="button" data-view="bayar"><span class="ic">💰</span><span>Pembayaran</span></button>
       <button class="sb-link" type="button" data-view="absen"><span class="ic">✅</span><span>Absensi Guru</span></button>
+      <button class="sb-link" type="button" data-view="presensi"><span class="ic">🎓</span><span>Presensi Siswa</span></button>
       <button class="sb-link" type="button" data-view="pengaturan"><span class="ic">⚙️</span><span>Pengaturan</span></button>
     </nav>
     <div class="sb-footer">
@@ -818,6 +819,37 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
       <div class="panel">
         <div id="absenList"></div>
+      </div>
+    </section>
+
+    <!-- VIEW: PRESENSI SISWA -->
+    <section id="view-presensi" class="view" style="display:none">
+      <div class="topbar">
+        <div>
+          <h1>Presensi Siswa</h1>
+          <p class="sub">Catat kehadiran siswa per pertemuan</p>
+        </div>
+      </div>
+      <div class="panel">
+        <div class="form-row">
+          <div class="field" style="min-width:160px">
+            <label for="presTanggal">Tanggal</label>
+            <input type="date" id="presTanggal" onchange="renderPresensi()">
+          </div>
+          <div class="field" style="min-width:160px">
+            <label for="presPertemuan">Pertemuan ke-</label>
+            <input type="number" id="presPertemuan" min="1" value="1" onchange="renderPresensi()">
+          </div>
+          <div class="field" style="min-width:220px">
+            <label for="presKelas">Kelas / Program</label>
+            <select id="presKelas" onchange="renderPresensi()">
+              <option value="">— Semua Kelas —</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="panel" id="presensiPanel">
+        <div id="presensiList"></div>
       </div>
     </section>
 
@@ -1113,7 +1145,7 @@ const CACHE_KEY = 'aliefbimbel_cache_v2';
 const OLD_KEY   = 'aliefbimbel_data_v1';      // data lama (versi localStorage)
 const VIEW_KEY  = 'alief_view';
 
-const KINDS = ['siswa','guru','jadwal','bayar','absen','pengaturan'];
+const KINDS = ['siswa','guru','jadwal','bayar','absen','presensi','pengaturan'];
 const URUT_HARI = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
 const NAMA_HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 const NAMA_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
@@ -1134,7 +1166,7 @@ const lsDel = k => { try{ localStorage.removeItem(k); }catch(e){} };
 /* ============================================================
    DATA & API
    ============================================================ */
-const emptyDB = () => ({ siswa:[], guru:[], jadwal:[], bayar:[], absen:[], pengaturan:[] });
+const emptyDB = () => ({ siswa:[], guru:[], jadwal:[], bayar:[], absen:[], presensi:[], pengaturan:[] });
 function normalize(d){
   const out = emptyDB();
   KINDS.forEach(k => { out[k] = Array.isArray(d?.[k]) ? d[k] : []; });
@@ -1381,7 +1413,7 @@ function endTime(jam, durasi){
 /* ============================================================
    NAVIGASI + BURGER
    ============================================================ */
-const VIEW_TITLE = { overview:'Ringkasan', jadwal:'Jadwal', siswa:'Siswa', guru:'Guru', bayar:'Pembayaran', absen:'Absensi Guru', pengaturan:'Pengaturan' };
+const VIEW_TITLE = { overview:'Ringkasan', jadwal:'Jadwal', siswa:'Siswa', guru:'Guru', bayar:'Pembayaran', absen:'Absensi Guru', presensi:'Presensi Siswa', pengaturan:'Pengaturan' };
 
 function showView(view){
   if(!VIEW_TITLE[view]) view = 'overview';
@@ -1939,8 +1971,82 @@ async function savePengaturan(){
   if(await save('pengaturan', { id:'utama', wa, tarif })){ showToast('Pengaturan disimpan'); renderAll(); }
 }
 
+/* ============================================================
+   RENDER: PRESENSI SISWA
+   ============================================================ */
+function getDistinctKelas(){
+  const set = new Set();
+  DB.siswa.forEach(s => set.add(s.kelas));
+  DB.jadwal.forEach(j => set.add(j.kelas));
+  return Array.from(set).filter(Boolean).sort();
+}
+function fillKelasSelect(selectId){
+  const sel = $(selectId), cur = sel.value;
+  const opts = getDistinctKelas().map(k => `<option value="${esc(k)}">${esc(k)}</option>`).join('');
+  sel.innerHTML = '<option value="">— Semua Kelas —</option>' + opts;
+  if(cur && Array.from(sel.options).some(o => o.value === cur)) sel.value = cur;
+}
+
+function renderPresensi(){
+  fillKelasSelect('presKelas');
+  const tanggal = $('presTanggal').value || getTanggalISO();
+  const pertemuan = String($('presPertemuan').value || '1');
+  const kelas = $('presKelas').value;
+
+  if(!DB.siswa.length){
+    $('presensiList').innerHTML = `<div class="empty"><div class="ic">🎓</div><h3>Belum ada siswa</h3><p>Tambah siswa terlebih dahulu agar bisa mencatat presensi.</p></div>`;
+    return;
+  }
+
+  let siswa = DB.siswa.slice().sort((a,b) => a.nama.localeCompare(b.nama));
+  if(kelas) siswa = siswa.filter(s => s.kelas === kelas);
+
+  const d = new Date(tanggal + 'T00:00:00');
+  const tglLabel = d.toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+  let html = `<div style="margin-bottom:14px;font-size:13.5px;color:var(--muted);font-weight:600">Presensi pertemuan <b style="color:var(--ink)">${esc(pertemuan)}</b> · <b style="color:var(--ink)">${esc(tglLabel)}</b>${kelas ? ' · ' + esc(kelas) : ''}</div>`;
+
+  siswa.forEach((s, i) => {
+    const rec = DB.presensi.find(p => p.siswaId === s.id && p.tanggal === tanggal && p.pertemuan === pertemuan);
+    const status = rec?.status || 'belum';
+    const badge = {
+      hadir:'<span class="badge badge-green">✓ Hadir</span>',
+      izin:'<span class="badge badge-yellow">Izin</span>',
+      sakit:'<span class="badge badge-yellow">Sakit</span>',
+      alpha:'<span class="badge badge-red">Alpha</span>'
+    }[status] || '<span class="badge badge-gray">Belum</span>';
+    const b = (val, label) => `<button class="btn btn-ghost btn-sm${status === val ? ' on' : ''}" type="button" onclick="setPresensi('${esc(s.id)}','${tanggal}','${pertemuan}','${val}')">${label}</button>`;
+
+    html += `<div class="item" style="flex-direction:column;align-items:stretch;gap:14px;animation:panelIn .35s var(--ease) ${i*0.04}s both">
+      <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
+        <div>
+          <div class="item-title">${esc(s.nama)}</div>
+          <div class="item-meta">${esc(s.kelas||'-')}</div>
+        </div>
+        ${badge}
+      </div>
+      <div class="abs-actions">
+        ${b('hadir','✓ Hadir')}${b('izin','Izin')}${b('sakit','Sakit')}${b('alpha','Alpha')}
+        ${rec ? `<button class="btn btn-danger btn-sm" type="button" onclick="clearPresensi('${esc(rec.id)}')">Reset</button>` : ''}
+      </div>
+    </div>`;
+  });
+  $('presensiList').innerHTML = html;
+}
+
+async function setPresensi(siswaId, tanggal, pertemuan, status){
+  const existing = DB.presensi.find(p => p.siswaId === siswaId && p.tanggal === tanggal && p.pertemuan === pertemuan);
+  const s = DB.siswa.find(x => x.id === siswaId);
+  const rec = existing
+    ? { ...existing, status, nama: s?.nama || existing.nama, kelas: s?.kelas || existing.kelas }
+    : { id: 'pres_' + siswaId + '_' + tanggal + '_' + pertemuan, siswaId, tanggal, pertemuan, status, nama: s?.nama || '', kelas: s?.kelas || '', createdAt: Date.now() };
+  if(await save('presensi', rec)){ renderPresensi(); showToast('Presensi siswa dicatat'); }
+}
+async function clearPresensi(id){
+  if(await remove('presensi', id)){ renderPresensi(); showToast('Presensi direset'); }
+}
+
 function renderAll(){
-  renderOverview(); renderJadwal(); renderSiswa(); renderGuru(); renderBayar(); renderAbsensi(); renderPengaturan();
+  renderOverview(); renderJadwal(); renderSiswa(); renderGuru(); renderBayar(); renderAbsensi(); renderPresensi(); renderPengaturan();
 }
 
 /* ============================================================
@@ -1955,6 +2061,7 @@ document.addEventListener('keydown', e => {
 
 document.addEventListener('DOMContentLoaded', () => {
   $('absenTanggal').value = getTanggalISO();
+  $('presTanggal').value = getTanggalISO();
   let v = 'overview'; try{ v = sessionStorage.getItem(VIEW_KEY) || 'overview'; }catch(e){}
   showView(v);
   if(!adminKey){
