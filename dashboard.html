@@ -400,8 +400,8 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .tbl tr{transition:background .2s}
 
 /* absensi */
-.abs-actions{display:grid;grid-template-columns:repeat(auto-fit,minmax(78px,1fr));gap:8px}
-.abs-actions .btn{width:100%}
+.abs-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.abs-actions .btn{flex:0 1 auto;min-width:72px;padding:7px 12px}
 .abs-date{max-width:320px}
 
 /* lock */
@@ -474,6 +474,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 
 /* ---- HP: tabel jadi kartu ---- */
 @media (max-width:760px){
+  .abs-actions{flex-direction:column;align-items:stretch}
+  .abs-actions .btn{width:100%;min-width:0;flex:1 1 auto;padding:11px 16px}
+
   .tbl-wrap{overflow:visible}
   .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
   .tbl thead{display:none}
