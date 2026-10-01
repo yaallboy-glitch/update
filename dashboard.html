@@ -653,20 +653,152 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
   .tbl-btn{width:28px;height:28px;border-radius:8px}
   .tbl-btn svg{width:14px;height:14px}
 }
+
+/* ============================================
+   RESPONSIVE TABLES & MICRO-INTERACTIONS
+   ============================================ */
+   
+.table-container {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-card {
+  min-width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+}
+
+.table-card th,
+.table-card td {
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--color-line);
+  transition: background-color 150ms ease;
+}
+
+.table-card tr:hover > td {
+  background-color: rgba(74, 144, 226, 0.05);
+}
+
+.table-card tbody tr:first-child td {
+  padding-top: 16px;
+}
+
+.table-card tbody tr:last-child td {
+  padding-bottom: 16px;
+}
+
+/* Mobile: Card layout for tables */
+@media (max-width: 768px) {
+  .table-card thead {
+    display: none;
+  }
+  
+  .table-card tr {
+    display: block;
+    margin-bottom: 12px;
+    border: 1px solid var(--color-line);
+    border-radius: 12px;
+    padding: 8px;
+  }
+  
+  .table-card td {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+  }
+  
+  .table-card td::before {
+    content: attr(data-label);
+    font-weight: 600;
+    color: var(--color-muted);
+    margin-right: 12px;
+  }
+}
+
+/* Icon buttons - smaller on mobile */
+.icon-btn {
+  width: 28px;
+  height: 28px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  transition: all 150ms ease;
+}
+
+.icon-btn:hover {
+  transform: scale(1.15);
+}
+
+.icon-btn svg {
+  pointer-events: none;
+}
+
+/* Modal animations */
+.modal-overlay {
+  backdrop-filter: blur(4px);
+  animation: fadeIn 200ms ease forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Table row stagger animation */
+.table-card tbody tr {
+  animation: slideIn 300ms ease both;
+}
+
+.table-card tbody tr:nth-child(1) { animation-delay: 0ms; }
+.table-card tbody tr:nth-child(2) { animation-delay: 50ms; }
+.table-card tbody tr:nth-child(3) { animation-delay: 100ms; }
+.table-card tbody tr:nth-child(4) { animation-delay: 150ms; }
+.table-card tbody tr:nth-child(5) { animation-delay: 200ms; }
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Touch-friendly buttons */
+.btn-action {
+  min-height: 44px; /* iOS recommended touch target */
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .icon-btn,
+  .table-card td,
+  .btn-action {
+    transition: none !important;
+    animation: none !important;
+  }
+}
+
 </style>
 
-<!-- ===== DASHBOARD SCRIPT ===== -->
+
 
 </head>
 <body class="loading">
 
-<!-- Loading Overlay -->
+
 <div class="loading-overlay" id="loading">
   <div class="spinner"></div>
 </div>
 
 
-<!-- TOP BAR (HP / tablet) -->
+
 <header class="mtop">
   <button class="burger" id="burger" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="sidebar"><span></span><span></span><span></span></button>
   <div class="mtop-brand"><div class="sb-logo">A</div><span id="mtopTitle">Ringkasan</span></div>
@@ -676,7 +808,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 
 <div class="app">
 
-  <!-- SIDEBAR -->
+  
   <aside class="sidebar" id="sidebar">
     <div class="sb-brand">
       <div class="sb-logo">A</div>
@@ -703,10 +835,10 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
     </div>
   </aside>
 
-  <!-- MAIN -->
+  
   <main class="main">
 
-    <!-- VIEW: OVERVIEW -->
+    
     <section id="view-overview" class="view">
       <div class="topbar">
         <div>
@@ -759,7 +891,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
-    <!-- VIEW: JADWAL -->
+    
     <section id="view-jadwal" class="view" style="display:none">
       <div class="topbar">
         <div>
@@ -775,7 +907,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
-    <!-- VIEW: SISWA -->
+    
     <section id="view-siswa" class="view" style="display:none">
       <div class="topbar">
         <div>
@@ -791,7 +923,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
-    <!-- VIEW: GURU -->
+    
     <section id="view-guru" class="view" style="display:none">
       <div class="topbar">
         <div>
@@ -807,7 +939,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
-    <!-- VIEW: PEMBAYARAN -->
+    
     <section id="view-bayar" class="view" style="display:none">
       <div class="topbar">
         <div>
@@ -829,7 +961,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
-    <!-- VIEW: ABSENSI -->
+    
     <section id="view-absen" class="view" style="display:none">
       <div class="topbar">
         <div>
@@ -848,7 +980,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
-    <!-- VIEW: PRESENSI SISWA -->
+    
     <section id="view-presensi" class="view" style="display:none">
       <div class="topbar">
         <div>
@@ -879,7 +1011,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
-    <!-- VIEW: PENGATURAN -->
+    
     <section id="view-pengaturan" class="view" style="display:none">
       <div class="topbar"><div><h1>Pengaturan</h1><p class="sub">Tarif dan nomor WhatsApp yang tampil di website</p></div></div>
       <div class="panel">
@@ -907,7 +1039,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
   </main>
 </div>
 
-<!-- MODAL JADWAL -->
+
 <div class="modal-ov" id="modalJadwal" onclick="if(event.target===this)closeModal('modalJadwal')">
   <div class="modal">
     <button class="modal-close" type="button" onclick="closeModal('modalJadwal')">✕</button>
@@ -971,7 +1103,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
   </div>
 </div>
 
-<!-- MODAL ANNOUNCEMENT -->
+
 <div class="modal-ov" id="modalAnnouncement" onclick="if(event.target===this)closeModal('modalAnnouncement')">
   <div class="modal">
     <button class="modal-close" type="button" onclick="closeModal('modalAnnouncement')">✕</button>
@@ -1006,7 +1138,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 </div>
 
 
-<!-- MODAL SISWA -->
+
 <div class="modal-ov" id="modalSiswa" onclick="if(event.target===this)closeModal('modalSiswa')">
   <div class="modal">
     <button class="modal-close" type="button" onclick="closeModal('modalSiswa')">✕</button>
@@ -1075,7 +1207,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
   </div>
 </div>
 
-<!-- MODAL GURU -->
+
 <div class="modal-ov" id="modalGuru" onclick="if(event.target===this)closeModal('modalGuru')">
   <div class="modal">
     <button class="modal-close" type="button" onclick="closeModal('modalGuru')">✕</button>
@@ -1124,7 +1256,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
   </div>
 </div>
 
-<!-- MODAL BAYAR -->
+
 <div class="modal-ov" id="modalBayar" onclick="if(event.target===this)closeModal('modalBayar')">
   <div class="modal">
     <button class="modal-close" type="button" onclick="closeModal('modalBayar')">✕</button>
@@ -1185,7 +1317,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 </div>
 
 
-<!-- LOCK / PIN -->
+
 <div class="lock" id="lock">
   <form class="lock-card" id="lockForm" autocomplete="off">
     <div class="sb-logo">A</div>

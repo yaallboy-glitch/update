@@ -636,13 +636,181 @@ html.js .loading{display:grid}
   .marquee__close{right:.75rem;width:26px;height:26px}
   .marquee::before,.marquee::after{width:2rem}
 }
+
+/* ============================================
+   MOBILE OPTIMIZATION - INDEX.HTML
+   ============================================ */
+
+/* Mobile-first hero */
+@media (max-width: 480px) {
+  .hero-card {
+    padding: 1.5rem !important;
+    grid-template-columns: 1fr !important;
+  }
+  
+  .hero-card__title {
+    font-size: 1.4rem !important;
+  }
+  
+  .hero-btns {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .hero-btns button {
+    width: 100%;
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero-card {
+    padding: 2rem !important;
+  }
+  
+  .hero-card__eyebrow {
+    font-size: 0.8rem !important;
+  }
+  
+  .hero-card__title {
+    font-size: 1.8rem !important;
+  }
+}
+
+/* PC Portrait */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .hero-card {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}
+
+/* PC Landscape */
+@media (min-width: 1201px) {
+  .hero-card {
+    max-width: 1200px;
+  }
+}
+
+/* Button micro-interactions */
+.hero-btn,
+.btn-primary,
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(var(--shadow-primary), 0.2);
+}
+
+.hero-btn:active,
+.btn-primary:active,
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Ripple effect for clicks */
+.hero-btn::after,
+.btn-primary::after,
+.btn-secondary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.hero-btn:active::after,
+.btn-primary:active::after,
+.btn-secondary:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Feature cards hover */
+.paket__card {
+  transition: all 250ms var(--ease);
+}
+
+.paket__card:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Stat counter animation on scroll */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-number {
+  display: inline-block;
+  animation: countUp 500ms ease forwards;
+}
+
+/* Lazy loading support */
+img[loading="lazy"] {
+  transition: opacity 300ms ease;
+}
+
+/* Scroll-driven animations */
+.hero-card__stats {
+  animation: fadeInSlide 600ms ease-out both;
+}
+
+.hero-card__stats:nth-child(1) { animation-delay: 100ms; }
+.hero-card__stats:nth-child(2) { animation-delay: 200ms; }
+.hero-card__stats:nth-child(3) { animation-delay: 300ms; }
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Touch-friendly spacing */
+@media (pointer: coarse) {
+  .hero-btn,
+  .paket__card,
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
+}
+
+/* Better mobile tap targets */
+@media (max-width: 768px) {
+  .nav-link,
+  .menu-item {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+  }
+}
+
 </style>
 </head>
 <body>
 <div class="loading" id="loading" aria-hidden="true"><div class="loading__dot"></div></div>
 <a class="sr" href="#program">Lewati ke program</a>
 
-<!-- ---------- NAV ---------- -->
+
 <nav class="nav" id="nav" aria-label="Navigasi utama">
   <a class="logo" href="#top">
     <span class="logo-mark" aria-hidden="true">A</span>
@@ -672,7 +840,7 @@ html.js .loading{display:grid}
   </div>
 </nav>
 
-<!-- marquee announcement -->
+
 <div class="marquee" id="marquee" role="banner" aria-live="polite">
   <div class="marquee__track" id="marqueeTrack"></div>
   <button class="marquee__close" id="marqueeClose" type="button" aria-label="Tutup pengumuman">
@@ -698,7 +866,7 @@ html.js .loading{display:grid}
   </div>
 </div>
 
-<!-- ---------- HERO ---------- -->
+
 <header class="hero" id="top">
   <div class="blob blob--1"></div>
   <div class="blob blob--2"></div>
@@ -749,7 +917,7 @@ html.js .loading{display:grid}
   </div>
 </header>
 
-<!-- ---------- FITUR (bento) ---------- -->
+
 <section id="fitur">
   <div class="wrap">
     <div class="section-head">
@@ -813,7 +981,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- CARA MULAI (tangga) ---------- -->
+
 <section class="how" id="cara">
   <div class="wrap">
     <div class="section-head">
@@ -841,7 +1009,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- PROGRAM ---------- -->
+
 <section id="program">
   <div class="wrap">
     <div class="section-head">
@@ -886,7 +1054,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- JADWAL & KELAS ---------- -->
+
 <section id="jadwal">
   <div class="wrap">
     <div class="section-head">
@@ -935,7 +1103,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- HARGA / 2 PAKET ---------- -->
+
 <section id="harga">
   <div class="wrap">
     <div class="section-head">
@@ -945,7 +1113,7 @@ html.js .loading{display:grid}
     </div>
 
     <div class="paket stagger">
-      <!-- Private -->
+      
       <article class="paket__card">
         <span class="paket__name">Paket Private</span>
         <p class="paket__lead">Satu anak satu tutor — fokus penuh, dan tutor bisa datang ke rumah untuk area dalam kota.</p>
@@ -967,7 +1135,7 @@ html.js .loading{display:grid}
         <a class="btn btn-ghost" href="https://wa.me/6285775434190?text=Halo%20AlifBimbel%2C%20saya%20ingin%20tanya%20paket%20Private" target="_blank" rel="noopener">Tanya paket Private</a>
       </article>
 
-      <!-- Reguler -->
+      
       <article class="paket__card paket__card--hi">
         <span class="paket__flag">PILIHAN HEMAT</span>
         <span class="paket__name">Paket Reguler</span>
@@ -994,7 +1162,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- PRESENSI & KEHADIRAN ---------- -->
+
 <section id="presensi" class="presensi">
   <div class="wrap">
     <div class="section-head">
@@ -1030,7 +1198,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- FAQ ---------- -->
+
 <section class="faq" id="faq">
   <div class="wrap">
     <div class="section-head">
@@ -1072,7 +1240,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- CTA ---------- -->
+
 <section id="daftar">
   <div class="wrap">
     <div class="cta reveal">
@@ -1089,7 +1257,7 @@ html.js .loading{display:grid}
   </div>
 </section>
 
-<!-- ---------- FOOTER ---------- -->
+
 <footer class="footer">
   <div class="wrap">
     <div class="footer__grid">
@@ -1509,7 +1677,7 @@ html.js .loading{display:grid}
 })();
 </script>
 
-<!-- Modal Detail Siswa -->
+
 <div class="modal-siswa" id="modalSiswa">
   <div class="modal-siswa__card">
     <div class="modal-siswa__head">
