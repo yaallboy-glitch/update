@@ -599,32 +599,42 @@ html.js .loading{display:grid}
 
 /* ---------- marquee announcement ---------- */
 .marquee{
-  display:none;position:relative;background:linear-gradient(135deg,var(--blue-deep),var(--blue));
-  color:#fff;overflow:hidden;z-index:100;
+  display:none;position:relative;height:52px;margin-top:5.2rem;
+  background:linear-gradient(135deg,var(--blue-deep),var(--blue));
+  color:#fff;overflow:hidden;z-index:5;
 }
-.marquee[data-visible]{display:block}
+.marquee[data-visible]{display:flex;align-items:center}
+.marquee::before,.marquee::after{
+  content:"";position:absolute;top:0;bottom:0;width:4rem;z-index:2;pointer-events:none;
+}
+.marquee::before{left:0;background:linear-gradient(90deg,var(--blue-deep),transparent)}
+.marquee::after{right:0;background:linear-gradient(270deg,var(--blue),transparent)}
 .marquee__track{
-  display:flex;align-items:center;gap:3rem;padding:.75rem 0;
-  animation:marquee 25s linear infinite;will-change:transform;
+  display:flex;align-items:center;gap:3rem;padding:0;
+  animation:marquee 28s linear infinite;will-change:transform;
 }
-.marquee__item{white-space:nowrap;font-weight:600;font-size:.95rem;display:flex;align-items:center;gap:.5rem}
-.marquee__item svg{flex-shrink:0;width:18px;height:18px;opacity:.9}
+.marquee:hover .marquee__track{animation-play-state:paused}
+.marquee__item{white-space:nowrap;font-weight:600;font-size:.9rem;display:flex;align-items:center;gap:.5rem;letter-spacing:.01em}
+.marquee__item svg{flex-shrink:0;width:16px;height:16px;opacity:.9}
 .marquee__close{
   position:absolute;right:1rem;top:50%;transform:translateY(-50%);
-  background:rgba(255,255,255,.15);color:#fff;border:0;
-  width:28px;height:28px;border-radius:50%;cursor:pointer;
+  background:rgba(255,255,255,.18);color:#fff;border:0;
+  width:30px;height:30px;border-radius:50%;cursor:pointer;z-index:3;
   display:flex;align-items:center;justify-content:center;
-  transition:background .2s;padding:0;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);padding:0;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
 }
-.marquee__close:hover{background:rgba(255,255,255,.25)}
-.marquee__close svg{width:16px;height:16px}
+.marquee__close:hover{background:rgba(255,255,255,.32);transform:translateY(-50%) scale(1.1) rotate(90deg)}
+.marquee__close svg{width:14px;height:14px}
 @keyframes marquee{
   0%{transform:translateX(0)}
   100%{transform:translateX(-50%)}
 }
 @media(max-width:768px){
-  .marquee__item{font-size:.88rem}
+  .marquee{height:46px;margin-top:4.8rem}
+  .marquee__item{font-size:.84rem;gap:.4rem}
   .marquee__close{right:.5rem;width:26px;height:26px}
+  .marquee::before,.marquee::after{width:2.5rem}
 }
 </style>
 </head>

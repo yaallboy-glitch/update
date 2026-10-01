@@ -635,6 +635,20 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
   outline:3px solid rgba(74,144,226,.35);outline-offset:3px;border-radius:8px;
 }
 </style>
+
+/* ===== TABLE ACTION BUTTONS ===== */
+.tbl-act{display:flex;gap:6px;align-items:center}
+.tbl-btn{
+  width:32px;height:32px;border-radius:9px;display:grid;place-items:center;
+  color:var(--muted);background:#fff;border:1px solid var(--line);
+  transition:transform .2s var(--ease), color .2s, border-color .2s, background .2s;
+}
+.tbl-btn svg{width:16px;height:16px;stroke-width:1.8;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round}
+.tbl-btn:hover{transform:translateY(-2px) scale(1.05)}
+.tbl-btn.edit:hover{color:var(--blue-deep);border-color:var(--blue);background:var(--blue-soft)}
+.tbl-btn.del:hover{color:var(--danger);border-color:var(--danger);background:var(--danger-soft)}
+.tbl-btn:active{transform:scale(.95)}
+
 </head>
 <body class="loading">
 
@@ -2124,8 +2138,12 @@ function renderAnnouncement(){
       <td>${exp}</td>
       <td>${st}</td>
       <td class="tbl-act">
-        <button class="tbl-btn" onclick="editAnnouncement('${esc(a.id)}')" title="Edit">✏️</button>
-        <button class="tbl-btn" onclick="deleteAnnouncement('${esc(a.id)}')" title="Hapus">🗑️</button>
+        <button class="tbl-btn edit" onclick="editAnnouncement('${esc(a.id)}')" title="Edit">
+          <svg viewBox="0 0 24 24"><path d="M4 20h4L18.5 9.5a2.12 2.12 0 0 0-3-3L5 17v3z"/><path d="M13.5 6.5l3 3"/></svg>
+        </button>
+        <button class="tbl-btn del" onclick="deleteAnnouncement('${esc(a.id)}')" title="Hapus">
+          <svg viewBox="0 0 24 24"><path d="M4 7h16"/><path d="M9 7V5a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/><path d="M6 7l1 13a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1l1-13"/></svg>
+        </button>
       </td>
     </tr>`;
   }).join('');
