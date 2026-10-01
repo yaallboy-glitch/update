@@ -596,6 +596,36 @@ html.js .loading{display:grid}
   .modal-siswa,.modal-siswa__card{animation:none}
   .modal-siswa__close{transition:none}
 }
+
+/* ---------- marquee announcement ---------- */
+.marquee{
+  display:none;position:relative;background:linear-gradient(135deg,var(--blue-deep),var(--blue));
+  color:#fff;overflow:hidden;z-index:100;
+}
+.marquee[data-visible]{display:block}
+.marquee__track{
+  display:flex;align-items:center;gap:3rem;padding:.75rem 0;
+  animation:marquee 25s linear infinite;will-change:transform;
+}
+.marquee__item{white-space:nowrap;font-weight:600;font-size:.95rem;display:flex;align-items:center;gap:.5rem}
+.marquee__item svg{flex-shrink:0;width:18px;height:18px;opacity:.9}
+.marquee__close{
+  position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.15);color:#fff;border:0;
+  width:28px;height:28px;border-radius:50%;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s;padding:0;
+}
+.marquee__close:hover{background:rgba(255,255,255,.25)}
+.marquee__close svg{width:16px;height:16px}
+@keyframes marquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+@media(max-width:768px){
+  .marquee__item{font-size:.88rem}
+  .marquee__close{right:.5rem;width:26px;height:26px}
+}
 </style>
 </head>
 <body>
@@ -632,6 +662,14 @@ html.js .loading{display:grid}
   </div>
 </nav>
 
+<!-- marquee announcement -->
+<div class="marquee" id="marquee" role="banner" aria-live="polite">
+  <div class="marquee__track" id="marqueeTrack"></div>
+  <button class="marquee__close" id="marqueeClose" type="button" aria-label="Tutup pengumuman">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+
 <div class="mmenu" id="mobileMenu">
   <div class="mmenu__backdrop" data-close></div>
   <div class="mmenu__panel" role="dialog" aria-label="Menu">
@@ -659,7 +697,7 @@ html.js .loading{display:grid}
     <div class="hero__grid">
       <div class="hero__content">
         <span class="eyebrow">Kelas baru dibuka minggu ini</span>
-        <h1>Belajar jadi <span class="hl">menyenangkan</span>, bersama <span class="hl">AlifBimbel</span>.</h1>
+        <h1>Belajar jadi <span class="hl">menyenangkan</span>, prestasi jadi <span class="hl">mungkin</span>.</h1>
         <p class="hero__sub">
           <b>AlifBimbel</b> bantu siswa <b>SD kelas 1–6</b> dan <b>SMP</b> paham pelajaran dengan cara yang personal,
           sabar, dan sesuai gaya belajar masing-masing. Bukan sekadar les, tapi teman belajar anak.
@@ -1497,6 +1535,33 @@ html.js .loading{display:grid}
     </div>
   </div>
 </div>
+
+<script>
+/* ponytail: fetch announcement, render marquee infinite scroll, dismissible localStorage */
+(function(){
+  var API = 'https://alifbimbel.septiartojuna.workers.dev/api/public/announcement';
+  var marquee = document.getElementById('marquee');
+  var track = document.getElementById('marqueeTrack');
+  var closeBtn = document.getElementById('marqueeClose');
+  if(!marquee || !track || !closeBtn || !('fetch' in window)) return;
+  
+  var STORAGE_KEY = 'marquee_dismissed';
+  if(localStorage.getItem(STORAGE_KEY)) return;
+  
+  fetch(API).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
+    if(!d.announcement || !d.announcement.content) return;
+    var icon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>';
+    var item = '<span class="marquee__item">' + icon + d.announcement.content + '</span>';
+    track.innerHTML = item + item + item + item;
+    marquee.setAttribute('data-visible', '');
+  }).catch(function(){});
+  
+  closeBtn.addEventListener('click', function(){
+    marquee.removeAttribute('data-visible');
+    localStorage.setItem(STORAGE_KEY, Date.now());
+  });
+})();
+</script>
 
 </body>
 </html>

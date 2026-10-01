@@ -672,6 +672,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       <button class="sb-link" type="button" data-view="absen"><span class="ic">✅</span><span>Absensi Guru</span></button>
       <button class="sb-link" type="button" data-view="presensi"><span class="ic">🎓</span><span>Presensi Siswa</span></button>
       <button class="sb-link" type="button" data-view="pengaturan"><span class="ic">⚙️</span><span>Pengaturan</span></button>
+      <button class="sb-link" type="button" data-view="announcement"><span class="ic">📢</span><span>Pengumuman</span></button>
     </nav>
     <div class="sb-footer">
       <div class="sync" id="syncDesk"><i></i><span>Menghubungkan…</span></div>
@@ -868,6 +869,19 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       </div>
     </section>
 
+    <section id="view-announcement" class="view" style="display:none">
+      <div class="topbar">
+        <div><h1>Pengumuman</h1><p class="sub">Kelola pengumuman marquee di landing page</p></div>
+        <button class="btn btn-primary" type="button" onclick="openModalAnnouncement()">+ Tambah Pengumuman</button>
+      </div>
+      <div class="panel">
+        <table id="tblAnnouncement">
+          <thead><tr><th>Konten</th><th>Berakhir</th><th>Status</th><th>Aksi</th></tr></thead>
+          <tbody id="tblAnnouncementBody"><tr><td colspan="4" class="tbl-empty">Belum ada pengumuman</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
   </main>
 </div>
 
@@ -934,6 +948,41 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
     </div>
   </div>
 </div>
+
+<!-- MODAL ANNOUNCEMENT -->
+<div class="modal-ov" id="modalAnnouncement" onclick="if(event.target===this)closeModal('modalAnnouncement')">
+  <div class="modal">
+    <button class="modal-close" type="button" onclick="closeModal('modalAnnouncement')">✕</button>
+    <h2 id="annTitle">Tambah Pengumuman</h2>
+    <p class="sub">Pengumuman akan tampil sebagai marquee di landing page</p>
+    <input type="hidden" id="annId">
+    <div class="form-row full">
+      <div class="field">
+        <label>Konten Pengumuman</label>
+        <input type="text" id="annContent" placeholder="Contoh: Pendaftaran gelombang 2 dibuka! Diskon 20% hingga 31 Oktober">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="field">
+        <label>Tanggal Berakhir (opsional)</label>
+        <input type="date" id="annExpires">
+        <small style="color:var(--muted)">Kosongkan jika tidak ada batas waktu</small>
+      </div>
+      <div class="field">
+        <label>Status</label>
+        <select id="annActive">
+          <option value="1">Aktif</option>
+          <option value="0">Nonaktif</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" type="button" onclick="closeModal('modalAnnouncement')">Batal</button>
+      <button class="btn btn-primary" type="button" onclick="saveAnnouncement()">Simpan</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- MODAL SISWA -->
 <div class="modal-ov" id="modalSiswa" onclick="if(event.target===this)closeModal('modalSiswa')">
@@ -1148,7 +1197,7 @@ const CACHE_KEY = 'aliefbimbel_cache_v2';
 const OLD_KEY   = 'aliefbimbel_data_v1';      // data lama (versi localStorage)
 const VIEW_KEY  = 'alief_view';
 
-const KINDS = ['siswa','guru','jadwal','bayar','absen','presensi','pengaturan'];
+const KINDS = ['siswa','guru','jadwal','bayar','absen','presensi','pengaturan','announcement'];
 const URUT_HARI = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
 const NAMA_HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 const NAMA_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
@@ -1169,7 +1218,7 @@ const lsDel = k => { try{ localStorage.removeItem(k); }catch(e){} };
 /* ============================================================
    DATA & API
    ============================================================ */
-const emptyDB = () => ({ siswa:[], guru:[], jadwal:[], bayar:[], absen:[], presensi:[], pengaturan:[] });
+const emptyDB = () => ({ siswa:[], guru:[], jadwal:[], bayar:[], absen:[], presensi:[], pengaturan:[], announcement:[] });
 function normalize(d){
   const out = emptyDB();
   KINDS.forEach(k => { out[k] = Array.isArray(d?.[k]) ? d[k] : []; });
@@ -1424,7 +1473,7 @@ function endTime(jam, durasi){
 /* ============================================================
    NAVIGASI + BURGER
    ============================================================ */
-const VIEW_TITLE = { overview:'Ringkasan', jadwal:'Jadwal', siswa:'Siswa', guru:'Guru', bayar:'Pembayaran', absen:'Absensi Guru', presensi:'Presensi Siswa', pengaturan:'Pengaturan' };
+const VIEW_TITLE = { overview:'Ringkasan', jadwal:'Jadwal', siswa:'Siswa', guru:'Guru', bayar:'Pembayaran', absen:'Absensi Guru', presensi:'Presensi Siswa', pengaturan:'Pengaturan', announcement:'Pengumuman' };
 
 function showView(view){
   if(!VIEW_TITLE[view]) view = 'overview';
@@ -2060,8 +2109,68 @@ async function clearPresensi(id){
   if(await remove('presensi', id)){ renderPresensi(); showToast('Presensi direset'); }
 }
 
+/* ============================================================
+   RENDER: ANNOUNCEMENT
+   ============================================================ */
+function renderAnnouncement(){
+  const list = DB.announcement.slice().sort((a,b) => (b.created_at||0) - (a.created_at||0));
+  const body = $('tblAnnouncementBody');
+  if(!list.length){ body.innerHTML = '<tr><td colspan="4" class="tbl-empty">Belum ada pengumuman</td></tr>'; return; }
+  body.innerHTML = list.map(a => {
+    const exp = a.expires_at ? new Date(a.expires_at).toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}) : '—';
+    const st = a.active ? '<span style="color:var(--success,#38A169)">Aktif</span>' : '<span style="color:var(--muted)">Nonaktif</span>';
+    return `<tr>
+      <td>${esc(a.content||'')}</td>
+      <td>${exp}</td>
+      <td>${st}</td>
+      <td class="tbl-act">
+        <button class="tbl-btn" onclick="editAnnouncement('${esc(a.id)}')" title="Edit">✏️</button>
+        <button class="tbl-btn" onclick="deleteAnnouncement('${esc(a.id)}')" title="Hapus">🗑️</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+function openModalAnnouncement(id){
+  const m = $('modalAnnouncement'); if(!m) return;
+  if(id){
+    const a = DB.announcement.find(x => x.id === id); if(!a) return;
+    $('annTitle').textContent = 'Edit Pengumuman';
+    $('annId').value = a.id;
+    $('annContent').value = a.content || '';
+    $('annExpires').value = a.expires_at ? a.expires_at.split('T')[0] : '';
+    $('annActive').value = a.active ? '1' : '0';
+  } else {
+    $('annTitle').textContent = 'Tambah Pengumuman';
+    $('annId').value = '';
+    $('annContent').value = '';
+    $('annExpires').value = '';
+    $('annActive').value = '1';
+  }
+  m.classList.add('show');
+  setTimeout(() => $('annContent').focus(), 50);
+}
+
+function editAnnouncement(id){ openModalAnnouncement(id); }
+
+async function saveAnnouncement(){
+  const id = $('annId').value || ('ann_' + Date.now());
+  const content = $('annContent').value.trim();
+  const expires = $('annExpires').value;
+  const active = $('annActive').value === '1';
+  if(!content){ showToast('Konten pengumuman wajib diisi'); $('annContent').focus(); return; }
+  const rec = { id, content, expires_at: expires ? expires + 'T23:59:59Z' : null, active, created_at: Date.now() };
+  if(await save('announcement', rec)){ closeModal('modalAnnouncement'); renderAll(); showToast('Pengumuman disimpan'); }
+}
+
+async function deleteAnnouncement(id){
+  if(!confirm('Hapus pengumuman ini?')) return;
+  if(await remove('announcement', id)){ renderAll(); showToast('Pengumuman dihapus'); }
+}
+
+
 function renderAll(){
-  renderOverview(); renderJadwal(); renderSiswa(); renderGuru(); renderBayar(); renderAbsensi(); renderPresensi(); renderPengaturan();
+  renderOverview(); renderJadwal(); renderSiswa(); renderGuru(); renderBayar(); renderAbsensi(); renderPresensi(); renderPengaturan(); renderAnnouncement();
 }
 
 /* ============================================================
