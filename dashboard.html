@@ -331,8 +331,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .sync.err i{background:var(--danger)}
 @keyframes blink{50%{opacity:.35}}
 
-/* top bar mobile + burger */
-.mtop,.sb-ov{display:none}
+/* top bar mobile + burger - default hidden on desktop only */
+.mtop{display:block;padding:0;position:relative;z-index:55}
+.sb-ov{display:none}
 .burger{
   width:44px;height:44px;border-radius:14px;background:#fff;
   border:1.5px solid var(--line);box-shadow:var(--shadow-sm);
@@ -784,6 +785,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
     animation: none !important;
   }
 }
+
+
+/* Card layouts */
+.abs-card{display:flex;flex-direction:column;align-items:stretch;gap:14px}
+.col-stretch{flex-direction:column;align-items:stretch}
+.gap-md{gap:12px}
 
 </style>
 
@@ -2132,7 +2139,7 @@ function renderAbsensi(){
     }[status] || '<span class="badge badge-gray">Belum diabsen</span>';
     const b = (val, label) => `<button class="btn btn-ghost btn-sm${status === val ? ' on' : ''}" type="button" onclick="setAbsen('${esc(j.id)}','${tanggal}','${val}')">${label}</button>`;
 
-    html += `<div class="item" style="flex-direction:column;align-items:stretch;gap:14px">
+    html += `<div class="item" class="abs-card col-stretch gap-md">
       <div style="display:flex;justify-content:space-between;gap:12px;align-items:flex-start;flex-wrap:wrap">
         <div>
           <div class="item-title">${esc(j.mapel)} · ${esc(j.kelas||'-')}</div>
