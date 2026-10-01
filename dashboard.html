@@ -1639,8 +1639,19 @@ function showView(view){
   window.scrollTo(0, 0);
   renderAll();
 }
+// Auto-close nav when clicking any section (mobile only)
+document.querySelectorAll('.view').forEach(v => {
+  v.addEventListener('click', (e) => { 
+    if(window.innerWidth <= 900) closeNav(); 
+  }, true); // use capture
+});
+
+// Sidebar links - change view and close nav
 document.querySelectorAll('.sb-link').forEach(link => {
-  link.addEventListener('click', () => { showView(link.dataset.view); closeNav(); });
+  link.addEventListener('click', () => { 
+    showView(link.dataset.view); 
+    closeNav(); 
+  });
 });
 
 function setNav(open){
