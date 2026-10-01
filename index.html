@@ -1093,16 +1093,18 @@ html.js .loading{display:grid}
 </a>
 
 <script>
-/* ponytail: fetch WA dari API pengaturan, fallback ke hardcode */
+/* ponytail: fetch WA dari API pengaturan, update semua link nomor utama */
 (function(){
   var API_INFO = 'https://alifbimbel.septiartojuna.workers.dev/api/public/info';
-  var waBtn = document.getElementById('waFloat');
-  if(!waBtn || !('fetch' in window)) return;
+  if(!('fetch' in window)) return;
   fetch(API_INFO).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
     if(!d.wa) return;
     var wa = String(d.wa).replace(/^0/, '62').replace(/\D/g, '');
     if(wa.length < 10) return;
-    waBtn.href = 'https://wa.me/' + wa + '?text=Halo%20AlifBimbel%2C%20saya%20ingin%20bertanya';
+    var links = document.querySelectorAll('a[href*="wa.me/62882003377569"]');
+    Array.prototype.forEach.call(links, function(link){
+      link.href = link.href.replace(/62882003377569/, wa);
+    });
   }).catch(function(){});
 })();
 </script>
