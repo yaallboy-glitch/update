@@ -1315,6 +1315,8 @@ window.addEventListener('load', () => {
       initGoogleAdminLogin();
     } else if(tries > 40){
       clearInterval(t);
+      const ge = $('lockGoogleErr');
+      if(ge) ge.textContent = 'Tombol Google gagal dimuat. Cek koneksi / pemblokir iklan, atau pakai PIN.';
     }
   }, 150);
 });
@@ -1353,6 +1355,12 @@ async function loadFromServer(fromLogin){
   }catch(e){
     if(e.code === 401){
       showLock(fromLogin ? 'PIN salah. Coba lagi.' : (adminKey ? 'PIN salah atau sudah diganti.' : ''));
+      setSync('err');
+      return false;
+    }
+    // saat login manual/Google: tampilkan penyebab error asli, jangan pura-pura berhasil masuk
+    if(fromLogin){
+      showLock('Gagal masuk: ' + (e.message || 'server tidak terjangkau'));
       setSync('err');
       return false;
     }
