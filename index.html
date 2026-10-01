@@ -1088,9 +1088,24 @@ html.js .loading{display:grid}
   </div>
 </footer>
 
-<a class="wa-float" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener" aria-label="Chat WhatsApp AlifBimbel">
+<a class="wa-float" id="waFloat" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener" aria-label="Chat WhatsApp AlifBimbel">
   <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.9.53 3.68 1.46 5.2L2 22l5.1-1.62a9.8 9.8 0 0 0 4.94 1.34c5.44 0 9.84-4.4 9.84-9.84S17.48 2 12.04 2Zm5.7 13.9c-.24.68-1.4 1.32-1.94 1.36-.54.05-1.02.14-2.6-.62-1.9-.92-3.1-3.02-3.2-3.16-.1-.14-.78-1.08-.78-2.06 0-.98.5-1.46.7-1.66.2-.2.44-.25.6-.25l.42.01c.14 0 .33-.05.5.4.18.46.62 1.6.68 1.72.06.12.1.26.01.42-.09.16-.16.26-.32.42-.16.16-.25.26-.35.42-.1.16-.22.34-.09.56.13.22.6 1 1.28 1.6.86.78 1.6 1.02 1.82 1.13.22.11.36.1.5-.05.14-.15.6-.7.76-.94.16-.24.32-.2.53-.12.21.08 1.34.63 1.57.75.23.11.38.17.44.27.05.1.05.6-.19 1.28Z"/></svg>
 </a>
+
+<script>
+/* ponytail: fetch WA dari API pengaturan, fallback ke hardcode */
+(function(){
+  var API_INFO = 'https://alifbimbel.septiartojuna.workers.dev/api/public/info';
+  var waBtn = document.getElementById('waFloat');
+  if(!waBtn || !('fetch' in window)) return;
+  fetch(API_INFO).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
+    if(!d.wa) return;
+    var wa = String(d.wa).replace(/^0/, '62').replace(/\D/g, '');
+    if(wa.length < 10) return;
+    waBtn.href = 'https://wa.me/' + wa + '?text=Halo%20AlifBimbel%2C%20saya%20ingin%20bertanya';
+  }).catch(function(){});
+})();
+</script>
 
 <script>
 (function(){
