@@ -1960,21 +1960,25 @@ function fillSiswaSelect(selectId){
 }
 
 const DEF_TARIF = { sd:450000, smp:650000, sma:850000, reguler:450000, intensif:750000, privat:1200000 };
+// kolom tarif diambil dari input yang benar-benar ada di form (id diawali "pg", selain pgWa)
+const tarifInputs = () => Array.from(document.querySelectorAll('#view-pengaturan input[id^="pg"]')).filter(el => el.id !== 'pgWa');
+const tarifKey = el => el.id.slice(2).toLowerCase();   // pgSd13 -> sd13
 function renderPengaturan(){
   if(document.activeElement && document.activeElement.closest('#view-pengaturan')) return;
   const p = DB.pengaturan.find(x => x.id === 'utama') || {};
   const t = { ...DEF_TARIF, ...(p.tarif||{}) };
-  $('pgWa').value = p.wa || '';
-  ['sd','smp','sma','reguler','intensif','privat'].forEach(k => $('pg' + k[0].toUpperCase() + k.slice(1)).value = t[k]);
+  const wa = $('pgWa'); if(wa) wa.value = p.wa || '';
+  tarifInputs().forEach(el => { const v = t[tarifKey(el)]; el.value = (v === undefined || v === null) ? '' : v; });
 }
 async function savePengaturan(){
   let wa = $('pgWa').value.replace(/\D/g,'');
   if(wa.startsWith('0')) wa = '62' + wa.slice(1);
   if(wa.length < 9){ showToast('Nomor WhatsApp tidak valid'); return; }
   const tarif = {};
-  for(const k of ['sd','smp','sma','reguler','intensif','privat']){
-    tarif[k] = parseInt($('pg' + k[0].toUpperCase() + k.slice(1)).value, 10) || 0;
-    if(!tarif[k]){ showToast('Semua tarif wajib diisi'); return; }
+  for(const el of tarifInputs()){
+    const k = tarifKey(el);
+    tarif[k] = parseInt(el.value, 10) || 0;
+    if(!tarif[k]){ showToast('Semua tarif wajib diisi'); el.focus(); return; }
   }
   if(await save('pengaturan', { id:'utama', wa, tarif })){ showToast('Pengaturan disimpan'); renderAll(); }
 }
