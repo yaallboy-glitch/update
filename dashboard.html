@@ -304,6 +304,10 @@ input,select,textarea{font-family:inherit}
 .badge-yellow{background:var(--yellow-soft);color:#7A5A00}
 .badge-blue{background:var(--blue-soft);color:var(--blue-deep)}
 .badge-gray{background:#F1F5F9;color:#475569}
+.chk{display:inline-flex;align-items:center;gap:8px;cursor:pointer;user-select:none;font-size:13px;font-weight:800}
+.chk input{width:18px;height:18px;accent-color:#16A34A;cursor:pointer}
+.chk .on{color:#166534}
+.chk .off{color:#991B1B}
 
 /* ===== FORM ===== */
 .form-row{
@@ -2130,9 +2134,8 @@ function renderSiswa(){
   </tr></thead><tbody>`;
   DB.siswa.forEach(s => {
     const bayar = DB.bayar.find(b => b.siswaId === s.id && b.bulan === bulanIni && String(b.tahun) === String(tahunIni));
-    const st = bayar?.status === 'paid'
-      ? '<span class="badge badge-green">✓ Lunas</span>'
-      : '<span class="badge badge-red">Belum Bayar</span>';
+    const paid = bayar?.status === 'paid';
+    const st = `<label class="chk"><input type="checkbox" ${paid ? 'checked' : ''} onchange="toggleBayar('${esc(s.id)}', this.checked)"><span class="${paid ? 'on' : 'off'}">${paid ? 'Lunas' : 'Belum Bayar'}</span></label>`;
     html += `<tr>
       <td class="nm"><div class="name">${esc(s.nama)}</div>${s.catatan ? `<div class="meta">${esc(s.catatan)}</div>` : ''}</td>
       <td data-label="Kelas">${esc(s.kelas)}</td>
@@ -2146,6 +2149,20 @@ function renderSiswa(){
     </tr>`;
   });
   $('siswaList').innerHTML = html + '</tbody></table></div>';
+}
+
+async function toggleBayar(siswaId, paid){
+  const bln = getBulanIni(), thn = getTahunIni();
+  const existing = DB.bayar.find(b => b.siswaId === siswaId && b.bulan === bln && String(b.tahun) === String(thn));
+  if(paid){
+    const s = DB.siswa.find(x => x.id === siswaId);
+    const rec = existing
+      ? { ...existing, status: 'paid' }
+      : { id: uid('bayar'), siswaId, bulan: bln, tahun: thn, jumlah: s?.iuran || 0, status: 'paid', metode: '' };
+    if(await save('bayar', rec)){ renderAll(); showToast('Ditandai lunas ✓'); }
+  } else if(existing){
+    if(await save('bayar', { ...existing, status: 'unpaid' })){ renderAll(); showToast('Ditandai belum bayar'); }
+  }
 }
 
 function openSiswaForm(id){
