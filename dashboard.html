@@ -1235,6 +1235,12 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
               <option value="">— Semua Kelas —</option>
             </select>
           </div>
+          <div class="field" style="min-width:220px">
+            <label for="presSiswa">Siswa</label>
+            <select id="presSiswa" onchange="renderPresensi()">
+              <option value="">— Semua Siswa —</option>
+            </select>
+          </div>
         </div>
       </div>
       <div class="panel" id="presensiPanel">
@@ -2510,16 +2516,26 @@ function fillKelasSelect(selectId){
   if(cur && Array.from(sel.options).some(o => o.value === cur)) sel.value = cur;
 }
 
+const PRES_BADGE = {
+  hadir:'<span class="badge badge-green">✓ Hadir</span>',
+  izin:'<span class="badge badge-yellow">Izin</span>',
+  sakit:'<span class="badge badge-yellow">Sakit</span>',
+  alpha:'<span class="badge badge-red">Alpha</span>'
+};
+
 function renderPresensi(){
   fillKelasSelect('presKelas');
+  fillPresensiSiswa();
   const tanggal = $('presTanggal').value || getTanggalISO();
   const pertemuan = String($('presPertemuan').value || '1');
   const kelas = $('presKelas').value;
+  const siswaId = $('presSiswa').value;
 
   if(!DB.siswa.length){
     $('presensiList').innerHTML = `<div class="empty"><div class="ic">🎓</div><h3>Belum ada siswa</h3><p>Tambah siswa terlebih dahulu agar bisa mencatat presensi.</p></div>`;
     return;
   }
+  if(siswaId){ renderPresensiSiswa(siswaId); return; }
 
   let siswa = DB.siswa.slice().sort((a,b) => a.nama.localeCompare(b.nama));
   if(kelas) siswa = siswa.filter(s => s.kelas === kelas);
@@ -2531,12 +2547,7 @@ function renderPresensi(){
   siswa.forEach((s, i) => {
     const rec = DB.presensi.find(p => p.siswaId === s.id && p.tanggal === tanggal && p.pertemuan === pertemuan);
     const status = rec?.status || 'belum';
-    const badge = {
-      hadir:'<span class="badge badge-green">✓ Hadir</span>',
-      izin:'<span class="badge badge-yellow">Izin</span>',
-      sakit:'<span class="badge badge-yellow">Sakit</span>',
-      alpha:'<span class="badge badge-red">Alpha</span>'
-    }[status] || '<span class="badge badge-gray">Belum</span>';
+    const badge = PRES_BADGE[status] || '<span class="badge badge-gray">Belum</span>';
     const b = (val, label) => `<button class="btn btn-ghost btn-sm${status === val ? ' on' : ''}" type="button" onclick="setPresensi('${esc(s.id)}','${tanggal}','${pertemuan}','${val}')">${label}</button>`;
 
     html += `<div class="item" style="flex-direction:column;align-items:stretch;gap:14px;animation:panelIn .35s var(--ease) ${i*0.04}s both">
@@ -2554,6 +2565,36 @@ function renderPresensi(){
     </div>`;
   });
   $('presensiList').innerHTML = html;
+}
+
+function fillPresensiSiswa(){
+  const sel = $('presSiswa'), cur = sel.value;
+  const kelas = $('presKelas').value;
+  let list = DB.siswa.slice().sort((a,b) => a.nama.localeCompare(b.nama));
+  if(kelas) list = list.filter(s => s.kelas === kelas);
+  sel.innerHTML = '<option value="">— Semua Siswa —</option>' +
+    list.map(s => `<option value="${esc(s.id)}">${esc(s.nama)}</option>`).join('');
+  if(cur && Array.from(sel.options).some(o => o.value === cur)) sel.value = cur; else sel.value = '';
+}
+
+function renderPresensiSiswa(siswaId){
+  const s = DB.siswa.find(x => x.id === siswaId);
+  const recs = DB.presensi.filter(p => p.siswaId === siswaId)
+    .sort((a,b) => b.tanggal.localeCompare(a.tanggal) || (Number(b.pertemuan) - Number(a.pertemuan)));
+  const n = recs.length;
+  const ringkas = st => `<span class="badge ${st === 'alpha' ? 'badge-red' : st === 'hadir' ? 'badge-green' : 'badge-yellow'}">${st === 'hadir' ? '✓ Hadir' : st.charAt(0).toUpperCase() + st.slice(1)} ${recs.filter(r => r.status === st).length}</span>`;
+  const tgl = t => new Date(t + 'T00:00:00').toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
+  const rows = n
+    ? recs.map(r => `<tr>
+      <td>${esc(tgl(r.tanggal))}</td>
+      <td>Pertemuan ${esc(r.pertemuan)}</td>
+      <td>${PRES_BADGE[r.status] || '<span class="badge badge-gray">Belum</span>'}</td>
+    </tr>`).join('')
+    : '<tr><td colspan="3" class="tbl-empty">Belum ada catatan presensi untuk siswa ini.</td></tr>';
+  $('presensiList').innerHTML = `
+    <div style="margin-bottom:14px;font-size:13.5px;color:var(--muted);font-weight:600">Riwayat presensi <b style="color:var(--ink)">${esc(s?.nama || '-')}</b>${s?.kelas ? ' · ' + esc(s.kelas) : ''}</div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">${ringkas('hadir')}${ringkas('izin')}${ringkas('sakit')}${ringkas('alpha')}<span class="badge badge-gray">Total ${n} pertemuan</span></div>
+    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tanggal</th><th>Pertemuan</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 async function setPresensi(siswaId, tanggal, pertemuan, status){
