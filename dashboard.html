@@ -331,7 +331,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .sync.err i{background:var(--danger)}
 @keyframes blink{50%{opacity:.35}}
 
-/* mobile header - hidden on desktop by default */
+/* mobile header: hidden on desktop; shown <=1000px by @media (max-width:1000px) */
 .mtop{display:none}
 .sb-ov{display:none}
 .burger {
@@ -470,7 +470,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 /* ---- tablet & HP: sidebar jadi drawer ---- */
-@media (max-width:900px){
+@media (max-width:1000px){
   body{font-size:14px}
   .app{grid-template-columns:1fr}
   .mtop {
@@ -503,7 +503,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     position:fixed;top:0;left:0;bottom:0;right:auto;
     width:min(290px,84vw);height:100vh;height:100dvh;z-index:80;
     padding:22px 0;border-right:0;border-top:0;flex-direction:column;overflow-y:auto;
-    transform:translateX(-104%);transition:transform .35s var(--ui-ease),box-shadow .35s;
+    transform:translateX(-104%);animation:none;transition:transform .35s var(--ui-ease),box-shadow .35s;
   }
   .nav-open .sidebar{transform:none;box-shadow:24px 0 60px -20px rgba(42,37,64,.35)}
   .sb-ov{
@@ -641,7 +641,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:translateY(0)}
 }
-.sidebar{animation:slideInLeft .45s cubic-bezier(.22,1,.36,1) both}
+@media (min-width:1001px){
+  .sidebar{animation:slideInLeft .45s cubic-bezier(.22,1,.36,1) both}
+}
 .main{animation:slideInUp .5s cubic-bezier(.22,1,.36,1) .05s both}
 .stat{animation:statIn .55s cubic-bezier(.34,1.56,.64,1) both}
 .stat:nth-child(1){animation-delay:.05s}
@@ -1704,7 +1706,7 @@ function showView(view){
 // Auto-close nav when clicking any section (mobile only)
 document.querySelectorAll('.view').forEach(v => {
   v.addEventListener('click', (e) => { 
-    if(window.innerWidth <= 900) closeNav(); 
+    if(window.innerWidth <= 1000) closeNav(); 
   }, true); // use capture
 });
 
@@ -1725,7 +1727,7 @@ function setNav(open){
 function closeNav(){ setNav(false); }
 $('burger').addEventListener('click', () => setNav(!document.body.classList.contains('nav-open')));
 $('sbOv').addEventListener('click', closeNav);
-window.addEventListener('resize', () => { if(window.innerWidth > 900) closeNav(); });
+window.addEventListener('resize', () => { if(window.innerWidth > 1000) closeNav(); });
 
 /* ============================================================
    RENDER: OVERVIEW
