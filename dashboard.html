@@ -163,6 +163,118 @@ input,select,textarea{font-family:inherit}
 }
 .panel-head .sub{font-size:13.5px;color:var(--muted);margin-top:2px;font-weight:600}
 
+/* ===== RINGKASAN PEMBAYARAN (rail clay + dropdown nama) ===== */
+.paybox{position:relative}
+.pay-rail{
+  position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px;
+  padding:8px;border-radius:20px;background:var(--bg);
+  border:2px solid var(--line);
+  box-shadow:inset 3px 3px 9px rgba(42,37,64,.10), inset -3px -3px 8px rgba(255,255,255,.95);
+}
+.pay-thumb{
+  position:absolute;top:8px;left:8px;bottom:8px;z-index:1;
+  width:calc((100% - 24px) / 2);
+  border-radius:14px;background:#fff;
+  box-shadow:0 7px 15px -7px rgba(42,37,64,.4), inset 0 -3px 0 rgba(42,37,64,.06);
+  transform:translateX(calc(var(--i,0) * (100% + 8px)));
+  transition:transform .42s var(--ease);
+}
+.pay-seg{
+  position:relative;z-index:2;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  padding:13px 10px;border-radius:14px;
+  font-family:var(--heading);font-weight:800;font-size:15.5px;color:var(--muted);
+  transition:color .2s;
+}
+.pay-seg:hover{color:var(--ink)}
+.pay-seg[aria-expanded="true"]{color:var(--ink)}
+.pay-seg .dot{
+  width:9px;height:9px;border-radius:50%;flex-shrink:0;
+  opacity:.4;transition:opacity .2s, transform .35s var(--ease);
+}
+.pay-seg[aria-expanded="true"] .dot{opacity:1;transform:scale(1.2)}
+.pay-seg[data-tab="lunas"] .dot{background:#16A34A;box-shadow:0 0 0 3px #DCFCE7}
+.pay-seg[data-tab="belum"] .dot{background:var(--coral);box-shadow:0 0 0 3px var(--coral-soft)}
+.pay-cnt{
+  min-width:28px;padding:2px 8px;border-radius:100px;
+  font-size:12.5px;font-weight:800;text-align:center;
+  background:#fff;border:1.5px solid var(--line);color:var(--muted);
+  transition:background .2s, color .2s, border-color .2s;
+}
+.pay-seg[aria-expanded="true"] .pay-cnt{background:var(--ink);border-color:var(--ink);color:#fff}
+.pay-drop{overflow:hidden;max-height:0;transition:max-height .45s var(--ui-ease)}
+.pay-sheet{
+  position:relative;margin-top:16px;
+  background:var(--bg);border:2px solid var(--line);border-radius:18px;
+  padding:16px;
+}
+.pay-sheet::before{
+  content:'';position:absolute;top:-9px;
+  left:calc(25% + (var(--i,0) * 50%) - 9px);
+  width:16px;height:16px;
+  background:var(--bg);
+  border-left:2px solid var(--line);border-top:2px solid var(--line);
+  transform:rotate(45deg);
+}
+.pay-head{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:12px;margin-bottom:8px;flex-wrap:wrap;position:relative;
+}
+.pay-title{font-family:var(--heading);font-weight:800;font-size:15.5px;line-height:1.25}
+.pay-title small{
+  display:block;font-family:var(--body);font-weight:600;
+  font-size:12.5px;color:var(--muted);letter-spacing:0;
+}
+.pay-sum{
+  font-family:var(--heading);font-weight:800;font-size:13.5px;
+  padding:6px 13px;border-radius:100px;background:#fff;border:1.5px solid var(--line);
+}
+.pay-sum.lunas{color:#166534;background:#DCFCE7;border-color:transparent}
+.pay-sum.belum{color:#991B1B;background:var(--danger-soft);border-color:transparent}
+.pay-row{
+  display:flex;align-items:center;gap:12px;
+  padding:11px 12px;border-radius:14px;
+  animation:payIn .45s var(--ease) both;
+  animation-delay:calc(var(--n,0) * 45ms);
+}
+.pay-row + .pay-row{border-top:1px dashed var(--line)}
+.pay-row:hover{background:#fff;box-shadow:var(--shadow-sm)}
+@keyframes payIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
+.pay-av{
+  width:38px;height:38px;flex-shrink:0;border-radius:13px;
+  display:grid;place-items:center;
+  font-family:var(--heading);font-weight:800;font-size:14px;color:var(--ink);
+  background:var(--av,var(--blue-soft));
+  box-shadow:inset -2px -2px 5px rgba(42,37,64,.14), 0 5px 12px -7px rgba(42,37,64,.55);
+}
+.pay-info{flex:1;min-width:0}
+.pay-name{font-family:var(--heading);font-weight:700;font-size:14.5px;line-height:1.3}
+.pay-meta{
+  font-size:12.5px;color:var(--muted);font-weight:600;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+}
+.pay-act{display:flex;align-items:center;gap:8px;flex-shrink:0}
+.pay-amt{font-family:var(--heading);font-weight:800;font-size:13.5px;color:var(--muted)}
+.pay-empty{
+  text-align:center;padding:26px 16px;color:var(--muted);font-weight:600;font-size:14px;
+}
+.pay-empty svg{display:block;margin:0 auto 8px;color:var(--muted);opacity:.65}
+.pay-empty b{
+  display:block;font-family:var(--heading);font-size:15.5px;
+  color:var(--ink);margin-bottom:2px;
+}
+@media (max-width:1000px){
+  .pay-seg{font-size:14.5px;gap:7px;padding:12px 8px}
+  .pay-sheet{padding:14px}
+  .pay-row{flex-wrap:wrap;row-gap:6px}
+  .pay-act{width:100%;justify-content:flex-end}
+}
+@media (prefers-reduced-motion:reduce){
+  .pay-thumb{transition:none}
+  .pay-row{animation:none}
+  .pay-drop{transition:none}
+}
+
 /* ===== TABLE ===== */
 .tbl{width:100%;border-collapse:collapse;font-size:14px}
 .tbl th{
@@ -947,11 +1059,34 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2>Belum Bayar Bulan Ini</h2>
-            <div class="sub">Siswa yang perlu diingatkan</div>
+            <h2>Ringkasan Pembayaran</h2>
+            <div class="sub">Pilih menu untuk buka daftar nama</div>
           </div>
         </div>
-        <div id="unpaidList"></div>
+        <div class="paybox" id="payBox">
+          <div class="pay-rail">
+            <div class="pay-thumb" id="payThumb" aria-hidden="true"></div>
+            <button class="pay-seg" type="button" data-tab="lunas" aria-expanded="false" aria-controls="payDrop">
+              <span class="dot" aria-hidden="true"></span>
+              <span>Lunas</span>
+              <span class="pay-cnt" id="cntLunas">0</span>
+            </button>
+            <button class="pay-seg" type="button" data-tab="belum" aria-expanded="false" aria-controls="payDrop">
+              <span class="dot" aria-hidden="true"></span>
+              <span>Belum</span>
+              <span class="pay-cnt" id="cntBelum">0</span>
+            </button>
+          </div>
+          <div class="pay-drop" id="payDrop">
+            <div class="pay-sheet" id="paySheet" role="region" aria-label="Daftar nama pembayaran">
+              <div class="pay-head">
+                <div class="pay-title" id="payTitle">—<small>—</small></div>
+                <span class="pay-sum" id="paySum">—</span>
+              </div>
+              <div id="payList"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
 
@@ -1761,23 +1896,90 @@ function renderOverview(){
         </div>`;
       }).join('');
 
-  const belumBayar = DB.siswa.filter(s => {
-    const b = DB.bayar.find(x => x.siswaId === s.id && x.bulan === bulanIni && String(x.tahun) === String(tahunIni));
-    return !b || b.status !== 'paid';
-  });
-  $('unpaidList').innerHTML = !belumBayar.length
-    ? `<div class="empty"><div class="ic">🎉</div><h3>Semua sudah bayar!</h3><p>Tidak ada tunggakan bulan ${bulanIni}.</p></div>`
-    : belumBayar.map(s => `<div class="item">
-        <div>
-          <div class="item-title">${esc(s.nama)}</div>
-          <div class="item-meta">${esc(s.kelas)} · Ortu: ${esc(s.ortu||'-')} · ${esc(s.wa||'-')}</div>
-        </div>
-        <div class="item-act">
-          <span class="badge badge-red">Belum Bayar</span>
-          <button class="btn btn-yellow btn-sm" type="button" onclick="openBayarForm('${esc(s.id)}')">Catat Bayar</button>
-        </div>
-      </div>`).join('');
+  buildPay();
+  renderPay();
 }
+
+/* ===== RINGKASAN PEMBAYARAN (rail + dropdown nama) ===== */
+const AV_SOFT = ['var(--blue-soft)','var(--mint-soft)','var(--yellow-soft)','var(--lavender-soft)','var(--coral-soft)'];
+let PAY = { lunas: [], belum: [], bulan: '' };
+let payTab = 'belum', payOpen = false;
+
+const payInitials = n => String(n || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
+
+function buildPay(){
+  const bulanIni = getBulanIni(), tahunIni = getTahunIni();
+  const lunas = [], belum = [];
+  DB.siswa.forEach(s => {
+    const b = DB.bayar.find(x => x.siswaId === s.id && x.bulan === bulanIni && String(x.tahun) === String(tahunIni));
+    if(b && b.status === 'paid') lunas.push({ s, b });
+    else belum.push({ s, b });
+  });
+  PAY = { lunas, belum, bulan: bulanIni };
+}
+
+function renderPay(){
+  const box = $('payBox'), drop = $('payDrop'), sheet = $('paySheet');
+  if(!box || !drop || !sheet) return;
+  box.style.setProperty('--i', payTab === 'lunas' ? 0 : 1);
+  document.querySelectorAll('.pay-seg').forEach(btn => {
+    btn.setAttribute('aria-expanded', (payOpen && btn.dataset.tab === payTab) ? 'true' : 'false');
+  });
+  $('cntLunas').textContent = PAY.lunas.length;
+  $('cntBelum').textContent  = PAY.belum.length;
+
+  if(!payOpen){
+    drop.classList.remove('open');
+    drop.style.maxHeight = '0px';
+    return;
+  }
+
+  const list = PAY[payTab], isLunas = payTab === 'lunas';
+  $('payTitle').innerHTML = (isLunas ? 'Sudah Lunas' : 'Belum Bayar') +
+    '<small>Bulan ' + esc(PAY.bulan) + ' · ' + list.length + ' siswa</small>';
+  const total = list.reduce((sum, x) => sum + Number(x.b?.jumlah || 0), 0);
+  $('paySum').className = 'pay-sum ' + payTab;
+  $('paySum').textContent = isLunas ? fmtShort(total) + ' terkumpul' : list.length + ' perlu ditagih';
+
+  $('payList').innerHTML = !list.length
+    ? `<div class="pay-empty">
+        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.4l2.4 2.4 4.6-5.2"/></svg>
+        <b>${isLunas ? 'Belum ada yang bayar' : 'Semua sudah bayar!'}</b>
+        ${isLunas ? 'Catat pembayaran lewat menu Pembayaran.' : 'Tidak ada tunggakan bulan ' + esc(PAY.bulan) + '.'}
+      </div>`
+    : list.map((x, i) => {
+        const s = x.s, b = x.b, av = AV_SOFT[i % AV_SOFT.length];
+        const meta = isLunas
+          ? `${esc(s.kelas)} · ${esc(b?.metode || '-')} · ${esc(b?.bulan || PAY.bulan)}`
+          : `${esc(s.kelas)} · Ortu: ${esc(s.ortu || '-')} · ${esc(s.wa || '-')}`;
+        const act = isLunas
+          ? `<span class="pay-amt">${fmtShort(b?.jumlah || 0)}</span><span class="badge badge-green">Lunas</span>`
+          : `<span class="badge badge-red">Belum</span><button class="btn btn-yellow btn-sm" type="button" onclick="openBayarForm('${esc(s.id)}')">Catat Bayar</button>`;
+        return `<div class="pay-row" style="--n:${i};--av:${av}">
+          <div class="pay-av" aria-hidden="true">${esc(payInitials(s.nama))}</div>
+          <div class="pay-info">
+            <div class="pay-name">${esc(s.nama)}</div>
+            <div class="pay-meta">${meta}</div>
+          </div>
+          <div class="pay-act">${act}</div>
+        </div>`;
+      }).join('');
+
+  drop.classList.add('open');
+  drop.style.maxHeight = (sheet.offsetHeight + 24) + 'px';
+}
+
+document.querySelectorAll('.pay-seg').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const tab = btn.dataset.tab;
+    if(payOpen && payTab === tab) payOpen = false;
+    else { payTab = tab; payOpen = true; }
+    renderPay();
+  });
+});
+document.addEventListener('click', e => {
+  if(payOpen && !$('payBox').contains(e.target)){ payOpen = false; renderPay(); }
+});
 
 /* ============================================================
    RENDER: JADWAL (kartu, urut Senin → Minggu)
