@@ -513,32 +513,64 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .item-act{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
 
 /* jadwal per hari */
-.day{margin-bottom:28px}
+.day{margin-bottom:18px}
 .day:last-child{margin-bottom:0}
 .day-head{
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  margin-bottom:14px;padding-bottom:10px;border-bottom:2px dashed var(--line);
+  margin-bottom:10px;padding-bottom:8px;border-bottom:2px dashed var(--line);
 }
-.day-name{font-family:var(--heading);font-weight:800;font-size:17px;letter-spacing:-.02em}
+.day-name{font-family:var(--heading);font-weight:800;font-size:16px;letter-spacing:-.02em}
 .day.today .day-name{color:var(--blue-deep)}
-.jd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
+.jd-grid{display:grid;gap:8px}
 .jd-card{
-  background:var(--bg);border:1.5px solid var(--line);border-radius:18px;padding:16px;
-  display:flex;flex-direction:column;gap:12px;
-  transition:transform .25s var(--ui-spring),box-shadow .25s,border-color .25s;
+  background:var(--bg);border:1.5px solid var(--line);border-radius:14px;
+  padding:8px 10px;
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;
+  animation:jdIn .4s var(--ease) both;
+  animation-delay:calc(var(--n,0) * 45ms);
+  transition:transform .2s var(--ui-spring),box-shadow .2s,border-color .2s;
 }
-.jd-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(74,144,226,.4)}
-.jd-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
-.jd-time{font-family:var(--heading);font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1.1}
-.jd-time small{display:block;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:0;margin-top:3px}
-.jd-mapel{font-family:var(--heading);font-weight:700;font-size:16px;line-height:1.3}
-.jd-info{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
-.jd-note{font-size:12.5px;color:var(--muted);background:#fff;border-radius:10px;padding:8px 10px;border:1px dashed var(--line)}
-.jd-act{
-  display:flex;justify-content:center;gap:8px;
-  padding-top:12px;border-top:1px solid var(--line);margin-top:auto;
+@keyframes jdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.jd-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:rgba(74,144,226,.45)}
+.jd-time{
+  font-family:var(--heading);font-weight:800;font-size:13.5px;letter-spacing:-.01em;line-height:1.15;
+  background:#fff;border:1.5px solid var(--line);border-radius:11px;
+  padding:5px 9px;text-align:center;
+  box-shadow:inset 0 -2px 0 rgba(42,37,64,.05);
 }
-.jd-act .btn{flex:1;max-width:150px}
+.jd-time small{display:block;font-family:var(--body);font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:0;margin-top:1px}
+.jd-main{min-width:0}
+.jd-mapel{
+  font-family:var(--heading);font-weight:700;font-size:14.5px;line-height:1.25;
+  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
+}
+.jd-kl{
+  font-size:11px;font-weight:800;color:var(--blue-deep);
+  background:var(--blue-soft);border-radius:100px;padding:1.5px 8px;
+}
+.jd-info{
+  font-size:12.5px;color:var(--muted);font-weight:600;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.jd-act{display:flex;gap:6px}
+.jd-act .btn{padding:6px 11px;font-size:12.5px;border-radius:10px}
+@media (max-width:640px){
+  .jd-card{grid-template-columns:auto minmax(0,1fr)}
+  .jd-act{grid-column:1 / -1;justify-content:flex-end;padding-top:6px;border-top:1px dashed var(--line)}
+}
+
+/* jadwal hari ini (overview) — ringkas */
+#todayList .item{
+  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;
+  padding:8px 10px;margin-bottom:8px;text-align:left;
+  animation:jdIn .4s var(--ease) both;
+  animation-delay:calc(var(--n,0) * 40ms);
+}
+#todayList .item .item-title{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#todayList .item .item-meta{margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#todayList .empty{padding:22px 14px}
+#todayList .empty .ic{font-size:30px;margin-bottom:6px}
+#todayList .empty p{margin-bottom:0}
 
 /* tabel */
 .tbl-wrap{overflow-x:auto}
@@ -1884,15 +1916,16 @@ function renderOverview(){
 
   $('todayList').innerHTML = !jadwalHariIni.length
     ? `<div class="empty"><div class="ic">📅</div><h3>Tidak ada jadwal hari ini</h3><p>Hari libur atau belum ada jadwal untuk ${hariIni}.</p></div>`
-    : jadwalHariIni.map(j => {
+    : jadwalHariIni.map((j, i) => {
         const guru = DB.guru.find(g => g.id === j.guruId);
         const n = DB.siswa.filter(s => s.kelas === j.kelas).length;
-        return `<div class="item">
+        return `<div class="item" style="--n:${i}">
+          <div class="jd-time">${esc(j.jam)}<small>${endTime(j.jam,j.durasi)}</small></div>
           <div>
             <div class="item-title">${esc(j.mapel)} · ${esc(j.kelas||'-')}</div>
-            <div class="item-meta">🕐 ${esc(j.jam)}–${endTime(j.jam,j.durasi)} · 👨‍🏫 ${esc(guru?.nama || 'Belum diisi')}</div>
+            <div class="item-meta">${esc(guru?.nama || 'Guru belum diisi')}</div>
           </div>
-          <div class="item-act"><span class="badge badge-blue">👥 ${n} siswa</span></div>
+          <div class="item-act"><span class="badge badge-blue">${n} siswa</span></div>
         </div>`;
       }).join('');
 
@@ -1992,7 +2025,7 @@ function renderJadwal(){
     return;
   }
   const hariIni = getHariIni();
-  let html = '';
+  let html = '', n = 0;
   URUT_HARI.forEach(hari => {
     const list = DB.jadwal.filter(j => j.hari === hari).sort((a,b) => a.jam.localeCompare(b.jam));
     if(!list.length) return;
@@ -2005,18 +2038,14 @@ function renderJadwal(){
       <div class="jd-grid">`;
     list.forEach(j => {
       const guru = DB.guru.find(g => g.id === j.guruId);
-      const n = DB.siswa.filter(s => s.kelas === j.kelas).length;
-      html += `<div class="jd-card">
-        <div class="jd-top">
-          <div class="jd-time">${esc(j.jam)} – ${endTime(j.jam,j.durasi)}<small>${j.durasi} menit</small></div>
-          <span class="badge badge-yellow">👥 ${n}</span>
+      const cnt = DB.siswa.filter(s => s.kelas === j.kelas).length;
+      const note = j.catatan ? ` · ${esc(j.catatan)}` : '';
+      html += `<div class="jd-card" style="--n:${n++}">
+        <div class="jd-time">${esc(j.jam)}<small>${endTime(j.jam,j.durasi)} · ${j.durasi} mnt</small></div>
+        <div class="jd-main">
+          <div class="jd-mapel">${esc(j.mapel)}<span class="jd-kl">${esc(j.kelas || '-')}</span></div>
+          <div class="jd-info">${esc(guru?.nama || 'Guru belum diisi')} · ${cnt} siswa${note}</div>
         </div>
-        <div class="jd-mapel">${esc(j.mapel)}</div>
-        <div class="jd-info">
-          <span>🎓 ${esc(j.kelas||'-')}</span>
-          <span>👨‍🏫 ${esc(guru?.nama || 'Guru belum diisi')}</span>
-        </div>
-        ${j.catatan ? `<div class="jd-note">📝 ${esc(j.catatan)}</div>` : ''}
         <div class="jd-act">
           <button class="btn btn-ghost btn-sm" type="button" onclick="openJadwalForm('${esc(j.id)}')">Edit</button>
           <button class="btn btn-danger btn-sm" type="button" onclick="hapusJadwal('${esc(j.id)}')">Hapus</button>
