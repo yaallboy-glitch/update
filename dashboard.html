@@ -1292,8 +1292,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
     </div>
     <div class="form-row">
       <div class="field">
-        <label>Durasi (menit)</label>
-        <input type="number" id="jdlDurasi" value="90" min="30" step="15">
+        <label>Jam Selesai</label>
+        <input type="time" id="jdlSelesai" value="15:30">
       </div>
       <div class="field">
         <label>Mata Pelajaran</label>
@@ -2041,7 +2041,7 @@ function renderJadwal(){
       const cnt = DB.siswa.filter(s => s.kelas === j.kelas).length;
       const note = j.catatan ? ` · ${esc(j.catatan)}` : '';
       html += `<div class="jd-card" style="--n:${n++}">
-        <div class="jd-time">${esc(j.jam)}<small>${endTime(j.jam,j.durasi)} · ${j.durasi} mnt</small></div>
+        <div class="jd-time">${esc(j.jam)}<small>${endTime(j.jam,j.durasi)}</small></div>
         <div class="jd-main">
           <div class="jd-mapel">${esc(j.mapel)}<span class="jd-kl">${esc(j.kelas || '-')}</span></div>
           <div class="jd-info">${esc(guru?.nama || 'Guru belum diisi')} · ${cnt} siswa${note}</div>
@@ -2066,7 +2066,7 @@ function openJadwalForm(id){
     $('jdlId').value = j.id;
     $('jdlHari').value = j.hari;
     $('jdlJam').value = j.jam;
-    $('jdlDurasi').value = j.durasi;
+    $('jdlSelesai').value = endTime(j.jam, j.durasi);
     $('jdlMapel').value = j.mapel;
     $('jdlKelas').value = j.kelas || '';
     $('jdlGuru').value = j.guruId || '';
@@ -2075,7 +2075,7 @@ function openJadwalForm(id){
     $('jdlId').value = '';
     $('jdlHari').value = 'Senin';
     $('jdlJam').value = '14:00';
-    $('jdlDurasi').value = 90;
+    $('jdlSelesai').value = '15:30';
     $('jdlMapel').value = '';
     $('jdlKelas').value = '';
     $('jdlGuru').value = '';
@@ -2086,17 +2086,22 @@ function openJadwalForm(id){
 
 async function saveJadwal(){
   const id = $('jdlId').value;
+  const jam = $('jdlJam').value, selesai = $('jdlSelesai').value;
+  if(!jam){ showToast('Jam mulai wajib diisi'); return; }
+  if(!selesai){ showToast('Jam selesai wajib diisi'); return; }
+  const menit = t => { const [h,m] = String(t).split(':').map(Number); return h*60 + (m||0); };
+  const durasi = menit(selesai) - menit(jam);
+  if(durasi <= 0){ showToast('Jam selesai harus setelah jam mulai'); return; }
   const data = {
     hari: $('jdlHari').value,
-    jam: $('jdlJam').value,
-    durasi: parseInt($('jdlDurasi').value, 10) || 90,
+    jam: jam,
+    durasi: durasi,
     mapel: $('jdlMapel').value.trim(),
     kelas: $('jdlKelas').value,
     guruId: $('jdlGuru').value,
     catatan: $('jdlCatatan').value.trim()
   };
   if(!data.mapel){ showToast('Mata pelajaran wajib diisi'); return; }
-  if(!data.jam){ showToast('Jam mulai wajib diisi'); return; }
   const old = id ? DB.jadwal.find(x => x.id === id) : null;
   const rec = { ...(old||{}), ...data, id: id || uid('jadwal') };
   if(await save('jadwal', rec)){
