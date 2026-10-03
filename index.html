@@ -1431,7 +1431,7 @@ img[loading="lazy"] {
     <div class="galeri__grid stagger">
       <article class="galeri__card">
         <div class="galeri__media">
-          <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Siswa SD belajar interaktif bersama tutor dalam kelompok kecil" loading="lazy" width="800" height="533">
+          <img id="galImg1" src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Siswa SD belajar interaktif bersama tutor dalam kelompok kecil" loading="lazy" width="800" height="533">
           <span class="galeri__tag galeri__tag--sun">Kelas Interaktif</span>
         </div>
         <div class="galeri__body">
@@ -1442,7 +1442,7 @@ img[loading="lazy"] {
 
       <article class="galeri__card">
         <div class="galeri__media">
-          <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Tutor mendampingi siswa dengan sabar dan personal" loading="lazy" width="800" height="533">
+          <img id="galImg2" src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Tutor mendampingi siswa dengan sabar dan personal" loading="lazy" width="800" height="533">
           <span class="galeri__tag galeri__tag--mint">Bimbingan Personal</span>
         </div>
         <div class="galeri__body">
@@ -1453,7 +1453,7 @@ img[loading="lazy"] {
 
       <article class="galeri__card">
         <div class="galeri__media">
-          <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Siswa ceria dan percaya diri saat belajar di bimbel" loading="lazy" width="800" height="533">
+          <img id="galImg3" src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Siswa ceria dan percaya diri saat belajar di bimbel" loading="lazy" width="800" height="533">
           <span class="galeri__tag galeri__tag--pink">Percaya Diri</span>
         </div>
         <div class="galeri__body">
@@ -2277,6 +2277,26 @@ img[loading="lazy"] {
     marquee.removeAttribute('data-visible');
     localStorage.setItem(STORAGE_KEY, Date.now());
   });
+})();
+</script>
+
+<script>
+/* galeri: 3 foto dari worker /api/public/galeri; fallback = foto statis di markup */
+(function(){
+  var API_GALERI = 'https://alifbimbel.septiartojuna.workers.dev/api/public/galeri';
+  var SLOTS = { galImg1: 'gal1', galImg2: 'gal2', galImg3: 'gal3' };
+  if(!('fetch' in window)) return;
+  fetch(API_GALERI).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
+    if(!d || !d.galeri || !d.galeri.length) return;
+    var bySlot = {};
+    d.galeri.forEach(function(g){ if(g && g.slot && g.url) bySlot[g.slot] = g.url; });
+    Object.keys(SLOTS).forEach(function(id){
+      var url = bySlot[SLOTS[id]];
+      if(!url) return;
+      var img = document.getElementById(id);
+      if(img) img.src = url;
+    });
+  }).catch(function(){});
 })();
 </script>
 

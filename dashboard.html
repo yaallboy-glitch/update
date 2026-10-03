@@ -24,7 +24,8 @@
   --shadow-sm:0 2px 8px rgba(28,25,23,.05);
   --shadow-md:0 8px 24px -8px rgba(28,25,23,.12);
   --shadow-lg:0 24px 60px -20px rgba(28,25,23,.2);
-  --ease:cubic-bezier(.34,1.56,.64,1);
+  --ease:cubic-bezier(.22,1,.36,1);--spring:cubic-bezier(.34,1.56,.64,1);
+  --color-line:var(--line);--color-ink:var(--ink);--color-muted:var(--muted);
 }
 html,body{height:100%}
 body{
@@ -163,118 +164,6 @@ input,select,textarea{font-family:inherit}
   font-size:18px;letter-spacing:-.02em;
 }
 .panel-head .sub{font-size:13.5px;color:var(--muted);margin-top:2px;font-weight:600}
-
-/* ===== RINGKASAN PEMBAYARAN (rail clay + dropdown nama) ===== */
-.paybox{position:relative}
-.pay-rail{
-  position:relative;display:grid;grid-template-columns:1fr 1fr;gap:8px;
-  padding:8px;border-radius:20px;background:var(--bg);
-  border:2px solid var(--line);
-  box-shadow:inset 3px 3px 9px rgba(28,25,23,.10), inset -3px -3px 8px rgba(255,255,255,.95);
-}
-.pay-thumb{
-  position:absolute;top:8px;left:8px;bottom:8px;z-index:1;
-  width:calc((100% - 24px) / 2);
-  border-radius:14px;background:#fff;
-  box-shadow:0 7px 15px -7px rgba(28,25,23,.4), inset 0 -3px 0 rgba(28,25,23,.06);
-  transform:translateX(calc(var(--i,0) * (100% + 8px)));
-  transition:transform .42s var(--ease);
-}
-.pay-seg{
-  position:relative;z-index:2;
-  display:flex;align-items:center;justify-content:center;gap:9px;
-  padding:13px 10px;border-radius:14px;
-  font-family:var(--heading);font-weight:800;font-size:15.5px;color:var(--muted);
-  transition:color .2s;
-}
-.pay-seg:hover{color:var(--ink)}
-.pay-seg[aria-expanded="true"]{color:var(--ink)}
-.pay-seg .dot{
-  width:9px;height:9px;border-radius:50%;flex-shrink:0;
-  opacity:.4;transition:opacity .2s, transform .35s var(--ease);
-}
-.pay-seg[aria-expanded="true"] .dot{opacity:1;transform:scale(1.2)}
-.pay-seg[data-tab="lunas"] .dot{background:#16A34A;box-shadow:0 0 0 3px #DCFCE7}
-.pay-seg[data-tab="belum"] .dot{background:var(--coral);box-shadow:0 0 0 3px var(--coral-soft)}
-.pay-cnt{
-  min-width:28px;padding:2px 8px;border-radius:100px;
-  font-size:12.5px;font-weight:800;text-align:center;
-  background:#fff;border:1.5px solid var(--line);color:var(--muted);
-  transition:background .2s, color .2s, border-color .2s;
-}
-.pay-seg[aria-expanded="true"] .pay-cnt{background:var(--ink);border-color:var(--ink);color:#fff}
-.pay-drop{overflow:hidden;max-height:0;transition:max-height .45s var(--ui-ease)}
-.pay-sheet{
-  position:relative;margin-top:16px;
-  background:var(--bg);border:2px solid var(--line);border-radius:18px;
-  padding:16px;
-}
-.pay-sheet::before{
-  content:'';position:absolute;top:-9px;
-  left:calc(25% + (var(--i,0) * 50%) - 9px);
-  width:16px;height:16px;
-  background:var(--bg);
-  border-left:2px solid var(--line);border-top:2px solid var(--line);
-  transform:rotate(45deg);
-}
-.pay-head{
-  display:flex;align-items:center;justify-content:space-between;
-  gap:12px;margin-bottom:8px;flex-wrap:wrap;position:relative;
-}
-.pay-title{font-family:var(--heading);font-weight:800;font-size:15.5px;line-height:1.25}
-.pay-title small{
-  display:block;font-family:var(--body);font-weight:600;
-  font-size:12.5px;color:var(--muted);letter-spacing:0;
-}
-.pay-sum{
-  font-family:var(--heading);font-weight:800;font-size:13.5px;
-  padding:6px 13px;border-radius:100px;background:#fff;border:1.5px solid var(--line);
-}
-.pay-sum.lunas{color:#166534;background:#DCFCE7;border-color:transparent}
-.pay-sum.belum{color:#991B1B;background:var(--danger-soft);border-color:transparent}
-.pay-row{
-  display:flex;align-items:center;gap:12px;
-  padding:11px 12px;border-radius:14px;
-  animation:payIn .45s var(--ease) both;
-  animation-delay:calc(var(--n,0) * 45ms);
-}
-.pay-row + .pay-row{border-top:1px dashed var(--line)}
-.pay-row:hover{background:#fff;box-shadow:var(--shadow-sm)}
-@keyframes payIn{from{opacity:0;transform:translateY(9px)}to{opacity:1;transform:none}}
-.pay-av{
-  width:38px;height:38px;flex-shrink:0;border-radius:13px;
-  display:grid;place-items:center;
-  font-family:var(--heading);font-weight:800;font-size:14px;color:var(--ink);
-  background:var(--av,var(--blue-soft));
-  box-shadow:inset -2px -2px 5px rgba(28,25,23,.14), 0 5px 12px -7px rgba(28,25,23,.55);
-}
-.pay-info{flex:1;min-width:0}
-.pay-name{font-family:var(--heading);font-weight:700;font-size:14.5px;line-height:1.3}
-.pay-meta{
-  font-size:12.5px;color:var(--muted);font-weight:600;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-}
-.pay-act{display:flex;align-items:center;gap:8px;flex-shrink:0}
-.pay-amt{font-family:var(--heading);font-weight:800;font-size:13.5px;color:var(--muted)}
-.pay-empty{
-  text-align:center;padding:26px 16px;color:var(--muted);font-weight:600;font-size:14px;
-}
-.pay-empty svg{display:block;margin:0 auto 8px;color:var(--muted);opacity:.65}
-.pay-empty b{
-  display:block;font-family:var(--heading);font-size:15.5px;
-  color:var(--ink);margin-bottom:2px;
-}
-@media (max-width:1000px){
-  .pay-seg{font-size:14.5px;gap:7px;padding:12px 8px}
-  .pay-sheet{padding:14px}
-  .pay-row{flex-wrap:wrap;row-gap:6px}
-  .pay-act{width:100%;justify-content:flex-end}
-}
-@media (prefers-reduced-motion:reduce){
-  .pay-thumb{transition:none}
-  .pay-row{animation:none}
-  .pay-drop{transition:none}
-}
 
 /* ===== TABLE ===== */
 .tbl{width:100%;border-collapse:collapse;font-size:14px}
@@ -444,7 +333,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .sync.err i{background:var(--danger)}
 @keyframes blink{50%{opacity:.35}}
 
-/* mobile header: hidden on desktop; shown <=1000px by @media (max-width:1000px) */
+/* mobile header - hidden on desktop by default */
 .mtop{display:none}
 .sb-ov{display:none}
 .burger {
@@ -514,64 +403,32 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .item-act{display:flex;gap:8px;align-items:center;justify-content:center;flex-wrap:wrap}
 
 /* jadwal per hari */
-.day{margin-bottom:18px}
+.day{margin-bottom:28px}
 .day:last-child{margin-bottom:0}
 .day-head{
   display:flex;align-items:center;gap:10px;flex-wrap:wrap;
-  margin-bottom:10px;padding-bottom:8px;border-bottom:2px dashed var(--line);
+  margin-bottom:14px;padding-bottom:10px;border-bottom:2px dashed var(--line);
 }
-.day-name{font-family:var(--heading);font-weight:800;font-size:16px;letter-spacing:-.02em}
+.day-name{font-family:var(--heading);font-weight:800;font-size:17px;letter-spacing:-.02em}
 .day.today .day-name{color:var(--blue-deep)}
-.jd-grid{display:grid;gap:8px}
+.jd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(270px,1fr));gap:14px}
 .jd-card{
-  background:var(--bg);border:1.5px solid var(--line);border-radius:14px;
-  padding:8px 10px;
-  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;
-  animation:jdIn .4s var(--ease) both;
-  animation-delay:calc(var(--n,0) * 45ms);
-  transition:transform .2s var(--ui-spring),box-shadow .2s,border-color .2s;
+  background:var(--bg);border:1.5px solid var(--line);border-radius:18px;padding:16px;
+  display:flex;flex-direction:column;gap:12px;
+  transition:transform .25s var(--ui-spring),box-shadow .25s,border-color .25s;
 }
-@keyframes jdIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.jd-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-sm);border-color:rgba(217,119,6,.45)}
-.jd-time{
-  font-family:var(--heading);font-weight:800;font-size:13.5px;letter-spacing:-.01em;line-height:1.15;
-  background:#fff;border:1.5px solid var(--line);border-radius:11px;
-  padding:5px 9px;text-align:center;
-  box-shadow:inset 0 -2px 0 rgba(28,25,23,.05);
+.jd-card:hover{transform:translateY(-3px);box-shadow:var(--shadow-md);border-color:rgba(217,119,6,.4)}
+.jd-top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.jd-time{font-family:var(--heading);font-weight:800;font-size:19px;letter-spacing:-.02em;line-height:1.1}
+.jd-time small{display:block;font-size:11.5px;font-weight:700;color:var(--muted);letter-spacing:0;margin-top:3px}
+.jd-mapel{font-family:var(--heading);font-weight:700;font-size:16px;line-height:1.3}
+.jd-info{display:grid;gap:4px;font-size:13px;color:var(--muted);font-weight:600}
+.jd-note{font-size:12.5px;color:var(--muted);background:#fff;border-radius:10px;padding:8px 10px;border:1px dashed var(--line)}
+.jd-act{
+  display:flex;justify-content:center;gap:8px;
+  padding-top:12px;border-top:1px solid var(--line);margin-top:auto;
 }
-.jd-time small{display:block;font-family:var(--body);font-size:10.5px;font-weight:700;color:var(--muted);letter-spacing:0;margin-top:1px}
-.jd-main{min-width:0}
-.jd-mapel{
-  font-family:var(--heading);font-weight:700;font-size:14.5px;line-height:1.25;
-  display:flex;align-items:center;gap:7px;flex-wrap:wrap;
-}
-.jd-kl{
-  font-size:11px;font-weight:800;color:var(--blue-deep);
-  background:var(--blue-soft);border-radius:100px;padding:1.5px 8px;
-}
-.jd-info{
-  font-size:12.5px;color:var(--muted);font-weight:600;
-  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
-}
-.jd-act{display:flex;gap:6px}
-.jd-act .btn{padding:6px 11px;font-size:12.5px;border-radius:10px}
-@media (max-width:640px){
-  .jd-card{grid-template-columns:auto minmax(0,1fr)}
-  .jd-act{grid-column:1 / -1;justify-content:flex-end;padding-top:6px;border-top:1px dashed var(--line)}
-}
-
-/* jadwal hari ini (overview) — ringkas */
-#todayList .item{
-  display:grid;grid-template-columns:auto minmax(0,1fr) auto;align-items:center;gap:12px;
-  padding:8px 10px;margin-bottom:8px;text-align:left;
-  animation:jdIn .4s var(--ease) both;
-  animation-delay:calc(var(--n,0) * 40ms);
-}
-#todayList .item .item-title{font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#todayList .item .item-meta{margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-#todayList .empty{padding:22px 14px}
-#todayList .empty .ic{font-size:30px;margin-bottom:6px}
-#todayList .empty p{margin-bottom:0}
+.jd-act .btn{flex:1;max-width:150px}
 
 /* tabel */
 .tbl-wrap{overflow-x:auto}
@@ -615,7 +472,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 
 /* ---- tablet & HP: sidebar jadi drawer ---- */
-@media (max-width:1000px){
+@media (max-width:900px){
   body{font-size:14px}
   .app{grid-template-columns:1fr}
   .mtop {
@@ -648,7 +505,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     position:fixed;top:0;left:0;bottom:0;right:auto;
     width:min(290px,84vw);height:100vh;height:100dvh;z-index:80;
     padding:22px 0;border-right:0;border-top:0;flex-direction:column;overflow-y:auto;
-    transform:translateX(-104%);animation:none;transition:transform .35s var(--ui-ease),box-shadow .35s;
+    transform:translateX(-104%);transition:transform .35s var(--ui-ease),box-shadow .35s;
   }
   .nav-open .sidebar{transform:none;box-shadow:24px 0 60px -20px rgba(28,25,23,.35)}
   .sb-ov{
@@ -786,9 +643,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:translateY(0)}
 }
-@media (min-width:1001px){
-  .sidebar{animation:slideInLeft .45s cubic-bezier(.22,1,.36,1) both}
-}
+.sidebar{animation:slideInLeft .45s cubic-bezier(.22,1,.36,1) both}
 .main{animation:slideInUp .5s cubic-bezier(.22,1,.36,1) .05s both}
 .stat{animation:statIn .55s cubic-bezier(.34,1.56,.64,1) both}
 .stat:nth-child(1){animation-delay:.05s}
@@ -806,6 +661,9 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   background:var(--yellow);opacity:.85;
 }
 .sb-link{position:relative}
+/* galeri preview */
+.gal-prev{height:56px;width:92px;object-fit:cover;border-radius:12px;border:2px solid var(--line);background:var(--bg)}
+#view-galeri input[type=file]{max-width:180px;font-size:12px}
 
 /* Table row hover */
 .tbl tr:hover td{background:rgba(217,119,6,.04);transition:background .15s}
@@ -851,11 +709,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 .tbl-btn.edit:hover{color:var(--blue-deep);border-color:var(--blue);background:var(--blue-soft);transform:translateY(-2px) scale(1.05)}
 .tbl-btn.del:hover{color:var(--danger);border-color:var(--danger);background:var(--danger-soft);transform:translateY(-2px) scale(1.05)}
 .tbl-btn:active{transform:scale(.95)}
-
-/* ===== GALERI PREVIEW THUMBNAIL ===== */
-.gal-prev{width:80px;height:80px;object-fit:cover;border-radius:12px;border:2px solid var(--line);box-shadow:var(--shadow-sm);transition:transform .25s var(--ease),box-shadow .25s}
-.gal-prev:hover{transform:scale(1.08);box-shadow:var(--shadow-md)}
-
 @media(max-width:768px){
   .tbl-act{gap:4px}
   .tbl-btn{width:28px;height:28px;border-radius:8px}
@@ -1098,34 +951,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       <div class="panel">
         <div class="panel-head">
           <div>
-            <h2>Ringkasan Pembayaran</h2>
-            <div class="sub">Pilih menu untuk buka daftar nama</div>
+            <h2>Belum Bayar Bulan Ini</h2>
+            <div class="sub">Siswa yang perlu diingatkan</div>
           </div>
         </div>
-        <div class="paybox" id="payBox">
-          <div class="pay-rail">
-            <div class="pay-thumb" id="payThumb" aria-hidden="true"></div>
-            <button class="pay-seg" type="button" data-tab="lunas" aria-expanded="false" aria-controls="payDrop">
-              <span class="dot" aria-hidden="true"></span>
-              <span>Lunas</span>
-              <span class="pay-cnt" id="cntLunas">0</span>
-            </button>
-            <button class="pay-seg" type="button" data-tab="belum" aria-expanded="false" aria-controls="payDrop">
-              <span class="dot" aria-hidden="true"></span>
-              <span>Belum</span>
-              <span class="pay-cnt" id="cntBelum">0</span>
-            </button>
-          </div>
-          <div class="pay-drop" id="payDrop">
-            <div class="pay-sheet" id="paySheet" role="region" aria-label="Daftar nama pembayaran">
-              <div class="pay-head">
-                <div class="pay-title" id="payTitle">—<small>—</small></div>
-                <span class="pay-sum" id="paySum">—</span>
-              </div>
-              <div id="payList"></div>
-            </div>
-          </div>
-        </div>
+        <div id="unpaidList"></div>
       </div>
     </section>
 
@@ -1242,12 +1072,6 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
               <option value="">— Semua Kelas —</option>
             </select>
           </div>
-          <div class="field" style="min-width:220px">
-            <label for="presSiswa">Siswa</label>
-            <select id="presSiswa" onchange="renderPresensi()">
-              <option value="">— Semua Siswa —</option>
-            </select>
-          </div>
         </div>
       </div>
       <div class="panel" id="presensiPanel">
@@ -1282,36 +1106,37 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 
     <section id="view-galeri" class="view" style="display:none">
       <div class="topbar">
-        <div><h1>Galeri Foto</h1><p class="sub">Foto kelas tampil di landing page: slot Hero (kartu bulat) &amp; slot Banner SMP. Upload foto maks 1 MB.</p></div>
+        <div><h1>Galeri Foto</h1><p class="sub">Ganti 3 foto galeri di landing page — pilih foto dari galeri Anda lalu upload (maks 1 MB)</p></div>
       </div>
       <div class="panel">
-        <table id="tblGaleri">
-          <thead><tr><th>Slot</th><th>Foto</th><th>Label</th><th>Aktif</th><th>Aksi</th></tr></thead>
+        <table>
+          <thead><tr><th>Foto</th><th>Slot</th><th>Aksi</th></tr></thead>
           <tbody>
             <tr>
-              <td><b>Hero</b><br><small>kartu bulat di header</small></td>
-              <td><img id="galImg_hero" class="gal-prev" alt="Foto hero" hidden></td>
-              <td><input type="text" id="galLabel_hero" placeholder="Label foto (opsional)"></td>
-              <td><input type="checkbox" id="galOn_hero" onchange="galeriToggle('hero')"></td>
+              <td><img id="galImg_gal1" class="gal-prev" alt="Foto galeri 1" hidden></td>
+              <td><b>Foto 1</b><br><small>kartu galeri kiri (Kelas Interaktif)</small></td>
               <td class="tbl-act">
-                <input type="file" id="galFile_hero" accept="image/*" onchange="galeriPick('hero')">
-                <button class="tbl-btn edit" type="button" onclick="galeriUpload('hero')" title="Upload foto ke imgBB">⤒</button>
-                <input type="url" id="galUrl_hero" placeholder="atau pas URL foto…">
-                <button class="tbl-btn edit" type="button" onclick="galeriUrl('hero')" title="Simpan URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 3v6h6V3M9 15h6v6"/></svg></button>
-                <button class="tbl-btn del" type="button" onclick="galeriClear('hero')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
+                <input type="file" id="galFile_gal1" accept="image/*" onchange="galeriPick('gal1')">
+                <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal1')" title="Upload ke imgBB">⤒</button>
+                <button class="tbl-btn del" type="button" onclick="galeriClear('gal1')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
               </td>
             </tr>
             <tr>
-              <td><b>Banner SMP</b><br><small>foto di kartu SMP</small></td>
-              <td><img id="galImg_banner-smp" class="gal-prev" alt="Foto banner SMP" hidden></td>
-              <td><input type="text" id="galLabel_banner-smp" placeholder="Label foto (opsional)"></td>
-              <td><input type="checkbox" id="galOn_banner-smp" onchange="galeriToggle('banner-smp')"></td>
+              <td><img id="galImg_gal2" class="gal-prev" alt="Foto galeri 2" hidden></td>
+              <td><b>Foto 2</b><br><small>kartu galeri tengah (Bimbingan Personal)</small></td>
               <td class="tbl-act">
-                <input type="file" id="galFile_banner-smp" accept="image/*" onchange="galeriPick('banner-smp')">
-                <button class="tbl-btn edit" type="button" onclick="galeriUpload('banner-smp')" title="Upload foto ke imgBB">⤒</button>
-                <input type="url" id="galUrl_banner-smp" placeholder="atau pas URL foto…">
-                <button class="tbl-btn edit" type="button" onclick="galeriUrl('banner-smp')" title="Simpan URL"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="3" width="12" height="18" rx="1.5"/><path d="M9 3v6h6V3M9 15h6v6"/></svg></button>
-                <button class="tbl-btn del" type="button" onclick="galeriClear('banner-smp')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
+                <input type="file" id="galFile_gal2" accept="image/*" onchange="galeriPick('gal2')">
+                <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal2')" title="Upload ke imgBB">⤒</button>
+                <button class="tbl-btn del" type="button" onclick="galeriClear('gal2')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
+              </td>
+            </tr>
+            <tr>
+              <td><img id="galImg_gal3" class="gal-prev" alt="Foto galeri 3" hidden></td>
+              <td><b>Foto 3</b><br><small>kartu galeri kanan (Percaya Diri)</small></td>
+              <td class="tbl-act">
+                <input type="file" id="galFile_gal3" accept="image/*" onchange="galeriPick('gal3')">
+                <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal3')" title="Upload ke imgBB">⤒</button>
+                <button class="tbl-btn del" type="button" onclick="galeriClear('gal3')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
               </td>
             </tr>
           </tbody>
@@ -1344,8 +1169,8 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
     </div>
     <div class="form-row">
       <div class="field">
-        <label>Jam Selesai</label>
-        <input type="time" id="jdlSelesai" value="15:30">
+        <label>Durasi (menit)</label>
+        <input type="number" id="jdlDurasi" value="90" min="30" step="15">
       </div>
       <div class="field">
         <label>Mata Pelajaran</label>
@@ -1925,7 +1750,7 @@ function showView(view){
 // Auto-close nav when clicking any section (mobile only)
 document.querySelectorAll('.view').forEach(v => {
   v.addEventListener('click', (e) => { 
-    if(window.innerWidth <= 1000) closeNav(); 
+    if(window.innerWidth <= 900) closeNav(); 
   }, true); // use capture
 });
 
@@ -1946,7 +1771,7 @@ function setNav(open){
 function closeNav(){ setNav(false); }
 $('burger').addEventListener('click', () => setNav(!document.body.classList.contains('nav-open')));
 $('sbOv').addEventListener('click', closeNav);
-window.addEventListener('resize', () => { if(window.innerWidth > 1000) closeNav(); });
+window.addEventListener('resize', () => { if(window.innerWidth > 900) closeNav(); });
 
 /* ============================================================
    RENDER: OVERVIEW
@@ -1968,103 +1793,35 @@ function renderOverview(){
 
   $('todayList').innerHTML = !jadwalHariIni.length
     ? `<div class="empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="4" width="13" height="14" rx="2"/><path d="M6 10h13M9 15h6"/></svg></div><h3>Tidak ada jadwal hari ini</h3><p>Hari libur atau belum ada jadwal untuk ${hariIni}.</p></div>`
-    : jadwalHariIni.map((j, i) => {
+    : jadwalHariIni.map(j => {
         const guru = DB.guru.find(g => g.id === j.guruId);
         const n = DB.siswa.filter(s => s.kelas === j.kelas).length;
-        return `<div class="item" style="--n:${i}">
-          <div class="jd-time">${esc(j.jam)}<small>${endTime(j.jam,j.durasi)}</small></div>
+        return `<div class="item">
           <div>
             <div class="item-title">${esc(j.mapel)} · ${esc(j.kelas||'-')}</div>
-            <div class="item-meta">${esc(guru?.nama || 'Guru belum diisi')}</div>
+            <div class="item-meta"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8.2"/><path d="M12 12v-5.5M12 12h4.5"/></svg> ${esc(j.jam)}–${endTime(j.jam,j.durasi)} · <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="7" r="2.8"/><path d="M5.6 9.4c1-3.3 2.5-5.3 5-5.3s4.6 2.3 5.8 4.2"/><rect x="15.5" y="5.5" width="6" height="9.5" rx="1.2"/><path d="M11.4 12.4l3.4 3.4"/></svg> ${esc(guru?.nama || 'Belum diisi')}</div>
           </div>
-          <div class="item-act"><span class="badge badge-blue">${n} siswa</span></div>
+          <div class="item-act"><span class="badge badge-blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="7.5" r="3"/><circle cx="15.5" cy="7.5" r="3"/><path d="M4.5 9.5c1-3.5 2.5-5.5 5-5.5s4.6 2.3 5.9 4.4"/><path d="M11.5 9.5c1-3.5 2.5-5.5 5-5.5s4.6 2.3 5.9 4.4"/></svg> ${n} siswa</span></div>
         </div>`;
       }).join('');
 
-  buildPay();
-  renderPay();
-}
-
-/* ===== RINGKASAN PEMBAYARAN (rail + dropdown nama) ===== */
-const AV_SOFT = ['var(--blue-soft)','var(--mint-soft)','var(--yellow-soft)','var(--lavender-soft)','var(--coral-soft)'];
-let PAY = { lunas: [], belum: [], bulan: '' };
-let payTab = 'belum', payOpen = false;
-
-const payInitials = n => String(n || '?').trim().split(/\s+/).slice(0, 2).map(w => w[0] || '').join('').toUpperCase();
-
-function buildPay(){
-  const bulanIni = getBulanIni(), tahunIni = getTahunIni();
-  const lunas = [], belum = [];
-  DB.siswa.forEach(s => {
+  const belumBayar = DB.siswa.filter(s => {
     const b = DB.bayar.find(x => x.siswaId === s.id && x.bulan === bulanIni && String(x.tahun) === String(tahunIni));
-    if(b && b.status === 'paid') lunas.push({ s, b });
-    else belum.push({ s, b });
+    return !b || b.status !== 'paid';
   });
-  PAY = { lunas, belum, bulan: bulanIni };
+  $('unpaidList').innerHTML = !belumBayar.length
+    ? `<div class="empty"><div class="ic">🎉</div><h3>Semua sudah bayar!</h3><p>Tidak ada tunggakan bulan ${bulanIni}.</p></div>`
+    : belumBayar.map(s => `<div class="item">
+        <div>
+          <div class="item-title">${esc(s.nama)}</div>
+          <div class="item-meta">${esc(s.kelas)} · Ortu: ${esc(s.ortu||'-')} · ${esc(s.wa||'-')}</div>
+        </div>
+        <div class="item-act">
+          <span class="badge badge-red">Belum Bayar</span>
+          <button class="btn btn-yellow btn-sm" type="button" onclick="openBayarForm('${esc(s.id)}')">Catat Bayar</button>
+        </div>
+      </div>`).join('');
 }
-
-function renderPay(){
-  const box = $('payBox'), drop = $('payDrop'), sheet = $('paySheet');
-  if(!box || !drop || !sheet) return;
-  box.style.setProperty('--i', payTab === 'lunas' ? 0 : 1);
-  document.querySelectorAll('.pay-seg').forEach(btn => {
-    btn.setAttribute('aria-expanded', (payOpen && btn.dataset.tab === payTab) ? 'true' : 'false');
-  });
-  $('cntLunas').textContent = PAY.lunas.length;
-  $('cntBelum').textContent  = PAY.belum.length;
-
-  if(!payOpen){
-    drop.classList.remove('open');
-    drop.style.maxHeight = '0px';
-    return;
-  }
-
-  const list = PAY[payTab], isLunas = payTab === 'lunas';
-  $('payTitle').innerHTML = (isLunas ? 'Sudah Lunas' : 'Belum Bayar') +
-    '<small>Bulan ' + esc(PAY.bulan) + ' · ' + list.length + ' siswa</small>';
-  const total = list.reduce((sum, x) => sum + Number(x.b?.jumlah || 0), 0);
-  $('paySum').className = 'pay-sum ' + payTab;
-  $('paySum').textContent = isLunas ? fmtShort(total) + ' terkumpul' : list.length + ' perlu ditagih';
-
-  $('payList').innerHTML = !list.length
-    ? `<div class="pay-empty">
-        <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M8.5 12.4l2.4 2.4 4.6-5.2"/></svg>
-        <b>${isLunas ? 'Belum ada yang bayar' : 'Semua sudah bayar!'}</b>
-        ${isLunas ? 'Catat pembayaran lewat menu Pembayaran.' : 'Tidak ada tunggakan bulan ' + esc(PAY.bulan) + '.'}
-      </div>`
-    : list.map((x, i) => {
-        const s = x.s, b = x.b, av = AV_SOFT[i % AV_SOFT.length];
-        const meta = isLunas
-          ? `${esc(s.kelas)} · ${esc(b?.metode || '-')} · ${esc(b?.bulan || PAY.bulan)}`
-          : `${esc(s.kelas)} · Ortu: ${esc(s.ortu || '-')} · ${esc(s.wa || '-')}`;
-        const act = isLunas
-          ? `<span class="pay-amt">${fmtShort(b?.jumlah || 0)}</span><span class="badge badge-green">Lunas</span>`
-          : `<span class="badge badge-red">Belum</span><button class="btn btn-yellow btn-sm" type="button" onclick="openBayarForm('${esc(s.id)}')">Catat Bayar</button>`;
-        return `<div class="pay-row" style="--n:${i};--av:${av}">
-          <div class="pay-av" aria-hidden="true">${esc(payInitials(s.nama))}</div>
-          <div class="pay-info">
-            <div class="pay-name">${esc(s.nama)}</div>
-            <div class="pay-meta">${meta}</div>
-          </div>
-          <div class="pay-act">${act}</div>
-        </div>`;
-      }).join('');
-
-  drop.classList.add('open');
-  drop.style.maxHeight = (sheet.offsetHeight + 24) + 'px';
-}
-
-document.querySelectorAll('.pay-seg').forEach(btn => {
-  btn.addEventListener('click', () => {
-    const tab = btn.dataset.tab;
-    if(payOpen && payTab === tab) payOpen = false;
-    else { payTab = tab; payOpen = true; }
-    renderPay();
-  });
-});
-document.addEventListener('click', e => {
-  if(payOpen && !$('payBox').contains(e.target)){ payOpen = false; renderPay(); }
-});
 
 /* ============================================================
    RENDER: JADWAL (kartu, urut Senin → Minggu)
@@ -2077,7 +1834,7 @@ function renderJadwal(){
     return;
   }
   const hariIni = getHariIni();
-  let html = '', n = 0;
+  let html = '';
   URUT_HARI.forEach(hari => {
     const list = DB.jadwal.filter(j => j.hari === hari).sort((a,b) => a.jam.localeCompare(b.jam));
     if(!list.length) return;
@@ -2090,14 +1847,18 @@ function renderJadwal(){
       <div class="jd-grid">`;
     list.forEach(j => {
       const guru = DB.guru.find(g => g.id === j.guruId);
-      const cnt = DB.siswa.filter(s => s.kelas === j.kelas).length;
-      const note = j.catatan ? ` · ${esc(j.catatan)}` : '';
-      html += `<div class="jd-card" style="--n:${n++}">
-        <div class="jd-time">${esc(j.jam)}<small>${endTime(j.jam,j.durasi)}</small></div>
-        <div class="jd-main">
-          <div class="jd-mapel">${esc(j.mapel)}<span class="jd-kl">${esc(j.kelas || '-')}</span></div>
-          <div class="jd-info">${esc(guru?.nama || 'Guru belum diisi')} · ${cnt} siswa${note}</div>
+      const n = DB.siswa.filter(s => s.kelas === j.kelas).length;
+      html += `<div class="jd-card">
+        <div class="jd-top">
+          <div class="jd-time">${esc(j.jam)} – ${endTime(j.jam,j.durasi)}<small>${j.durasi} menit</small></div>
+          <span class="badge badge-yellow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="7.5" r="3"/><circle cx="15.5" cy="7.5" r="3"/><path d="M4.5 9.5c1-3.5 2.5-5.5 5-5.5s4.6 2.3 5.9 4.4"/><path d="M11.5 9.5c1-3.5 2.5-5.5 5-5.5s4.6 2.3 5.9 4.4"/></svg> ${n}</span>
         </div>
+        <div class="jd-mapel">${esc(j.mapel)}</div>
+        <div class="jd-info">
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6.5 5L12 13L17.5 5Z"/><path d="M12 13v3h3"/></svg> ${esc(j.kelas||'-')}</span>
+          <span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="7" r="2.8"/><path d="M5.6 9.4c1-3.3 2.5-5.3 5-5.3s4.6 2.3 5.8 4.2"/><rect x="15.5" y="5.5" width="6" height="9.5" rx="1.2"/><path d="M11.4 12.4l3.4 3.4"/></svg> ${esc(guru?.nama || 'Guru belum diisi')}</span>
+        </div>
+        ${j.catatan ? `<div class="jd-note"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="5" y="4" width="14" height="16" rx="2"/><path d="M8.5 8.5h7M9.5 12.5h5M8.5 16.5h7"/></svg> ${esc(j.catatan)}</div>` : ''}
         <div class="jd-act">
           <button class="btn btn-ghost btn-sm" type="button" onclick="openJadwalForm('${esc(j.id)}')">Edit</button>
           <button class="btn btn-danger btn-sm" type="button" onclick="hapusJadwal('${esc(j.id)}')">Hapus</button>
@@ -2118,7 +1879,7 @@ function openJadwalForm(id){
     $('jdlId').value = j.id;
     $('jdlHari').value = j.hari;
     $('jdlJam').value = j.jam;
-    $('jdlSelesai').value = endTime(j.jam, j.durasi);
+    $('jdlDurasi').value = j.durasi;
     $('jdlMapel').value = j.mapel;
     $('jdlKelas').value = j.kelas || '';
     $('jdlGuru').value = j.guruId || '';
@@ -2127,7 +1888,7 @@ function openJadwalForm(id){
     $('jdlId').value = '';
     $('jdlHari').value = 'Senin';
     $('jdlJam').value = '14:00';
-    $('jdlSelesai').value = '15:30';
+    $('jdlDurasi').value = 90;
     $('jdlMapel').value = '';
     $('jdlKelas').value = '';
     $('jdlGuru').value = '';
@@ -2138,22 +1899,17 @@ function openJadwalForm(id){
 
 async function saveJadwal(){
   const id = $('jdlId').value;
-  const jam = $('jdlJam').value, selesai = $('jdlSelesai').value;
-  if(!jam){ showToast('Jam mulai wajib diisi'); return; }
-  if(!selesai){ showToast('Jam selesai wajib diisi'); return; }
-  const menit = t => { const [h,m] = String(t).split(':').map(Number); return h*60 + (m||0); };
-  const durasi = menit(selesai) - menit(jam);
-  if(durasi <= 0){ showToast('Jam selesai harus setelah jam mulai'); return; }
   const data = {
     hari: $('jdlHari').value,
-    jam: jam,
-    durasi: durasi,
+    jam: $('jdlJam').value,
+    durasi: parseInt($('jdlDurasi').value, 10) || 90,
     mapel: $('jdlMapel').value.trim(),
     kelas: $('jdlKelas').value,
     guruId: $('jdlGuru').value,
     catatan: $('jdlCatatan').value.trim()
   };
   if(!data.mapel){ showToast('Mata pelajaran wajib diisi'); return; }
+  if(!data.jam){ showToast('Jam mulai wajib diisi'); return; }
   const old = id ? DB.jadwal.find(x => x.id === id) : null;
   const rec = { ...(old||{}), ...data, id: id || uid('jadwal') };
   if(await save('jadwal', rec)){
@@ -2176,15 +1932,21 @@ function renderSiswa(){
       <button class="btn btn-primary" type="button" onclick="openSiswaForm()">+ Tambah Siswa</button></div>`;
     return;
   }
+  const bulanIni = getBulanIni(), tahunIni = getTahunIni();
   let html = `<div class="tbl-wrap"><table class="tbl"><thead><tr>
-    <th>Nama</th><th>Kelas</th><th>Orang Tua</th><th>Program</th><th class="act">Aksi</th>
+    <th>Nama</th><th>Kelas</th><th>Orang Tua</th><th>Program</th><th>Status Bayar</th><th class="act">Aksi</th>
   </tr></thead><tbody>`;
   DB.siswa.forEach(s => {
+    const bayar = DB.bayar.find(b => b.siswaId === s.id && b.bulan === bulanIni && String(b.tahun) === String(tahunIni));
+    const st = bayar?.status === 'paid'
+      ? '<span class="badge badge-green">✓ Lunas</span>'
+      : '<span class="badge badge-red">Belum Bayar</span>';
     html += `<tr>
       <td class="nm"><div class="name">${esc(s.nama)}</div>${s.catatan ? `<div class="meta">${esc(s.catatan)}</div>` : ''}</td>
       <td data-label="Kelas">${esc(s.kelas)}</td>
       <td data-label="Orang Tua"><div class="ortu"><div>${esc(s.ortu||'-')}</div><div class="meta">${esc(s.wa||'-')}</div></div></td>
       <td data-label="Program"><span class="badge badge-blue">${esc(s.program)}</span></td>
+      <td data-label="Status Bayar">${st}</td>
       <td class="act"><div class="row-act">
         <button class="btn btn-ghost btn-sm" type="button" onclick="openSiswaForm('${esc(s.id)}')">Edit</button>
         <button class="btn btn-danger btn-sm" type="button" onclick="hapusSiswa('${esc(s.id)}')">Hapus</button>
@@ -2562,26 +2324,16 @@ function fillKelasSelect(selectId){
   if(cur && Array.from(sel.options).some(o => o.value === cur)) sel.value = cur;
 }
 
-const PRES_BADGE = {
-  hadir:'<span class="badge badge-green">✓ Hadir</span>',
-  izin:'<span class="badge badge-yellow">Izin</span>',
-  sakit:'<span class="badge badge-yellow">Sakit</span>',
-  alpha:'<span class="badge badge-red">Alpha</span>'
-};
-
 function renderPresensi(){
   fillKelasSelect('presKelas');
-  fillPresensiSiswa();
   const tanggal = $('presTanggal').value || getTanggalISO();
   const pertemuan = String($('presPertemuan').value || '1');
   const kelas = $('presKelas').value;
-  const siswaId = $('presSiswa').value;
 
   if(!DB.siswa.length){
     $('presensiList').innerHTML = `<div class="empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6.5 5L12 13L17.5 5Z"/><path d="M12 13v3h3"/></svg></div><h3>Belum ada siswa</h3><p>Tambah siswa terlebih dahulu agar bisa mencatat presensi.</p></div>`;
     return;
   }
-  if(siswaId){ renderPresensiSiswa(siswaId); return; }
 
   let siswa = DB.siswa.slice().sort((a,b) => a.nama.localeCompare(b.nama));
   if(kelas) siswa = siswa.filter(s => s.kelas === kelas);
@@ -2593,7 +2345,12 @@ function renderPresensi(){
   siswa.forEach((s, i) => {
     const rec = DB.presensi.find(p => p.siswaId === s.id && p.tanggal === tanggal && p.pertemuan === pertemuan);
     const status = rec?.status || 'belum';
-    const badge = PRES_BADGE[status] || '<span class="badge badge-gray">Belum</span>';
+    const badge = {
+      hadir:'<span class="badge badge-green">✓ Hadir</span>',
+      izin:'<span class="badge badge-yellow">Izin</span>',
+      sakit:'<span class="badge badge-yellow">Sakit</span>',
+      alpha:'<span class="badge badge-red">Alpha</span>'
+    }[status] || '<span class="badge badge-gray">Belum</span>';
     const b = (val, label) => `<button class="btn btn-ghost btn-sm${status === val ? ' on' : ''}" type="button" onclick="setPresensi('${esc(s.id)}','${tanggal}','${pertemuan}','${val}')">${label}</button>`;
 
     html += `<div class="item" style="flex-direction:column;align-items:stretch;gap:14px;animation:panelIn .35s var(--ease) ${i*0.04}s both">
@@ -2611,36 +2368,6 @@ function renderPresensi(){
     </div>`;
   });
   $('presensiList').innerHTML = html;
-}
-
-function fillPresensiSiswa(){
-  const sel = $('presSiswa'), cur = sel.value;
-  const kelas = $('presKelas').value;
-  let list = DB.siswa.slice().sort((a,b) => a.nama.localeCompare(b.nama));
-  if(kelas) list = list.filter(s => s.kelas === kelas);
-  sel.innerHTML = '<option value="">— Semua Siswa —</option>' +
-    list.map(s => `<option value="${esc(s.id)}">${esc(s.nama)}</option>`).join('');
-  if(cur && Array.from(sel.options).some(o => o.value === cur)) sel.value = cur; else sel.value = '';
-}
-
-function renderPresensiSiswa(siswaId){
-  const s = DB.siswa.find(x => x.id === siswaId);
-  const recs = DB.presensi.filter(p => p.siswaId === siswaId)
-    .sort((a,b) => b.tanggal.localeCompare(a.tanggal) || (Number(b.pertemuan) - Number(a.pertemuan)));
-  const n = recs.length;
-  const ringkas = st => `<span class="badge ${st === 'alpha' ? 'badge-red' : st === 'hadir' ? 'badge-green' : 'badge-yellow'}">${st === 'hadir' ? '✓ Hadir' : st.charAt(0).toUpperCase() + st.slice(1)} ${recs.filter(r => r.status === st).length}</span>`;
-  const tgl = t => new Date(t + 'T00:00:00').toLocaleDateString('id-ID', { day:'numeric', month:'long', year:'numeric' });
-  const rows = n
-    ? recs.map(r => `<tr>
-      <td>${esc(tgl(r.tanggal))}</td>
-      <td>Pertemuan ${esc(r.pertemuan)}</td>
-      <td>${PRES_BADGE[r.status] || '<span class="badge badge-gray">Belum</span>'}</td>
-    </tr>`).join('')
-    : '<tr><td colspan="3" class="tbl-empty">Belum ada catatan presensi untuk siswa ini.</td></tr>';
-  $('presensiList').innerHTML = `
-    <div style="margin-bottom:14px;font-size:13.5px;color:var(--muted);font-weight:600">Riwayat presensi <b style="color:var(--ink)">${esc(s?.nama || '-')}</b>${s?.kelas ? ' · ' + esc(s.kelas) : ''}</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">${ringkas('hadir')}${ringkas('izin')}${ringkas('sakit')}${ringkas('alpha')}<span class="badge badge-gray">Total ${n} pertemuan</span></div>
-    <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Tanggal</th><th>Pertemuan</th><th>Status</th></tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 
 async function setPresensi(siswaId, tanggal, pertemuan, status){
@@ -2719,18 +2446,15 @@ async function deleteAnnouncement(id){
 }
 
 /* ============================================================
-   RENDER: GALERI FOTO (imgBB upload → URL di D1, 2 slot fiks)
+   GALERI FOTO (3 slot: gal1/gal2/gal3 — upload foto dari galeri admin ke imgBB)
    ============================================================ */
 let galPending = null;
 
 function renderGaleri(){
-  ['hero','banner-smp'].forEach(slot => {
+  ['gal1','gal2','gal3'].forEach(slot => {
     const g = DB.galeri.find(x => x.id === 'gal_' + slot);
-    $('galLabel_' + slot).value = g?.label || '';
-    $('galOn_' + slot).checked = !!g?.aktif;
-    $('galUrl_' + slot).value = g?.url || '';
     const img = $('galImg_' + slot);
-    if(g?.url){ img.src = g.url; img.hidden = false; }
+    if(g && g.url){ img.src = g.url; img.hidden = false; }
     else { img.removeAttribute('src'); img.hidden = true; }
   });
 }
@@ -2740,13 +2464,7 @@ function galeriPick(slot){
   if(!f) return;
   if(f.size > 1024 * 1024){ showToast('Foto maks 1 MB'); return; }
   const rd = new FileReader();
-  rd.onload = () => {
-    galPending = { slot, data: rd.result };
-    const img = $('galImg_' + slot);
-    img.src = rd.result; img.hidden = false;
-    $('galUrl_' + slot).value = '';
-    showToast('Foto siap. Klik ⤒ untuk upload.');
-  };
+  rd.onload = () => { galPending = { slot, data: rd.result }; showToast('Foto siap. Klik ⤒ untuk upload.'); };
   rd.onerror = () => showToast('Gagal baca file');
   rd.readAsDataURL(f);
 }
@@ -2758,9 +2476,9 @@ async function galeriUpload(slot){
   try{
     const d = await api('/api/galeri/upload', {
       method: 'POST',
-      body: JSON.stringify({ slot, base64: galPending.data, label: $('galLabel_' + slot).value.trim() })
+      body: JSON.stringify({ slot, base64: galPending.data })
     });
-    const rec = { id: 'gal_' + slot, slot, url: d.url, label: $('galLabel_' + slot).value.trim(), aktif: true, urutan: Date.now() };
+    const rec = { id: 'gal_' + slot, slot, url: d.url, label: '', aktif: true, urutan: Date.now() };
     const i = DB.galeri.findIndex(x => x.id === rec.id);
     if(i > -1) DB.galeri[i] = rec; else DB.galeri.push(rec);
     cacheDB(); setSync('ok');
@@ -2772,25 +2490,10 @@ async function galeriUpload(slot){
   finally{ busy = false; }
 }
 
-async function galeriUrl(slot){
-  const url = $('galUrl_' + slot).value.trim();
-  if(!/^https?:\/\//.test(url)){ showToast('URL foto wajib mulai http(s)://'); $('galUrl_' + slot).focus(); return; }
-  const old = DB.galeri.find(x => x.id === 'gal_' + slot);
-  const rec = { id: 'gal_' + slot, slot, url, label: $('galLabel_' + slot).value.trim(), aktif: true, urutan: Date.now(), created_at: old?.created_at || Date.now() };
-  if(await save('galeri', rec)){ galPending = null; $('galFile_' + slot).value = ''; renderGaleri(); showToast('Foto tersimpan'); }
-}
-
-async function galeriToggle(slot){
-  const g = DB.galeri.find(x => x.id === 'gal_' + slot);
-  if(!g){ $('galOn_' + slot).checked = false; showToast('Belum ada foto slot ini — upload atau pas URL dulu'); return; }
-  const rec = { ...g, aktif: !!$('galOn_' + slot).checked };
-  if(await save('galeri', rec)) showToast(rec.aktif ? 'Foto aktif di landing page' : 'Foto nonaktif di landing page');
-}
-
 async function galeriClear(slot){
   if(!DB.galeri.find(x => x.id === 'gal_' + slot)) return;
   if(!confirm('Hapus foto slot ini?')) return;
-  if(await remove('galeri', 'gal_' + slot)){ galPending = null; $('galFile_' + slot).value = ''; renderGaleri(); showToast('Foto dihapus'); }
+  if(await remove('galeri', 'gal_' + slot)){ $('galFile_' + slot).value = ''; renderGaleri(); showToast('Foto dihapus'); }
 }
 
 
