@@ -662,7 +662,10 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 }
 .sb-link{position:relative}
 /* galeri preview */
-.gal-prev{height:56px;width:92px;object-fit:cover;border-radius:12px;border:2px solid var(--line);background:var(--bg)}
+.gal-frame{position:relative;width:300px;max-width:100%;aspect-ratio:372/220;border-radius:14px;overflow:hidden;border:2px solid var(--line);background:var(--bg);cursor:grab;touch-action:none;user-select:none;-webkit-user-select:none}
+.gal-frame.dragging{cursor:grabbing}
+.gal-frame img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none}
+.gal-hint{display:block;margin-top:4px;font-size:11px;opacity:.65}
 #view-galeri input[type=file]{max-width:180px;font-size:12px}
 
 /* Table row hover */
@@ -1106,36 +1109,42 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 
     <section id="view-galeri" class="view" style="display:none">
       <div class="topbar">
-        <div><h1>Galeri Foto</h1><p class="sub">Ganti 3 foto galeri di landing page — pilih foto dari galeri Anda lalu upload (maks 1 MB)</p></div>
+        <div><h1>Galeri Foto</h1><p class="sub">Ganti 3 foto galeri di landing page — pilih foto lalu upload (foto besar otomatis diperkecil, maks 25 MB). Geser foto di dalam kotak untuk mengatur bagian yang tampil, lalu klik ✓</p></div>
       </div>
       <div class="panel">
         <table>
           <thead><tr><th>Foto</th><th>Slot</th><th>Aksi</th></tr></thead>
           <tbody>
             <tr>
-              <td><img id="galImg_gal1" class="gal-prev" alt="Foto galeri 1" hidden></td>
+              <td><div class="gal-frame" id="galFrame_gal1"><img id="galImg_gal1" alt="Foto galeri 1" hidden></div><small class="gal-hint">Geser foto untuk atur posisi</small></td>
               <td><b>Foto 1</b><br><small>kartu galeri kiri (Kelas Interaktif)</small></td>
               <td class="tbl-act">
                 <input type="file" id="galFile_gal1" accept="image/*" onchange="galeriPick('gal1')">
                 <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal1')" title="Upload ke imgBB">⤒</button>
+                <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal1')" title="Simpan posisi foto">✓</button>
+                <button class="tbl-btn" type="button" onclick="galeriResetPos('gal1')" title="Kembalikan posisi ke tengah">↺</button>
                 <button class="tbl-btn del" type="button" onclick="galeriClear('gal1')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
               </td>
             </tr>
             <tr>
-              <td><img id="galImg_gal2" class="gal-prev" alt="Foto galeri 2" hidden></td>
+              <td><div class="gal-frame" id="galFrame_gal2"><img id="galImg_gal2" alt="Foto galeri 2" hidden></div><small class="gal-hint">Geser foto untuk atur posisi</small></td>
               <td><b>Foto 2</b><br><small>kartu galeri tengah (Bimbingan Personal)</small></td>
               <td class="tbl-act">
                 <input type="file" id="galFile_gal2" accept="image/*" onchange="galeriPick('gal2')">
                 <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal2')" title="Upload ke imgBB">⤒</button>
+                <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal2')" title="Simpan posisi foto">✓</button>
+                <button class="tbl-btn" type="button" onclick="galeriResetPos('gal2')" title="Kembalikan posisi ke tengah">↺</button>
                 <button class="tbl-btn del" type="button" onclick="galeriClear('gal2')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
               </td>
             </tr>
             <tr>
-              <td><img id="galImg_gal3" class="gal-prev" alt="Foto galeri 3" hidden></td>
+              <td><div class="gal-frame" id="galFrame_gal3"><img id="galImg_gal3" alt="Foto galeri 3" hidden></div><small class="gal-hint">Geser foto untuk atur posisi</small></td>
               <td><b>Foto 3</b><br><small>kartu galeri kanan (Percaya Diri)</small></td>
               <td class="tbl-act">
                 <input type="file" id="galFile_gal3" accept="image/*" onchange="galeriPick('gal3')">
                 <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal3')" title="Upload ke imgBB">⤒</button>
+                <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal3')" title="Simpan posisi foto">✓</button>
+                <button class="tbl-btn" type="button" onclick="galeriResetPos('gal3')" title="Kembalikan posisi ke tengah">↺</button>
                 <button class="tbl-btn del" type="button" onclick="galeriClear('gal3')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
               </td>
             </tr>
@@ -2450,35 +2459,126 @@ async function deleteAnnouncement(id){
    ============================================================ */
 let galPending = null;
 
+const galPos = {};   // slot -> {x,y} posisi foto (persen), termasuk yang belum disimpan
+const galClamp = v => Math.min(100, Math.max(0, v));
+const galNum = v => (typeof v === 'number' && isFinite(v)) ? galClamp(v) : 50;
+
+function galApplyPos(slot){
+  const img = $('galImg_' + slot), p = galPos[slot] || { x: 50, y: 50 };
+  if(img) img.style.objectPosition = p.x + '% ' + p.y + '%';
+}
+
 function renderGaleri(){
   ['gal1','gal2','gal3'].forEach(slot => {
     const g = DB.galeri.find(x => x.id === 'gal_' + slot);
     const img = $('galImg_' + slot);
-    if(g && g.url){ img.src = g.url; img.hidden = false; }
-    else { img.removeAttribute('src'); img.hidden = true; }
+    if(g && g.url){
+      img.src = g.url; img.hidden = false;
+      galPos[slot] = { x: galNum(g.posX), y: galNum(g.posY) };
+      galApplyPos(slot);
+    } else {
+      img.removeAttribute('src'); img.hidden = true; img.style.objectPosition = '';
+      delete galPos[slot];
+    }
   });
 }
 
-function galeriPick(slot){
+/* geser foto di dalam kotak (mouse / sentuh) untuk atur bagian yang tampil */
+function galInitDrag(){
+  ['gal1','gal2','gal3'].forEach(slot => {
+    const fr = $('galFrame_' + slot), img = $('galImg_' + slot);
+    if(!fr || !img) return;
+    let st = null;
+    fr.addEventListener('pointerdown', e => {
+      if(img.hidden || !img.naturalWidth) return;
+      const r = fr.getBoundingClientRect();
+      const sc = Math.max(r.width / img.naturalWidth, r.height / img.naturalHeight);
+      const p = galPos[slot] || { x: 50, y: 50 };
+      st = { sx: e.clientX, sy: e.clientY, x: p.x, y: p.y,
+             ox: img.naturalWidth * sc - r.width, oy: img.naturalHeight * sc - r.height };
+      fr.setPointerCapture(e.pointerId);
+      fr.classList.add('dragging');
+      e.preventDefault();
+    });
+    fr.addEventListener('pointermove', e => {
+      if(!st) return;
+      let x = st.x, y = st.y;
+      if(st.ox > 1) x = galClamp(st.x - (e.clientX - st.sx) / st.ox * 100);
+      if(st.oy > 1) y = galClamp(st.y - (e.clientY - st.sy) / st.oy * 100);
+      galPos[slot] = { x, y };
+      galApplyPos(slot);
+    });
+    const end = () => { st = null; fr.classList.remove('dragging'); };
+    fr.addEventListener('pointerup', end);
+    fr.addEventListener('pointercancel', end);
+  });
+}
+if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', galInitDrag);
+else galInitDrag();
+
+async function galeriSavePos(slot){
+  const g = DB.galeri.find(x => x.id === 'gal_' + slot);
+  if(!g){ showToast('Upload foto dulu'); return; }
+  if(galPending && galPending.slot === slot){ showToast('Klik ⤒ untuk upload foto baru dulu'); return; }
+  const p = galPos[slot] || { x: 50, y: 50 };
+  if(await save('galeri', { ...g, posX: Math.round(p.x), posY: Math.round(p.y) })) showToast('Posisi foto tersimpan');
+}
+
+function galeriResetPos(slot){
+  galPos[slot] = { x: 50, y: 50 };
+  galApplyPos(slot);
+}
+
+/* perkecil foto di browser: sisi terpanjang maks 1600px, JPEG, ukuran dijaga ±1.2 MB — kualitas tetap tajam untuk web */
+async function fileToCompressedDataURL(file, maxSide = 1600, targetBytes = 1.2 * 1024 * 1024){
+  let bmp;
+  try{ bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
+  catch(_){
+    bmp = await new Promise((res, rej) => {
+      const im = new Image();
+      im.onload = () => res(im); im.onerror = rej;
+      im.src = URL.createObjectURL(file);
+    });
+  }
+  const w0 = bmp.width, h0 = bmp.height;
+  const k = Math.min(1, maxSide / Math.max(w0, h0));
+  const w = Math.round(w0 * k), h = Math.round(h0 * k);
+  const cv = document.createElement('canvas');
+  cv.width = w; cv.height = h;
+  const ctx = cv.getContext('2d');
+  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+  ctx.drawImage(bmp, 0, 0, w, h);
+  let q = 0.9, out = cv.toDataURL('image/jpeg', q);
+  while(out.length > targetBytes && q > 0.5){ q -= 0.07; out = cv.toDataURL('image/jpeg', q); }
+  return out;
+}
+
+async function galeriPick(slot){
   const f = $('galFile_' + slot).files[0];
   if(!f) return;
-  if(f.size > 1024 * 1024){ showToast('Foto maks 1 MB'); return; }
-  const rd = new FileReader();
-  rd.onload = () => { galPending = { slot, data: rd.result }; showToast('Foto siap. Klik ⤒ untuk upload.'); };
-  rd.onerror = () => showToast('Gagal baca file');
-  rd.readAsDataURL(f);
+  if(!/^image\//.test(f.type)){ showToast('File harus berupa foto'); return; }
+  if(f.size > 25 * 1024 * 1024){ showToast('Foto maks 25 MB'); return; }
+  try{
+    showToast('Memproses foto…');
+    const data = await fileToCompressedDataURL(f);
+    galPending = { slot, data };
+    const img = $('galImg_' + slot);
+    img.src = data; img.hidden = false;
+    galPos[slot] = { x: 50, y: 50 }; galApplyPos(slot);
+    showToast('Foto siap (' + Math.round(data.length * 0.75 / 1024) + ' KB). Klik ⤒ untuk upload.');
+  }catch(e){ galPending = null; showToast('Gagal membaca foto ini'); }
 }
 
 async function galeriUpload(slot){
-  if(!galPending || galPending.slot !== slot){ showToast('Pilih file foto dulu (maks 1 MB)'); return; }
+  if(!galPending || galPending.slot !== slot){ showToast('Pilih file foto dulu'); return; }
   if(busy) return;
   busy = true; setSync('busy');
   try{
     const d = await api('/api/galeri/upload', {
       method: 'POST',
-      body: JSON.stringify({ slot, base64: galPending.data })
+      body: JSON.stringify({ slot, base64: galPending.data, posX: Math.round((galPos[slot]||{x:50}).x), posY: Math.round((galPos[slot]||{y:50}).y) })
     });
-    const rec = { id: 'gal_' + slot, slot, url: d.url, label: '', aktif: true, urutan: Date.now() };
+    const rec = { id: 'gal_' + slot, slot, url: d.url, label: '', aktif: true, posX: Math.round((galPos[slot]||{x:50}).x), posY: Math.round((galPos[slot]||{y:50}).y), urutan: Date.now() };
     const i = DB.galeri.findIndex(x => x.id === rec.id);
     if(i > -1) DB.galeri[i] = rec; else DB.galeri.push(rec);
     cacheDB(); setSync('ok');

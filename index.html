@@ -2289,12 +2289,14 @@ img[loading="lazy"] {
   fetch(API_GALERI).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
     if(!d || !d.galeri || !d.galeri.length) return;
     var bySlot = {};
-    d.galeri.forEach(function(g){ if(g && g.slot && g.url) bySlot[g.slot] = g.url; });
+    d.galeri.forEach(function(g){ if(g && g.slot && g.url) bySlot[g.slot] = g; });
     Object.keys(SLOTS).forEach(function(id){
-      var url = bySlot[SLOTS[id]];
-      if(!url) return;
+      var g = bySlot[SLOTS[id]];
+      if(!g) return;
       var img = document.getElementById(id);
-      if(img) img.src = url;
+      if(!img) return;
+      img.src = g.url;
+      if(typeof g.posX === 'number' && typeof g.posY === 'number') img.style.objectPosition = g.posX + '% ' + g.posY + '%';
     });
   }).catch(function(){});
 })();
