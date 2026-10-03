@@ -344,6 +344,38 @@ section{padding:4.6rem 0;position:relative}
 .icon--mint{background:linear-gradient(150deg,var(--mint),#5ED9CC)}
 .icon--pink{background:linear-gradient(150deg,var(--pink),#FF8BC0)}
 
+/* ---------- galeri 3 foto suasana belajar ---------- */
+.galeri{padding:4.6rem 0}
+.galeri__grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.35rem;align-items:stretch}
+.galeri__card{
+  background:var(--paper);border-radius:var(--r-xl);overflow:hidden;
+  box-shadow:var(--clay-sm);border:1px solid rgba(255,255,255,.9);
+  display:flex;flex-direction:column;
+  transition:transform .32s var(--spring),box-shadow .32s var(--ease);
+}
+.galeri__grid .galeri__card:nth-child(1){rotate:-1deg}
+.galeri__grid .galeri__card:nth-child(2){rotate:.8deg;translate:0 -12px}
+.galeri__grid .galeri__card:nth-child(3){rotate:-.8deg}
+.galeri__card:hover{transform:translateY(-8px) scale(1.01);box-shadow:var(--clay)}
+.galeri__media{position:relative;width:100%;height:220px;overflow:hidden;background:#F4F1FB}
+.galeri__media img{
+  width:100%;height:100%;object-fit:cover;display:block;
+  transition:transform .5s var(--ease);
+}
+.galeri__card:hover .galeri__media img{transform:scale(1.06)}
+.galeri__tag{
+  position:absolute;bottom:12px;left:14px;
+  font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:.76rem;
+  letter-spacing:.06em;text-transform:uppercase;padding:.32rem .75rem;
+  border-radius:999px;box-shadow:var(--clay-sm);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+}
+.galeri__tag--sun{background:rgba(255,242,201,.92);color:#7A5200}
+.galeri__tag--mint{background:rgba(204,251,241,.92);color:#0B5F57}
+.galeri__tag--pink{background:rgba(255,228,230,.92);color:#9F1239}
+.galeri__body{padding:1.35rem 1.4rem 1.55rem;display:flex;flex-direction:column;flex:1}
+.galeri__body h3{font-size:1.2rem;margin-bottom:.45rem;color:var(--ink)}
+.galeri__body p{color:var(--muted);font-size:.94rem;line-height:1.55;flex:1}
+
 /* ---------- 3 langkah (tangga, bukan kolom rata) ---------- */
 .how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;position:relative}
 .how-steps::before{
@@ -755,6 +787,9 @@ html.js .loading{display:grid}
   .how-steps::before{display:none}
   .programs{grid-template-columns:1fr}
   .programs .program:nth-child(2){translate:0}
+  .galeri__grid{grid-template-columns:1fr;gap:1.2rem}
+  .galeri__grid .galeri__card:nth-child(2){translate:0}
+  .galeri__card{rotate:0deg !important}
   .jd-grid{grid-template-columns:1fr 1fr}
   .paket{grid-template-columns:1fr}
   .footer__grid{grid-template-columns:1fr 1fr}
@@ -776,6 +811,8 @@ html.js .loading{display:grid}
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
   html{scroll-behavior:auto}
   .reveal,.stagger>*{opacity:1!important;translate:none!important}
+  .galeri__card{rotate:0deg !important;translate:none !important}
+  .galeri__card:hover,.galeri__media img{transform:none !important}
 }
 
 /* ---------- menu Masuk (portal / dashboard) ---------- */
@@ -1217,6 +1254,7 @@ img[loading="lazy"] {
   </a>
   <div class="nav-links">
     <a href="#fitur">Fitur</a>
+    <a href="#galeri">Suasana</a>
     <a href="#program">Program</a>
     <a href="#jadwal">Jadwal</a>
     <a href="#presensi">Presensi</a>
@@ -1251,6 +1289,7 @@ img[loading="lazy"] {
   <div class="mmenu__backdrop" data-close></div>
   <div class="mmenu__panel" role="dialog" aria-label="Menu">
     <a href="#fitur">Fitur</a>
+    <a href="#galeri">Suasana Belajar</a>
     <a href="#program">Program</a>
     <a href="#jadwal">Jadwal</a>
     <a href="#presensi">Presensi</a>
@@ -1375,6 +1414,52 @@ img[loading="lazy"] {
           <p>Grup WhatsApp khusus orang tua. Bisa tanya langsung ke tutor kapan saja.</p>
         </div>
         <a class="btn btn-ghost btn-sm" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20konsultasi" target="_blank" rel="noopener">Tanya tutor</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section id="galeri" class="galeri">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Suasana Belajar</span>
+      <h2>Momen belajar yang <span class="hl">hidup &amp; bermakna</span>.</h2>
+      <p>Bukan kelas yang kaku dan menegangkan. Di sini anak merasa aman untuk bertanya, mencoba, dan berkembang.</p>
+    </div>
+
+    <div class="galeri__grid stagger">
+      <article class="galeri__card">
+        <div class="galeri__media">
+          <img src="https://images.unsplash.com/photo-1577896851231-70ef18881754?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Siswa SD belajar interaktif bersama tutor dalam kelompok kecil" loading="lazy" width="800" height="533">
+          <span class="galeri__tag galeri__tag--sun">Kelas Interaktif</span>
+        </div>
+        <div class="galeri__body">
+          <h3>Diskusi &amp; Eksplorasi Bersama</h3>
+          <p>Belajar dalam kelompok kecil (maksimal 6 siswa) membuat suasana lebih santai, saling dukung, dan seru tanpa rasa takut salah.</p>
+        </div>
+      </article>
+
+      <article class="galeri__card">
+        <div class="galeri__media">
+          <img src="https://images.unsplash.com/photo-1509062522246-3755977927d7?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Tutor mendampingi siswa dengan sabar dan personal" loading="lazy" width="800" height="533">
+          <span class="galeri__tag galeri__tag--mint">Bimbingan Personal</span>
+        </div>
+        <div class="galeri__body">
+          <h3>Pendampingan Penuh Kesabaran</h3>
+          <p>Tiap anak punya ritme berbeda. Tutor kami mendampingi step-by-step sampai konsep dasar benar-benar dipahami anak.</p>
+        </div>
+      </article>
+
+      <article class="galeri__card">
+        <div class="galeri__media">
+          <img src="https://images.unsplash.com/photo-1580582932707-520aed937b7b?auto=format&amp;fit=crop&amp;w=800&amp;q=80" alt="Siswa ceria dan percaya diri saat belajar di bimbel" loading="lazy" width="800" height="533">
+          <span class="galeri__tag galeri__tag--pink">Percaya Diri</span>
+        </div>
+        <div class="galeri__body">
+          <h3>Prestasi Berawal dari Senyuman</h3>
+          <p>Ketika belajar terasa menyenangkan, motivasi dan rasa percaya diri siswa tumbuh alami menghadapi materi sekolah maupun ujian.</p>
+        </div>
       </article>
     </div>
   </div>
