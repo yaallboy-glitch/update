@@ -1035,6 +1035,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       <button class="sb-link" type="button" data-view="presensi"><span class="ic">🎓</span><span>Presensi Siswa</span></button>
       <button class="sb-link" type="button" data-view="pengaturan"><span class="ic">⚙️</span><span>Pengaturan</span></button>
       <button class="sb-link" type="button" data-view="announcement"><span class="ic">📢</span><span>Pengumuman</span></button>
+      <button class="sb-link" type="button" data-view="galeri"><span class="ic">🖼️</span><span>Galeri Foto</span></button>
     </nav>
     <div class="sb-footer">
       <div class="sync" id="syncDesk"><i></i><span>Menghubungkan…</span></div>
@@ -1269,6 +1270,45 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
         <table id="tblAnnouncement">
           <thead><tr><th>Konten</th><th>Berakhir</th><th>Status</th><th>Aksi</th></tr></thead>
           <tbody id="tblAnnouncementBody"><tr><td colspan="4" class="tbl-empty">Belum ada pengumuman</td></tr></tbody>
+        </table>
+      </div>
+    </section>
+
+    <section id="view-galeri" class="view" style="display:none">
+      <div class="topbar">
+        <div><h1>Galeri Foto</h1><p class="sub">Foto kelas tampil di landing page: slot Hero (kartu bulat) &amp; slot Banner SMP. Upload foto maks 1 MB.</p></div>
+      </div>
+      <div class="panel">
+        <table id="tblGaleri">
+          <thead><tr><th>Slot</th><th>Foto</th><th>Label</th><th>Aktif</th><th>Aksi</th></tr></thead>
+          <tbody>
+            <tr>
+              <td><b>Hero</b><br><small>kartu bulat di header</small></td>
+              <td><img id="galImg_hero" class="gal-prev" alt="Foto hero" hidden></td>
+              <td><input type="text" id="galLabel_hero" placeholder="Label foto (opsional)"></td>
+              <td><input type="checkbox" id="galOn_hero" onchange="galeriToggle('hero')"></td>
+              <td class="tbl-act">
+                <input type="file" id="galFile_hero" accept="image/*" onchange="galeriPick('hero')">
+                <button class="tbl-btn edit" type="button" onclick="galeriUpload('hero')" title="Upload foto ke imgBB">⤒</button>
+                <input type="url" id="galUrl_hero" placeholder="atau pas URL foto…">
+                <button class="tbl-btn edit" type="button" onclick="galeriUrl('hero')" title="Simpan URL">💾</button>
+                <button class="tbl-btn del" type="button" onclick="galeriClear('hero')" title="Hapus foto">🗑️</button>
+              </td>
+            </tr>
+            <tr>
+              <td><b>Banner SMP</b><br><small>foto di kartu SMP</small></td>
+              <td><img id="galImg_banner-smp" class="gal-prev" alt="Foto banner SMP" hidden></td>
+              <td><input type="text" id="galLabel_banner-smp" placeholder="Label foto (opsional)"></td>
+              <td><input type="checkbox" id="galOn_banner-smp" onchange="galeriToggle('banner-smp')"></td>
+              <td class="tbl-act">
+                <input type="file" id="galFile_banner-smp" accept="image/*" onchange="galeriPick('banner-smp')">
+                <button class="tbl-btn edit" type="button" onclick="galeriUpload('banner-smp')" title="Upload foto ke imgBB">⤒</button>
+                <input type="url" id="galUrl_banner-smp" placeholder="atau pas URL foto…">
+                <button class="tbl-btn edit" type="button" onclick="galeriUrl('banner-smp')" title="Simpan URL">💾</button>
+                <button class="tbl-btn del" type="button" onclick="galeriClear('banner-smp')" title="Hapus foto">🗑️</button>
+              </td>
+            </tr>
+          </tbody>
         </table>
       </div>
     </section>
@@ -1588,7 +1628,7 @@ const CACHE_KEY = 'aliefbimbel_cache_v2';
 const OLD_KEY   = 'aliefbimbel_data_v1';      // data lama (versi localStorage)
 const VIEW_KEY  = 'alief_view';
 
-const KINDS = ['siswa','guru','jadwal','bayar','absen','presensi','pengaturan','announcement'];
+const KINDS = ['siswa','guru','jadwal','bayar','absen','presensi','pengaturan','announcement','galeri'];
 const URUT_HARI = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
 const NAMA_HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
 const NAMA_BULAN = ['Januari','Februari','Maret','April','Mei','Juni','Juli','Agustus','September','Oktober','November','Desember'];
@@ -1609,7 +1649,7 @@ const lsDel = k => { try{ localStorage.removeItem(k); }catch(e){} };
 /* ============================================================
    DATA & API
    ============================================================ */
-const emptyDB = () => ({ siswa:[], guru:[], jadwal:[], bayar:[], absen:[], presensi:[], pengaturan:[], announcement:[] });
+const emptyDB = () => ({ siswa:[], guru:[], jadwal:[], bayar:[], absen:[], presensi:[], pengaturan:[], announcement:[], galeri:[] });
 function normalize(d){
   const out = emptyDB();
   KINDS.forEach(k => { out[k] = Array.isArray(d?.[k]) ? d[k] : []; });
@@ -1864,7 +1904,7 @@ function endTime(jam, durasi){
 /* ============================================================
    NAVIGASI + BURGER
    ============================================================ */
-const VIEW_TITLE = { overview:'Ringkasan', jadwal:'Jadwal', siswa:'Siswa', guru:'Guru', bayar:'Pembayaran', absen:'Absensi Guru', presensi:'Presensi Siswa', pengaturan:'Pengaturan', announcement:'Pengumuman' };
+const VIEW_TITLE = { overview:'Ringkasan', jadwal:'Jadwal', siswa:'Siswa', guru:'Guru', bayar:'Pembayaran', absen:'Absensi Guru', presensi:'Presensi Siswa', pengaturan:'Pengaturan', announcement:'Pengumuman', galeri:'Galeri Foto' };
 
 function showView(view){
   if(!VIEW_TITLE[view]) view = 'overview';
@@ -2672,9 +2712,84 @@ async function deleteAnnouncement(id){
   if(await remove('announcement', id)){ renderAll(); showToast('Pengumuman dihapus'); }
 }
 
+/* ============================================================
+   RENDER: GALERI FOTO (imgBB upload → URL di D1, 2 slot fiks)
+   ============================================================ */
+let galPending = null;
+
+function renderGaleri(){
+  ['hero','banner-smp'].forEach(slot => {
+    const g = DB.galeri.find(x => x.id === 'gal_' + slot);
+    $('galLabel_' + slot).value = g?.label || '';
+    $('galOn_' + slot).checked = !!g?.aktif;
+    $('galUrl_' + slot).value = g?.url || '';
+    const img = $('galImg_' + slot);
+    if(g?.url){ img.src = g.url; img.hidden = false; }
+    else { img.removeAttribute('src'); img.hidden = true; }
+  });
+}
+
+function galeriPick(slot){
+  const f = $('galFile_' + slot).files[0];
+  if(!f) return;
+  if(f.size > 1024 * 1024){ showToast('Foto maks 1 MB'); return; }
+  const rd = new FileReader();
+  rd.onload = () => {
+    galPending = { slot, data: rd.result };
+    const img = $('galImg_' + slot);
+    img.src = rd.result; img.hidden = false;
+    $('galUrl_' + slot).value = '';
+    showToast('Foto siap. Klik ⤒ untuk upload.');
+  };
+  rd.onerror = () => showToast('Gagal baca file');
+  rd.readAsDataURL(f);
+}
+
+async function galeriUpload(slot){
+  if(!galPending || galPending.slot !== slot){ showToast('Pilih file foto dulu (maks 1 MB)'); return; }
+  if(busy) return;
+  busy = true; setSync('busy');
+  try{
+    const d = await api('/api/galeri/upload', {
+      method: 'POST',
+      body: JSON.stringify({ slot, base64: galPending.data, label: $('galLabel_' + slot).value.trim() })
+    });
+    const rec = { id: 'gal_' + slot, slot, url: d.url, label: $('galLabel_' + slot).value.trim(), aktif: true, urutan: Date.now() };
+    const i = DB.galeri.findIndex(x => x.id === rec.id);
+    if(i > -1) DB.galeri[i] = rec; else DB.galeri.push(rec);
+    cacheDB(); setSync('ok');
+    galPending = null;
+    $('galFile_' + slot).value = '';
+    renderGaleri();
+    showToast('Foto uploaded & tersimpan');
+  }catch(e){ handleErr(e); }
+  finally{ busy = false; }
+}
+
+async function galeriUrl(slot){
+  const url = $('galUrl_' + slot).value.trim();
+  if(!/^https?:\/\//.test(url)){ showToast('URL foto wajib mulai http(s)://'); $('galUrl_' + slot).focus(); return; }
+  const old = DB.galeri.find(x => x.id === 'gal_' + slot);
+  const rec = { id: 'gal_' + slot, slot, url, label: $('galLabel_' + slot).value.trim(), aktif: true, urutan: Date.now(), created_at: old?.created_at || Date.now() };
+  if(await save('galeri', rec)){ galPending = null; $('galFile_' + slot).value = ''; renderGaleri(); showToast('Foto tersimpan'); }
+}
+
+async function galeriToggle(slot){
+  const g = DB.galeri.find(x => x.id === 'gal_' + slot);
+  if(!g){ $('galOn_' + slot).checked = false; showToast('Belum ada foto slot ini — upload atau pas URL dulu'); return; }
+  const rec = { ...g, aktif: !!$('galOn_' + slot).checked };
+  if(await save('galeri', rec)) showToast(rec.aktif ? 'Foto aktif di landing page' : 'Foto nonaktif di landing page');
+}
+
+async function galeriClear(slot){
+  if(!DB.galeri.find(x => x.id === 'gal_' + slot)) return;
+  if(!confirm('Hapus foto slot ini?')) return;
+  if(await remove('galeri', 'gal_' + slot)){ galPending = null; $('galFile_' + slot).value = ''; renderGaleri(); showToast('Foto dihapus'); }
+}
+
 
 function renderAll(){
-  renderOverview(); renderJadwal(); renderSiswa(); renderGuru(); renderBayar(); renderAbsensi(); renderPresensi(); renderPengaturan(); renderAnnouncement();
+  renderOverview(); renderJadwal(); renderSiswa(); renderGuru(); renderBayar(); renderAbsensi(); renderPresensi(); renderPengaturan(); renderAnnouncement(); renderGaleri();
 }
 
 /* ============================================================
