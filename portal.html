@@ -705,6 +705,47 @@ input:focus{
   80%{transform:translateX(4px)}
 }
 
+/* ============================================
+   PORTAL PREMIUM POLISH (add-on)
+   Same system, warmer depth — no structural change
+   ============================================ */
+
+/* Soft ambient orbs behind everything (static, no blur) */
+body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(38vw 34vh at 8% 6%,rgba(53,107,140,.07),transparent 60%),
+  radial-gradient(30vw 30vh at 96% 12%,rgba(232,189,101,.09),transparent 62%),
+  radial-gradient(42vw 40vh at 50% 96%,rgba(79,146,136,.06),transparent 65%)}
+
+::selection{background:rgba(53,107,140,.22);color:var(--color-ink)}
+
+/* Login card: top accent strip + inner top light (double-bezel feel) */
+#login{position:relative;box-shadow:0 18px 55px rgba(38,54,61,.075),inset 0 1px 0 rgba(255,255,255,.65)}
+#login::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:0 0 8px 8px;background:linear-gradient(90deg,rgba(53,107,140,.55),rgba(232,189,101,.3),rgba(79,146,136,.55))}
+
+/* Input icons (inline SVG data-URI, no dependency) */
+#wa,#pin{background-repeat:no-repeat;background-position:14px center;background-size:19px;padding-left:44px}
+#wa{background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cg%20fill='none'%20stroke='%2326363d'%20stroke-opacity='.45'%20stroke-width='1.8'%20stroke-linecap='round'%3E%3Crect%20x='6'%20y='10'%20width='12'%20height='9'%20rx='1.5'/%3E%3Crect%20x='7.6'%20y='3.5'%20width='2.2'%20height='6'%20rx='1.1'/%3E%3Crect%20x='14.2'%20y='3.5'%20width='2.2'%20height='6'%20rx='1.1'/%3E%3C/g%3E%3C/svg%3E")}
+#pin{background-image:url("data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%3E%3Cg%20fill='none'%20stroke='%2326363d'%20stroke-opacity='.45'%20stroke-width='2'%20stroke-linecap='round'%3E%3Cpath%20d='M8.5%209%20h7M8.5%209%20v-2.6M15.5%209%20v-2.6'/%3E%3Crect%20x='8.5'%20y='9'%20width='7'%20height='7'%20rx='1.5'/%3E%3C/g%3E%3C/svg%3E")}
+input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #fff inset;-webkit-text-fill-color:var(--color-ink)}
+
+/* Buttons: glossy top pellicle over existing gradients */
+.btn-primary,.btn-success,.btn-wa{box-shadow:0 5px 13px rgba(53,107,140,.16),inset 0 1px 0 rgba(255,255,255,.22)}
+
+/* Status badges: color dot + soft float shadow */
+.badge{box-shadow:0 1px 3px rgba(38,54,61,.08)}
+.badge::before{content:'';width:7px;height:7px;border-radius:50%;background:currentColor;box-shadow:0 0 0 2px rgba(255,255,255,.85);flex:none}
+
+/* Schedule rows: dashed list -> soft cards with hover lift */
+#app .row{background:#fbf8f3;border:1px solid rgba(38,54,61,.07);border-radius:12px;padding:12px 14px;margin:0 0 10px;transition:transform .18s cubic-bezier(.2,.7,.25,1),box-shadow .18s ease,border-color .18s ease}
+#app .row:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(38,54,61,.07);border-color:rgba(53,107,140,.16)}
+#app .row:last-child{margin-bottom:4px}
+
+/* Day separators: quiet chip */
+.hari{background:rgba(53,107,140,.08);border-radius:8px;padding:5px 10px;display:inline-block}
+
+/* Divider label: soft pill */
+.divider span{background:#fff;padding:2px 14px;border-radius:100px;border:1px solid rgba(38,54,61,.1);font-weight:800}
+
 </style>
 </head>
 <body>
