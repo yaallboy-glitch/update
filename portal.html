@@ -746,6 +746,20 @@ input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #fff inset;-webkit-text-fil
 /* Divider label: soft pill */
 .divider span{background:#fff;padding:2px 14px;border-radius:100px;border:1px solid rgba(38,54,61,.1);font-weight:800}
 
+
+/* presensi siswa: select & input angka mengikuti gaya input tanggal */
+#app select,
+#app input[type="number"] {
+  width: 100%;
+  padding: 13px 16px;
+  border: var(--border-width) solid var(--color-line);
+  border-radius: var(--radius-md);
+  font-size: 15px;
+  font-family: inherit;
+  background: var(--color-bg-alt);
+  color: var(--color-ink);
+}
+.pres-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 8px; }
 </style>
 </head>
 <body>
@@ -1179,6 +1193,157 @@ function jadwalHtml(list, withGuru) {
   return h;
 }
 
+
+// ============================================
+// PRESENSI SISWA
+// Orang tua: hanya melihat. Guru: mengisi untuk siswa di kelas yang diajarnya.
+// ============================================
+
+const PRES_BD = {
+  hadir: '<span class="badge badge-success">✓ Hadir</span>',
+  izin: '<span class="badge badge-pending">Izin</span>',
+  sakit: '<span class="badge badge-pending">Sakit</span>',
+  alpha: '<span class="badge badge-warning">Alpha</span>'
+};
+
+const fmtTgl = t => {
+  const d = new Date(t + 'T00:00:00');
+  return isNaN(d) ? '-' : d.getDate() + ' ' + NAMA_BLN[d.getMonth()] + ' ' + d.getFullYear();
+};
+
+function presensiOrtuHtml(s) {
+  const list = (me.presensi || [])
+    .filter(p => p.siswaId === s.id)
+    .sort((a, b) => (Number(b.pertemuan) - Number(a.pertemuan)) || String(b.tanggal).localeCompare(String(a.tanggal)));
+  const c = { hadir: 0, izin: 0, sakit: 0, alpha: 0 };
+  list.forEach(p => { if (c[p.status] != null) c[p.status]++; });
+
+  return `
+    <div class="card">
+      <h3>🎓 Presensi ${esc(s.nama)}</h3>
+      ${list.length ? `
+        <p class="sub">Hadir ${c.hadir} · Izin ${c.izin} · Sakit ${c.sakit} · Alpha ${c.alpha}</p>
+        ${list.map(p => `
+          <div class="row">
+            <div>
+              <b>Pertemuan ${esc(p.pertemuan)}</b>
+              <small>${esc(fmtTgl(p.tanggal))}</small>
+            </div>
+            ${PRES_BD[p.status] || '<span class="badge badge-pending">-</span>'}
+          </div>
+        `).join('')}
+      ` : '<p class="sub">Belum ada catatan presensi.</p>'}
+    </div>
+  `;
+}
+
+let presKelas = '';
+let presPertemuan = '1';
+let isSettingPres = false;
+
+function presensiGuruHtml() {
+  const siswa = me.siswa || [];
+  const kelasList = [...new Set(siswa.map(s => s.kelas))].sort();
+  if (!kelasList.length) {
+    return '<div class="card"><h3>🎓 Presensi Siswa</h3><p class="sub">Belum ada siswa di kelas yang Anda ajar.</p></div>';
+  }
+  if (!kelasList.includes(presKelas)) presKelas = kelasList[0];
+  const murid = siswa.filter(s => s.kelas === presKelas).sort((a, b) => String(a.nama).localeCompare(String(b.nama)));
+
+  return `
+    <div class="card">
+      <h3>🎓 Presensi Siswa</h3>
+      <p class="sub">Tanggal mengikuti pilihan di atas (${esc(fmtTgl(tanggal))}).</p>
+      <div class="pres-grid">
+        <div>
+          <label for="presKelas">Kelas</label>
+          <select id="presKelas">
+            ${kelasList.map(k => `<option value="${esc(k)}"${k === presKelas ? ' selected' : ''}>${esc(k)}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label for="presPertemuan">Pertemuan ke-</label>
+          <input type="number" id="presPertemuan" min="1" max="999" value="${esc(presPertemuan)}">
+        </div>
+      </div>
+      ${murid.map(s => {
+        const rec = (me.presensi || []).find(p => p.siswaId === s.id && p.tanggal === tanggal && String(p.pertemuan) === presPertemuan);
+        const st = rec?.status;
+        const B = (v, label) => `
+          <button class="btn ${st === v ? 'btn-primary' : 'btn-outline'} btn-small" data-pres-s="${esc(s.id)}" data-pres-st="${v}">${label}</button>`;
+        return `
+          <div class="row" style="flex-direction:column;align-items:stretch">
+            <div style="display:flex;justify-content:space-between;gap:12px;width:100%">
+              <div><b>${esc(s.nama)}</b><small>${esc(s.kelas)}</small></div>
+              ${PRES_BD[st] || '<span class="badge badge-pending">Belum diisi</span>'}
+            </div>
+            <div class="acts">
+              ${B('hadir', '✓ Hadir')}${B('izin', '📝 Izin')}${B('sakit', '🤒 Sakit')}${B('alpha', '✕ Alpha')}
+              ${rec ? `<button class="btn btn-outline btn-small" data-pres-del="${esc(rec.id)}">Reset</button>` : ''}
+            </div>
+          </div>`;
+      }).join('')}
+    </div>
+  `;
+}
+
+function bindPresensiGuru() {
+  const k = $('presKelas');
+  if (k) k.onchange = e => { presKelas = e.target.value; viewGuru(); };
+  const n = $('presPertemuan');
+  if (n) n.onchange = e => {
+    presPertemuan = String(Math.min(999, Math.max(1, parseInt(e.target.value, 10) || 1)));
+    viewGuru();
+  };
+  document.querySelectorAll('[data-pres-s]').forEach(b => {
+    b.onclick = () => setPresensi(b.dataset.presS, b.dataset.presSt);
+  });
+  document.querySelectorAll('[data-pres-del]').forEach(b => {
+    b.onclick = () => resetPresensi(b.dataset.presDel);
+  });
+}
+
+async function setPresensi(siswaId, status) {
+  if (isSettingPres) return;
+  const s = (me.siswa || []).find(x => x.id === siswaId);
+  if (!s) return;
+  const id = 'pres_' + siswaId + '_' + tanggal + '_' + presPertemuan;
+  const rec = { id, siswaId, tanggal, pertemuan: presPertemuan, status, nama: s.nama, kelas: s.kelas };
+
+  isSettingPres = true;
+  showLoading(true);
+  try {
+    await api('/api/presensi/' + encodeURIComponent(id), { method: 'PUT', body: JSON.stringify(rec) });
+    me.presensi = (me.presensi || []).filter(p => p.id !== id).concat(rec);
+    showLoading(false);
+    viewGuru();
+  } catch (x) {
+    showLoading(false);
+    if (x.code === 401) $('out').onclick();
+    else alert('Gagal menyimpan presensi: ' + x.message);
+  } finally {
+    isSettingPres = false;
+  }
+}
+
+async function resetPresensi(id) {
+  if (isSettingPres) return;
+  isSettingPres = true;
+  showLoading(true);
+  try {
+    await api('/api/presensi/' + encodeURIComponent(id), { method: 'DELETE' });
+    me.presensi = (me.presensi || []).filter(p => p.id !== id);
+    showLoading(false);
+    viewGuru();
+  } catch (x) {
+    showLoading(false);
+    if (x.code === 401) $('out').onclick();
+    else alert('Gagal mereset presensi: ' + x.message);
+  } finally {
+    isSettingPres = false;
+  }
+}
+
 // ============================================
 // ORANG TUA VIEW
 // ============================================
@@ -1204,6 +1369,8 @@ function viewOrtu() {
         <h3 style="margin-top:20px">📅 Jadwal Belajar</h3>
         ${jadwalHtml(jd, true)}
       </div>
+
+      ${presensiOrtuHtml(s)}
       
       <div class="card">
         <h3>💰 Pembayaran ${esc(s.nama)}</h3>
@@ -1295,6 +1462,8 @@ function viewGuru() {
       }).join('') : '<p class="sub">Tidak ada jadwal mengajar hari ini.</p>'}
     </div>
     
+    ${presensiGuruHtml()}
+
     <div class="card">
       <h3>📅 Jadwal Saya</h3>
       ${jadwalHtml(jadwal, false)}
@@ -1312,6 +1481,8 @@ function viewGuru() {
   document.querySelectorAll('[data-abs]').forEach(b => {
     b.onclick = () => setAbsen(b.dataset.abs, b.dataset.st);
   });
+
+  bindPresensiGuru();
 }
 
 // ============================================
