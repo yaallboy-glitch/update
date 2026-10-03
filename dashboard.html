@@ -2530,7 +2530,7 @@ function galeriResetPos(slot){
 }
 
 /* perkecil foto di browser: sisi terpanjang maks 1600px, JPEG, ukuran dijaga ±1.2 MB — kualitas tetap tajam untuk web */
-async function fileToCompressedDataURL(file, maxSide = 1600, targetBytes = 1.2 * 1024 * 1024){
+async function fileToCompressedDataURL(file, maxSide = 1280, targetBytes = 600 * 1024, hardMax = 900 * 1024){
   let bmp;
   try{ bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
   catch(_){
@@ -2540,17 +2540,21 @@ async function fileToCompressedDataURL(file, maxSide = 1600, targetBytes = 1.2 *
       im.src = URL.createObjectURL(file);
     });
   }
-  const w0 = bmp.width, h0 = bmp.height;
-  const k = Math.min(1, maxSide / Math.max(w0, h0));
-  const w = Math.round(w0 * k), h = Math.round(h0 * k);
-  const cv = document.createElement('canvas');
-  cv.width = w; cv.height = h;
-  const ctx = cv.getContext('2d');
-  ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
-  ctx.drawImage(bmp, 0, 0, w, h);
-  let q = 0.9, out = cv.toDataURL('image/jpeg', q);
-  while(out.length > targetBytes && q > 0.5){ q -= 0.07; out = cv.toDataURL('image/jpeg', q); }
-  return out;
+  let side = maxSide, out = '';
+  for(let attempt = 0; attempt < 6; attempt++){
+    const k = Math.min(1, side / Math.max(bmp.width, bmp.height));
+    const w = Math.round(bmp.width * k), h = Math.round(bmp.height * k);
+    const cv = document.createElement('canvas');
+    cv.width = w; cv.height = h;
+    const ctx = cv.getContext('2d');
+    ctx.fillStyle = '#fff'; ctx.fillRect(0, 0, w, h);
+    ctx.drawImage(bmp, 0, 0, w, h);
+    let q = 0.9; out = cv.toDataURL('image/jpeg', q);
+    while(out.length > targetBytes && q > 0.55){ q -= 0.07; out = cv.toDataURL('image/jpeg', q); }
+    if(out.length <= hardMax) return out;
+    side = Math.round(side * 0.8);   // masih terlalu besar -> kecilkan dimensi lagi
+  }
+  throw new Error('Foto tidak bisa diperkecil cukup');
 }
 
 async function galeriPick(slot){

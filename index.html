@@ -2295,6 +2295,8 @@ img[loading="lazy"] {
       if(!g) return;
       var img = document.getElementById(id);
       if(!img) return;
+      var orig = img.getAttribute('src');
+      img.onerror = function(){ img.onerror = null; img.src = orig; img.style.objectPosition = ''; };  // gagal dimuat -> kembali ke foto bawaan
       img.src = g.url;
       if(typeof g.posX === 'number' && typeof g.posY === 'number') img.style.objectPosition = g.posX + '% ' + g.posY + '%';
     });
