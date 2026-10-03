@@ -1,0 +1,1982 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AlifBimbel — Bimbel SD 1–6 &amp; SMP yang bikin belajar menyenangkan</title>
+<meta name="description" content="AlifBimbel: bimbel SD kelas 1–6 dan SMP. Paket Reguler Rp 50.000/8 pertemuan, Paket Private mulai Rp 20.000/pertemuan. Tutor sabar, kelas kecil maksimal 6 siswa, laporan bulanan untuk orang tua.">
+<script>document.documentElement.classList.add('js');</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   AlifBimbel — redesign (folder: Downloads/cline)
+   Arah desain: claymorphism hangat, ramah anak, tetap kredibel
+   Dials: VARIANCE 6 / MOTION 4 / DENSITY 4
+   ============================================================ */
+:root{
+  --bg:#FFF8EC;
+  --paper:#FFFFFF;
+  --ink:#241F3D;
+  --muted:#6B6383;
+  --line:rgba(36,31,61,.10);
+
+  --blue:#2563EB;
+  --blue-deep:#1D4ED8;
+  --blue-soft:#E4EDFF;
+
+  --sun:#FFC93C;
+  --sun-deep:#F59E0B;
+  --sun-soft:#FFF2C9;
+
+  --pink:#EC4899;
+  --pink-soft:#FFE3F0;
+
+  --mint:#0FA79A;
+  --mint-soft:#D6F6F1;
+
+  --r-xl:32px;
+  --r-lg:24px;
+  --r-md:16px;
+  --r-sm:12px;
+
+  --clay:0 20px 40px -20px rgba(36,31,61,.30), inset 0 2px 0 rgba(255,255,255,.95);
+  --clay-sm:0 12px 22px -14px rgba(36,31,61,.26), inset 0 1px 0 rgba(255,255,255,.95);
+  --clay-in:inset 0 5px 12px rgba(36,31,61,.14), inset 0 -2px 0 rgba(255,255,255,.7);
+
+  --ring:0 0 0 4px rgba(37,99,235,.30);
+  --ease:cubic-bezier(.22,1,.36,1);
+  --spring:cubic-bezier(.34,1.56,.64,1);
+}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:'Nunito',system-ui,-apple-system,sans-serif;
+  font-size:17px;line-height:1.65;overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:'Baloo 2',system-ui,sans-serif;line-height:1.14;letter-spacing:-.015em;margin:0}
+p{margin:0}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+:focus-visible{outline:none;box-shadow:var(--ring);border-radius:var(--r-sm)}
+.wrap{width:min(1160px,100% - 2.4rem);margin-inline:auto}
+.sr{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+
+/* ---------- tombol ---------- */
+.btn{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:1rem;
+  padding:.85rem 1.5rem;border-radius:999px;border:2px solid transparent;
+  transition:transform .22s var(--spring),box-shadow .22s var(--ease),background .22s var(--ease);
+  will-change:transform;
+}
+.btn:active{transform:translateY(2px) scale(.985)}
+.btn-primary{background:var(--blue);color:#fff;box-shadow:0 12px 22px -14px rgba(37,99,235,.85)}
+.btn-primary:hover{background:var(--blue-deep);transform:translateY(-2px)}
+.btn-sun{background:var(--sun);color:#3A2C00;box-shadow:0 12px 22px -14px rgba(245,158,11,.9)}
+.btn-sun:hover{background:#FFD75E;transform:translateY(-2px)}
+.btn-pink{background:var(--pink);color:#fff;box-shadow:0 12px 22px -14px rgba(236,72,153,.9)}
+.btn-pink:hover{transform:translateY(-2px)}
+.btn-ghost{background:var(--paper);border-color:var(--line);color:var(--ink);box-shadow:var(--clay-sm)}
+.btn-ghost:hover{transform:translateY(-2px);border-color:rgba(37,99,235,.35)}
+.btn-sm{padding:.6rem 1.1rem;font-size:.92rem}
+
+/* ---------- label kecil ---------- */
+.eyebrow{
+  display:inline-flex;align-items:center;gap:.45rem;
+  font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;
+  font-size:.78rem;letter-spacing:.09em;text-transform:uppercase;
+  background:var(--sun-soft);color:#7A5200;
+  padding:.42rem .9rem;border-radius:999px;box-shadow:var(--clay-sm);
+}
+.section-head{max-width:640px;margin-bottom:2.6rem}
+.section-head h2{font-size:clamp(1.75rem,4.4vw,2.6rem);margin:1rem 0 .7rem}
+.section-head p{color:var(--muted)}
+.hl{
+  background:linear-gradient(180deg,transparent 58%,rgba(255,201,60,.85) 58%);
+  border-radius:.35rem;padding-inline:.12rem;
+}
+section{padding:4.6rem 0;position:relative}
+
+/* ---------- nav (pill melayang, bukan bar datar biasa) ---------- */
+.nav{
+  position:fixed;top:.9rem;left:50%;transform:translateX(-50%);
+  z-index:60;width:min(1160px,calc(100% - 1.6rem));
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  padding:.6rem .7rem .6rem 1rem;
+  background:rgba(255,255,255,.86);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-radius:999px;border:1px solid rgba(255,255,255,.9);
+  box-shadow:var(--clay-sm);
+  transition:box-shadow .3s var(--ease),background .3s var(--ease);
+}
+.nav.is-scrolled{box-shadow:var(--clay)}
+.logo{display:inline-flex;align-items:center;gap:.6rem;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:1.16rem}
+.logo-mark{
+  width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
+  background:linear-gradient(150deg,var(--blue),#5B9BFF);color:#fff;
+  box-shadow:var(--clay-in);font-size:1.05rem;
+}
+.nav-links{display:flex;gap:.35rem}
+.nav-links a{
+  padding:.5rem .85rem;border-radius:999px;font-weight:700;font-size:.95rem;color:var(--muted);
+  transition:color .2s var(--ease),background .2s var(--ease);
+}
+.nav-links a:hover{color:var(--ink);background:var(--blue-soft)}
+.nav-actions{display:flex;align-items:center;gap:.5rem}
+.menu-toggle{display:none;width:44px;height:44px;border-radius:14px;background:var(--paper);box-shadow:var(--clay-sm);place-items:center}
+.menu-toggle span{display:block;width:20px;height:2.4px;margin:3px auto;border-radius:2px;background:var(--ink);transition:transform .25s var(--ease),opacity .2s}
+.menu-toggle[aria-expanded="true"] span:nth-child(1){transform:translateY(5.4px) rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span:nth-child(2){opacity:0}
+.menu-toggle[aria-expanded="true"] span:nth-child(3){transform:translateY(-5.4px) rotate(-45deg)}
+
+/* ---------- menu mobile ---------- */
+.mmenu{position:fixed;inset:0;z-index:70;display:none}
+.mmenu.is-open{display:block}
+.mmenu__backdrop{position:absolute;inset:0;background:rgba(36,31,61,.42);backdrop-filter:blur(3px)}
+.mmenu__panel{
+  position:absolute;top:.9rem;left:1rem;right:1rem;padding:1.1rem;
+  background:var(--paper);border-radius:var(--r-xl);box-shadow:var(--clay);
+  display:grid;gap:.2rem;animation:drop .32s var(--spring) both;
+}
+.mmenu__panel a{padding:.8rem 1rem;border-radius:var(--r-md);font-weight:700}
+.mmenu__panel a:hover{background:var(--blue-soft)}
+.mmenu__cta{display:grid;gap:.55rem;margin-top:.7rem}
+@keyframes drop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
+
+/* ---------- hero ---------- */
+.hero{padding:8.2rem 0 4.2rem;overflow:hidden}
+.hero__grid{display:grid;grid-template-columns:1.06fr .94fr;gap:3rem;align-items:center}
+.hero h1{font-size:clamp(2.1rem,5.4vw,3.35rem);margin:1.1rem 0 1rem}
+.hero__sub{color:var(--muted);font-size:1.06rem;max-width:34rem}
+.hero__sub b{color:var(--ink)}
+.hero__cta{display:flex;flex-wrap:wrap;gap:.7rem;margin-top:1.8rem}
+.hero__trust{display:flex;align-items:center;gap:.55rem;margin-top:1.5rem;color:var(--muted);font-size:.92rem;font-weight:600}
+.hero__trust .dot{width:9px;height:9px;border-radius:50%;background:var(--mint);box-shadow:0 0 0 5px var(--mint-soft)}
+
+/* blob + pola buku tulis */
+.blob{position:absolute;border-radius:50%;filter:blur(2px);opacity:.75;z-index:-1}
+.blob--1{width:340px;height:340px;background:radial-gradient(circle at 35% 30%,var(--sun),rgba(255,201,60,0) 70%);top:-70px;right:-60px;animation:float 9s var(--ease) infinite}
+.blob--2{width:260px;height:260px;background:radial-gradient(circle at 40% 35%,var(--blue-soft),rgba(228,237,255,0) 70%);bottom:-60px;left:-70px;animation:float 11s var(--ease) infinite reverse}
+.blob--3{width:150px;height:150px;background:radial-gradient(circle at 40% 35%,var(--mint-soft),rgba(214,246,241,0) 70%);top:38%;left:44%;animation:float 13s var(--ease) infinite}
+/* ---------- kartu jadwal di hero (clay + stiker miring) ---------- */
+.hero__visual{position:relative}
+.hero-card{
+  background:var(--paper);border-radius:var(--r-xl);padding:1.35rem;
+  box-shadow:var(--clay);border:1px solid rgba(255,255,255,.9);
+  rotate:-1.6deg;
+}
+.hero-card__top{display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.hero-card__eyebrow{font-size:.7rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--blue)}
+.hero-card__title{font-size:1.35rem;margin-top:.25rem}
+.hero-card__date{
+  flex:none;text-align:center;background:var(--sun-soft);border-radius:var(--r-md);
+  padding:.5rem .7rem;box-shadow:var(--clay-in);font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;line-height:1.05;
+}
+.hero-card__date small{display:block;font-size:.7rem;font-weight:700;color:#7A5200;letter-spacing:.06em}
+.hero-card__days{display:grid;grid-template-columns:repeat(6,1fr);gap:.35rem;margin:1.15rem 0 .9rem}
+.hero-card__days button{
+  padding:.5rem .1rem;border-radius:var(--r-sm);background:#F4F1FB;color:var(--muted);
+  font-size:.72rem;font-weight:800;display:grid;gap:.15rem;justify-items:center;
+  transition:transform .2s var(--spring),background .2s var(--ease),color .2s var(--ease);
+}
+.hero-card__days--4{grid-template-columns:repeat(4,1fr)}
+.hero-card__days button b{font-size:.85rem}
+.hero-card__days button:hover{transform:translateY(-2px)}
+.hero-card__days button[aria-pressed="true"]{background:var(--blue);color:#fff;box-shadow:0 8px 14px -10px rgba(37,99,235,.95)}
+.hero-card__list{list-style:none;margin:0;padding:0;display:grid;gap:.55rem;min-height:132px}
+.hero-card__list li{
+  display:flex;align-items:center;gap:.7rem;background:#F8F6FE;
+  border-radius:var(--r-md);padding:.62rem .8rem;font-size:.92rem;font-weight:600;
+}
+.hero-card__list li b{font-family:'Baloo 2',system-ui,sans-serif}
+.hero-card__time{
+  flex:none;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:.82rem;
+  background:var(--paper);border-radius:999px;padding:.2rem .6rem;box-shadow:var(--clay-sm);
+}
+.hero-card__cta{margin-top:.95rem;justify-content:center}
+.hero-card__list{max-height:17rem;overflow-y:auto}
+.hero-card__list li{animation:liIn .45s var(--ease) both;animation-delay:calc(var(--i,0)*60ms)}
+.hero-card__list li>span:nth-child(2){flex:1;min-width:0;display:grid;line-height:1.2}
+.hero-card__list li small{font-weight:600;color:var(--muted);font-size:.74rem}
+.hero-card__list li.jd-note{display:block;color:var(--muted);font-weight:600;min-height:0}
+.hero-card__list li.is-live{background:#E8F8EF}
+.hero-card__list li.is-done{opacity:.55}
+.jd-chip{flex:none;font-size:.68rem;font-weight:800;border-radius:999px;padding:.18rem .55rem;background:var(--paper);box-shadow:var(--clay-sm);color:var(--muted)}
+.is-live .jd-chip{color:#0E7A43}
+.jd-dot{display:inline-block;width:.5rem;height:.5rem;border-radius:50%;background:#16A34A;margin-right:.3rem;animation:pulse 1.1s var(--ease) infinite}
+.hero-card__days button[data-today="1"]::after{content:"";width:.3rem;height:.3rem;border-radius:50%;background:var(--sun)}
+@keyframes liIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.hero-card__list li,.jd-dot{animation:none}}
+.sticker{
+  position:absolute;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:.85rem;
+  padding:.6rem .95rem;border-radius:var(--r-md);box-shadow:var(--clay);z-index:2;
+}
+.sticker--sun{background:var(--sun);color:#3A2C00;rotate:5deg;right:-14px;top:-22px}
+.sticker--mint{background:var(--mint-soft);color:#0B5F57;rotate:-4deg;left:-18px;bottom:-20px}
+
+/* ---------- strip angka ---------- */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;margin-top:3.4rem}
+.stat{background:var(--paper);border-radius:var(--r-lg);padding:1.15rem;box-shadow:var(--clay-sm);text-align:center}
+.stat b{display:block;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:1.9rem;color:var(--blue-deep)}
+.stat span{font-size:.86rem;color:var(--muted);font-weight:600}
+
+/* ---------- bento fitur (bukan 3 kartu seragam) ---------- */
+.bento{display:grid;grid-template-columns:repeat(6,1fr);gap:1.05rem}
+.bento__item{
+  background:var(--paper);border-radius:var(--r-xl);padding:1.5rem;
+  box-shadow:var(--clay-sm);border:1px solid rgba(255,255,255,.9);
+  transition:transform .28s var(--spring),box-shadow .28s var(--ease);
+}
+.bento__item:hover{transform:translateY(-5px);box-shadow:var(--clay)}
+.bento__item--w3{grid-column:span 3}
+.bento__item--w2{grid-column:span 2}
+.bento__item--full{grid-column:span 6;display:flex;align-items:center;gap:1.3rem}
+.bento__item h3{font-size:1.15rem;margin:.9rem 0 .4rem}
+.bento__item p{color:var(--muted);font-size:.96rem}
+.bento__item--full h3{margin-top:0}
+.bento__item--full .bento__text{flex:1}
+.icon{
+  width:52px;height:52px;border-radius:18px;display:grid;place-items:center;
+  box-shadow:var(--clay-in);color:#fff;flex:none;
+}
+.icon svg{width:26px;height:26px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.icon--blue{background:linear-gradient(150deg,var(--blue),#6AA5FF)}
+.icon--sun{background:linear-gradient(150deg,var(--sun-deep),var(--sun));color:#3A2C00}
+.icon--mint{background:linear-gradient(150deg,var(--mint),#5ED9CC)}
+.icon--pink{background:linear-gradient(150deg,var(--pink),#FF8BC0)}
+
+/* ---------- 3 langkah (tangga, bukan kolom rata) ---------- */
+.how-steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem;position:relative}
+.how-steps::before{
+  content:"";position:absolute;top:34px;left:8%;right:8%;height:2px;
+  background:repeating-linear-gradient(90deg,var(--line) 0 10px,transparent 10px 20px);
+}
+.step{
+  background:var(--paper);border-radius:var(--r-xl);padding:1.5rem;box-shadow:var(--clay-sm);
+  position:relative;z-index:1;
+}
+.step:nth-child(2){transform:translateY(28px)}
+.step:nth-child(3){transform:translateY(56px)}
+.step__num{
+  width:52px;height:52px;border-radius:50%;display:grid;place-items:center;
+  font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:1.3rem;
+  background:var(--blue);color:#fff;box-shadow:var(--clay-in);margin-bottom:1rem;
+}
+.step h3{font-size:1.15rem}
+.step p{color:var(--muted);font-size:.96rem;margin-top:.4rem}
+
+/* ---------- kartu program (tumpang tindih, bukan grid rata) ---------- */
+.programs{display:grid;grid-template-columns:repeat(3,1fr);gap:1.2rem}
+.program{
+  background:var(--paper);border-radius:var(--r-xl);padding:1.5rem;box-shadow:var(--clay-sm);
+  border-top:6px solid var(--blue);transition:transform .3s var(--spring),box-shadow .3s var(--ease);
+}
+.programs .program:nth-child(1){rotate:-1.1deg}
+.programs .program:nth-child(2){rotate:.9deg;translate:0 -14px;border-top-color:var(--sun)}
+.programs .program:nth-child(3){rotate:-.7deg;border-top-color:var(--mint)}
+.program:hover{transform:translateY(-6px);box-shadow:var(--clay)}
+.program__tag{
+  display:inline-block;font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:.74rem;
+  letter-spacing:.08em;background:var(--blue-soft);color:var(--blue-deep);
+  padding:.3rem .7rem;border-radius:999px;
+}
+.program h3{font-size:1.25rem;margin:.85rem 0 .5rem}
+.program p{color:var(--muted);font-size:.96rem;margin-bottom:1.15rem}
+
+/* ---------- jadwal ---------- */
+.jd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.jd-card{background:var(--paper);border-radius:var(--r-lg);padding:1.2rem;box-shadow:var(--clay-sm)}
+.jd-card h3{font-size:1.08rem}
+.jd-card__meta{color:var(--blue-deep);font-weight:800;font-size:.86rem;margin:.3rem 0 .8rem}
+.jd-card ul{list-style:none;margin:0;padding:0;display:grid;gap:.4rem;font-size:.92rem}
+.jd-card li{display:flex;justify-content:space-between;gap:.8rem;border-bottom:1px dashed var(--line);padding-bottom:.35rem}
+.jd-empty{
+  grid-column:1/-1;background:var(--paper);border-radius:var(--r-lg);padding:1.4rem;
+  box-shadow:var(--clay-sm);color:var(--muted);
+}
+
+/* ---------- harga / 2 paket ---------- */
+.paket{display:grid;grid-template-columns:.92fr 1.08fr;gap:1.3rem;align-items:start}
+.paket__card{
+  background:var(--paper);border-radius:var(--r-xl);padding:1.6rem;box-shadow:var(--clay-sm);
+  display:flex;flex-direction:column;gap:.9rem;position:relative;overflow:hidden;
+}
+.paket__card--hi{
+  background:linear-gradient(165deg,#FFFFFF,#F3F8FF);
+  box-shadow:var(--clay);border:2px solid rgba(37,99,235,.22);
+}
+.paket__flag{
+  position:absolute;top:1.1rem;right:-40px;rotate:32deg;width:170px;text-align:center;
+  background:var(--pink);color:#fff;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;
+  font-size:.74rem;letter-spacing:.06em;padding:.28rem 0;
+}
+.paket__name{font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:1.3rem}
+.paket__lead{color:var(--muted);font-size:.94rem}
+.harga-row{display:grid;gap:.7rem}
+.harga-item{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  background:#F8F6FE;border-radius:var(--r-md);padding:.75rem .9rem;
+}
+.harga-item__label{font-weight:700;font-size:.95rem}
+.harga-item__label small{display:block;font-weight:600;color:var(--muted);font-size:.78rem}
+.harga-item__value{font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:1.06rem;color:var(--blue-deep);white-space:nowrap}
+.harga-item__value small{display:block;font-family:'Nunito',sans-serif;font-weight:600;font-size:.74rem;color:var(--muted)}
+.paket__list{list-style:none;margin:0;padding:0;display:grid;gap:.5rem;font-size:.95rem}
+.paket__list li{display:flex;gap:.6rem;align-items:flex-start}
+.paket__list svg{width:19px;height:19px;flex:none;margin-top:.2rem;fill:none;stroke:var(--mint);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round}
+.paket__note{font-size:.84rem;color:#6A4A00;background:var(--sun-soft);border-radius:var(--r-md);padding:.6rem .8rem}
+
+/* ---------- FAQ ---------- */
+.faq-list{display:grid;gap:.7rem;max-width:820px}
+.faq-item{background:var(--paper);border-radius:var(--r-lg);box-shadow:var(--clay-sm);overflow:hidden}
+.faq-item summary{
+  cursor:pointer;list-style:none;padding:1.05rem 1.3rem;font-family:'Baloo 2',system-ui,sans-serif;
+  font-weight:700;font-size:1.03rem;display:flex;justify-content:space-between;gap:1rem;align-items:center;
+}
+.faq-item summary::-webkit-details-marker{display:none}
+.faq-item summary::after{
+  content:"";width:11px;height:11px;flex:none;border-right:2.6px solid var(--blue);border-bottom:2.6px solid var(--blue);
+  rotate:45deg;transition:rotate .25s var(--ease);margin-top:-4px;
+}
+.faq-item[open] summary::after{rotate:-135deg;margin-top:2px}
+.faq-item__answer{padding:0 1.3rem 1.2rem;color:var(--muted);font-size:.97rem}
+
+/* ---------- CTA penutup ---------- */
+.cta{
+  background:linear-gradient(150deg,var(--blue),#5B9BFF 65%,#7FB6FF);
+  border-radius:40px;padding:3.2rem 2rem;text-align:center;color:#fff;box-shadow:var(--clay);
+  position:relative;overflow:hidden;
+}
+.cta h2{font-size:clamp(1.6rem,4vw,2.4rem);margin-bottom:.7rem}
+.cta p{opacity:.95;max-width:34rem;margin:0 auto 1.6rem}
+.cta .hl{background:linear-gradient(180deg,transparent 58%,rgba(255,201,60,.95) 58%);color:#10203F}
+.cta__row{display:flex;gap:.7rem;justify-content:center;flex-wrap:wrap}
+
+/* ---------- footer ---------- */
+.footer{background:#241F3D;color:#E9E6F5;padding:3.4rem 0 2rem;border-radius:40px 40px 0 0;margin-top:3rem}
+.footer__grid{display:grid;grid-template-columns:1.5fr 1fr 1fr 1fr;gap:2rem}
+.footer h3,.footer h4{font-family:'Baloo 2',system-ui,sans-serif}
+.footer h3{font-size:1.25rem;margin-bottom:.5rem}
+.footer h4{font-size:1rem;margin-bottom:.7rem;color:#fff}
+.footer p,.footer a{color:#B9B3CE;font-size:.93rem}
+.footer__col{display:grid;gap:.45rem;align-content:start}
+.footer a:hover{color:#fff}
+.footer__stamp{display:inline-block;margin-top:.8rem;background:rgba(255,255,255,.09);border-radius:999px;padding:.35rem .8rem;font-size:.82rem}
+.footer__bottom{
+  margin-top:2.4rem;padding-top:1.3rem;border-top:1px solid rgba(255,255,255,.12);
+  display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center;
+}
+.footer__social{display:flex;gap:.6rem}
+.footer__social a{
+  width:38px;height:38px;border-radius:50%;display:grid;place-items:center;
+  background:rgba(255,255,255,.09);transition:transform .2s var(--spring),background .2s var(--ease);
+}
+.footer__social a:hover{transform:translateY(-3px);background:rgba(255,255,255,.2)}
+.footer__social svg{width:17px;height:17px;fill:none;stroke:currentColor;stroke-width:2}
+
+/* ---------- tombol WhatsApp mengapung ---------- */
+.wa-float{
+  position:fixed;right:1rem;bottom:1rem;z-index:65;width:56px;height:56px;border-radius:50%;
+  background:#25D366;display:grid;place-items:center;box-shadow:0 16px 28px -14px rgba(37,211,102,.95);
+  transition:transform .25s var(--spring);
+}
+.wa-float:hover{transform:translateY(-3px) scale(1.04)}
+.wa-float svg{width:28px;height:28px;fill:#fff}
+
+/* ---------- reveal & micro-interaksi ---------- */
+.reveal{transition:opacity .5s var(--ease),translate .5s var(--ease)}
+html.js .reveal{opacity:0;translate:0 14px}
+html.js .reveal.is-in{opacity:1;translate:0}
+.float-slow{animation:float 7s var(--ease) infinite}
+.stagger>*{transition:opacity .45s var(--ease),translate .45s var(--ease)}
+html.js .stagger>*{opacity:0;translate:0 12px}
+html.js .stagger.is-in>*{opacity:1;translate:0}
+.stagger.is-in>*:nth-child(2){transition-delay:.07s}
+.stagger.is-in>*:nth-child(3){transition-delay:.14s}
+.stagger.is-in>*:nth-child(4){transition-delay:.21s}
+.stagger.is-in>*:nth-child(5){transition-delay:.28s}
+.stagger.is-in>*:nth-child(6){transition-delay:.35s}
+.loading{position:fixed;inset:0;z-index:99;background:var(--bg);display:none;place-items:center;transition:opacity .4s var(--ease)}
+html.js .loading{display:grid}
+.loading.is-done{opacity:0;pointer-events:none;visibility:hidden}
+.loading__dot{width:52px;height:52px;border-radius:50%;background:var(--blue);box-shadow:var(--clay-in);animation:pulse 1.1s var(--ease) infinite}
+@keyframes pulse{50%{transform:scale(.72);background:var(--sun)}}
+
+/* ---------- responsif ---------- */
+@media (max-width:1000px){
+  .nav-links{display:none}
+  .menu-toggle{display:grid}
+  .hero{padding-top:7rem}
+  .hero__grid{grid-template-columns:1fr;gap:2.4rem}
+  .hero__visual{max-width:520px;margin-inline:auto;width:100%}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .bento__item--w3,.bento__item--w2{grid-column:span 3}
+  .bento__item--full{grid-column:span 6;flex-direction:column;align-items:flex-start}
+  .how-steps{grid-template-columns:1fr;gap:1rem}
+  .step:nth-child(2),.step:nth-child(3){transform:none}
+  .how-steps::before{display:none}
+  .programs{grid-template-columns:1fr}
+  .programs .program:nth-child(2){translate:0}
+  .jd-grid{grid-template-columns:1fr 1fr}
+  .paket{grid-template-columns:1fr}
+  .footer__grid{grid-template-columns:1fr 1fr}
+}
+@media (max-width:620px){
+  body{font-size:16px}
+  section{padding:3.4rem 0}
+  .stats{grid-template-columns:1fr 1fr;gap:.7rem}
+  .jd-grid{grid-template-columns:1fr}
+  .bento__item--w3,.bento__item--w2{grid-column:span 6}
+  .footer__grid{grid-template-columns:1fr}
+  .cta{border-radius:28px;padding:2.4rem 1.2rem}
+  .wa-float{width:52px;height:52px}
+  .hero-card{rotate:0deg}
+  .sticker--sun{right:0}
+  .sticker--mint{left:0}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
+  html{scroll-behavior:auto}
+  .reveal,.stagger>*{opacity:1!important;translate:none!important}
+}
+
+/* ---------- menu Masuk (portal / dashboard) ---------- */
+.login-menu{position:relative}
+.login-menu>summary{list-style:none;cursor:pointer}
+.login-menu>summary::-webkit-details-marker{display:none}
+.login-menu>summary::after{
+  content:"";width:6px;height:6px;margin-left:.1rem;
+  border-right:2px solid currentColor;border-bottom:2px solid currentColor;
+  rotate:45deg;translate:0 -1px;transition:rotate .25s var(--ease)
+}
+.login-menu[open]>summary::after{rotate:-135deg}
+.login-menu__panel{
+  position:absolute;top:calc(100% + .5rem);right:0;min-width:15.5rem;z-index:60;
+  background:var(--paper);border-radius:var(--r-md);padding:.45rem;
+  box-shadow:var(--clay);border:1px solid rgba(255,255,255,.9);
+  display:grid;gap:.3rem;animation:menuIn .28s var(--spring) both
+}
+.login-menu__panel a{
+  display:grid;gap:.1rem;padding:.6rem .7rem;border-radius:var(--r-sm);
+  color:var(--ink);font-weight:600;transition:background .2s var(--ease),translate .2s var(--spring)
+}
+.login-menu__panel a:hover{background:var(--blue-soft);translate:0 -2px}
+.login-menu__panel b{font-family:'Baloo 2',system-ui,sans-serif;font-size:.95rem}
+.login-menu__panel small{color:var(--muted);font-size:.78rem;font-weight:600}
+@keyframes menuIn{from{opacity:0;translate:0 -8px;scale:.97}to{opacity:1;translate:0 0;scale:1}}
+/* ---------- PRESENSI (landing) ---------- */
+.presensi{padding:4rem 0}
+.presensi__toolbar{
+  display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;align-items:flex-end;margin-bottom:1.6rem;
+}
+.presensi__search{
+  position:relative;display:flex;align-items:center;min-width:min(100%,360px);
+  background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:.5rem .8rem;box-shadow:var(--clay-sm);
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease);
+}
+.presensi__search:focus-within{border-color:var(--blue);box-shadow:var(--ring)}
+.presensi__search svg{width:20px;height:20px;color:var(--muted);margin-right:.5rem}
+.presensi__search input{flex:1;border:0;background:transparent;font:inherit;font-size:1rem;outline:none;color:var(--ink)}
+/* --- Dropdown pertemuan: native-feel, auto-close, responsive --- */
+.presensi__meet{position:relative;min-width:min(180px,100%)}
+.presensi__toggle{
+  display:flex;align-items:center;justify-content:space-between;gap:.6rem;width:100%;
+  background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:.65rem 1rem;font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:1rem;box-shadow:var(--clay-sm);
+  transition:border-color .2s var(--ease),box-shadow .2s var(--ease),background .2s var(--ease);
+}
+.presensi__toggle:hover{border-color:var(--blue)}
+.presensi__toggle[aria-expanded="true"]{border-color:var(--blue);background:var(--blue-soft);box-shadow:var(--ring)}
+.presensi__toggle svg{width:18px;height:18px;transition:transform .25s var(--ease)}
+.presensi__toggle[aria-expanded="true"] svg{transform:rotate(180deg)}
+.presensi__menu{
+  position:absolute;top:calc(100% + .5rem);left:0;right:0;z-index:20;
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--r-md);box-shadow:var(--clay);
+  max-height:0;opacity:0;overflow:hidden;transform:translateY(-8px) scale(.98);pointer-events:none;transform-origin:top center;
+  transition:max-height .35s var(--ease),opacity .2s var(--ease),transform .25s var(--ease);
+}
+.presensi__menu.is-open{max-height:min(55vh,260px);opacity:1;transform:translateY(0) scale(1);pointer-events:auto;overflow:auto;overscroll-behavior:contain}
+.presensi__menu button{
+  display:block;width:100%;text-align:left;padding:.7rem 1rem;border:0;background:transparent;font:inherit;color:var(--ink);cursor:pointer;transition:background .15s;
+}
+.presensi__menu button:hover,.presensi__menu button[aria-selected="true"]{background:var(--blue-soft);font-weight:700}
+.presensi__menu button + button{border-top:1px solid var(--line)}
+
+.presensi__summary{
+  display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;
+}
+.presensi__chip{
+  display:flex;align-items:center;gap:.6rem;background:var(--paper);border:2px solid var(--line);border-radius:999px;padding:.55rem 1.1rem;font-weight:700;box-shadow:var(--clay-sm);min-width:120px;justify-content:center;
+}
+.presensi__chip b{font-family:'Baloo 2',system-ui,sans-serif;font-size:1.4rem}
+.presensi__chip--hadir b{color:var(--mint)}
+.presensi__chip--izin b{color:#F59E0B}
+.presensi__chip--sakit b{color:#8B5CF6}
+.presensi__chip--alpha b{color:#EF4444}
+
+.presensi__list{display:grid;gap:.9rem;max-width:800px;margin:0 auto}
+.presensi__row{
+  display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:center;background:var(--paper);border:2px solid var(--line);border-radius:var(--r-lg);padding:1rem 1.2rem;box-shadow:var(--clay-sm);
+  opacity:0;transform:translateY(12px);animation:presRowIn .4s var(--ease) forwards;
+}
+@keyframes presRowIn{to{opacity:1;transform:translateY(0)}}
+.presensi__row + .presensi__row{} /* spacer handled by gap */
+.presensi__num{width:38px;height:38px;border-radius:50%;display:grid;place-items:center;background:var(--blue-soft);font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;color:var(--blue-deep)}
+.presensi__name{font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:1.1rem}
+.presensi__kelas{font-size:.9rem;color:var(--muted)}
+.presensi__status{font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:.9rem;padding:.35rem .8rem;border-radius:999px}
+.presensi__status--hadir{background:#D6F6F1;color:#0B766C}
+.presensi__status--izin{background:#FEF3C7;color:#92400E}
+.presensi__status--sakit{background:#EDE9FE;color:#5B21B6}
+.presensi__status--alpha{background:#FEE2E2;color:#991B1B}
+.presensi__empty{text-align:center;color:var(--muted);padding:2rem}
+
+@media (max-width:720px){
+  .presensi{padding:2.6rem 0}
+  .presensi__toolbar{flex-direction:column;align-items:stretch;gap:.75rem;margin-bottom:1.25rem}
+  .presensi__search{min-width:0;width:100%;border-radius:var(--r-md);padding:.55rem .75rem}
+  .presensi__meet{width:100%}
+  .presensi__toggle{border-radius:var(--r-md);padding:.6rem .9rem;font-size:.95rem}
+  .presensi__menu{position:fixed;left:14px;right:14px;top:auto;margin-top:.5rem;max-height:0;transform:translateY(8px) scale(.98)}
+  .presensi__menu.is-open{max-height:min(52vh,320px);transform:translateY(0) scale(1)}
+  .presensi__summary{gap:.5rem;margin-bottom:1.5rem}
+  .presensi__chip{min-width:0;flex:1 1 calc(50% - .5rem);padding:.5rem .7rem;font-size:.85rem}
+  .presensi__chip b{font-size:1.15rem}
+  .presensi__row{grid-template-columns:1fr auto;gap:.8rem;padding:.9rem 1rem}
+  .presensi__num{order:0;grid-column:1;width:32px;height:32px;font-size:.9rem}
+  .presensi__name{grid-column:1 / -1;font-size:1rem}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .presensi__menu,.presensi__row{transition:none;animation:none;transform:none;opacity:1}
+}
+
+/* ---------- modal detail siswa ---------- */
+.modal-siswa{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;padding:1rem;background:rgba(15,23,42,.75);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.modal-siswa.show{display:flex;animation:modalFadeIn .3s var(--ease)}
+.modal-siswa__card{background:var(--paper);border-radius:var(--r-xl);box-shadow:0 24px 64px rgba(0,0,0,.18);max-width:760px;width:100%;max-height:calc(100vh - 2rem);overflow:hidden;display:flex;flex-direction:column;animation:modalSlideUp .35s var(--ease)}
+.modal-siswa__head{padding:1.5rem 1.8rem;border-bottom:2px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:1rem}
+.modal-siswa__title{font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:1.35rem;line-height:1.3}
+.modal-siswa__subtitle{font-size:.9rem;color:var(--muted);font-weight:600;margin-top:.2rem}
+.modal-siswa__close{flex:none;width:36px;height:36px;border:0;background:var(--line);border-radius:50%;cursor:pointer;font-size:1.3rem;line-height:1;color:var(--muted);transition:all .2s var(--ease)}
+.modal-siswa__close:hover{background:var(--blue-soft);color:var(--blue-deep);transform:rotate(90deg)}
+.modal-siswa__body{padding:1.8rem;overflow-y:auto;flex:1}
+.modal-siswa__progress{margin-bottom:2rem}
+.modal-siswa__progress-label{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:.6rem}
+.modal-siswa__progress-label strong{font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:1rem}
+.modal-siswa__progress-label span{font-size:.85rem;color:var(--muted);font-weight:600}
+.modal-siswa__progress-bar{height:14px;background:var(--line);border-radius:999px;overflow:hidden;position:relative}
+.modal-siswa__progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#6366F1);border-radius:999px;transition:width .5s var(--ease);box-shadow:inset 0 1px 2px rgba(255,255,255,.3)}
+.modal-siswa__table{width:100%;border-collapse:separate;border-spacing:0}
+.modal-siswa__table thead{position:sticky;top:0;z-index:1;background:var(--paper)}
+.modal-siswa__table th{text-align:left;font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:.88rem;color:var(--muted);padding:.75rem .9rem;border-bottom:2px solid var(--line)}
+.modal-siswa__table td{padding:.85rem .9rem;border-bottom:1px solid var(--line);font-size:.92rem}
+.modal-siswa__table tbody tr{transition:background .2s var(--ease)}
+.modal-siswa__table tbody tr:hover{background:var(--blue-soft)}
+.modal-siswa__table tbody tr:last-child td{border-bottom:0}
+.modal-siswa__table .col-num{width:60px;text-align:center;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;color:var(--blue-deep)}
+.modal-siswa__table .col-pertemuan{font-weight:600}
+.modal-siswa__table .col-tanggal{color:var(--muted)}
+.modal-siswa__table .col-status{text-align:right}
+.modal-siswa__empty{text-align:center;padding:3rem 1rem;color:var(--muted);font-size:.95rem}
+@keyframes modalFadeIn{from{opacity:0}}
+@keyframes modalSlideUp{from{transform:translateY(32px);opacity:0}}
+@media (max-width:720px){
+  .modal-siswa{padding:.5rem}
+  .modal-siswa__card{max-height:calc(100vh - 1rem)}
+  .modal-siswa__head{padding:1.2rem 1.3rem}
+  .modal-siswa__title{font-size:1.15rem}
+  .modal-siswa__body{padding:1.3rem}
+  .modal-siswa__table{font-size:.88rem}
+  .modal-siswa__table th,.modal-siswa__table td{padding:.65rem .7rem}
+  .modal-siswa__table .col-num{width:48px;font-size:.9rem}
+}
+@media (prefers-reduced-motion:reduce){
+  .modal-siswa,.modal-siswa__card{animation:none}
+  .modal-siswa__close{transition:none}
+}
+
+/* ---------- marquee announcement ---------- */
+.marquee{
+  display:none;position:relative;height:48px;margin-top:5.2rem;
+  background:linear-gradient(135deg,var(--blue-deep),var(--blue));
+  color:#fff;overflow:hidden;z-index:5;
+}
+.marquee[data-visible]{display:flex;align-items:center}
+.marquee::before,.marquee::after{
+  content:"";position:absolute;top:0;bottom:0;width:3rem;z-index:2;pointer-events:none;
+}
+.marquee::before{left:0;background:linear-gradient(90deg,var(--blue-deep),transparent)}
+.marquee::after{right:0;background:linear-gradient(270deg,var(--blue),transparent)}
+.marquee__track{
+  display:flex;align-items:center;gap:2.5rem;padding:0;
+  animation:marquee 28s linear infinite;will-change:transform;
+}
+.marquee:hover .marquee__track{animation-play-state:paused}
+.marquee__item{white-space:nowrap;font-weight:600;font-size:.88rem;display:flex;align-items:center;gap:.45rem;letter-spacing:.01em}
+.marquee__item svg{flex-shrink:0;width:15px;height:15px;opacity:.92}
+.marquee__close{
+  position:absolute;right:1rem;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.18);color:#fff;border:0;
+  width:28px;height:28px;border-radius:50%;cursor:pointer;z-index:3;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .3s cubic-bezier(.34,1.56,.64,1);padding:0;
+  backdrop-filter:blur(4px);-webkit-backdrop-filter:blur(4px);
+}
+.marquee__close:hover{background:rgba(255,255,255,.32);transform:translateY(-50%) scale(1.08) rotate(90deg)}
+.marquee__close svg{width:13px;height:13px}
+@keyframes marquee{
+  0%{transform:translateX(0)}
+  100%{transform:translateX(-50%)}
+}
+@media(max-width:768px){
+  .marquee{height:44px;margin-top:4.8rem}
+  .marquee__item{font-size:.82rem;gap:.4rem}
+  .marquee__close{right:.75rem;width:26px;height:26px}
+  .marquee::before,.marquee::after{width:2rem}
+}
+
+/* ============================================
+   MOBILE OPTIMIZATION - INDEX.HTML
+   ============================================ */
+
+/* Mobile-first hero */
+@media (max-width: 480px) {
+  .hero-card {
+    padding: 1.5rem !important;
+    grid-template-columns: 1fr !important;
+  }
+  
+  .hero-card__title {
+    font-size: 1.4rem !important;
+  }
+  
+  .hero-btns {
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .hero-btns button {
+    width: 100%;
+  }
+}
+
+/* Tablet optimization */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .hero-card {
+    padding: 2rem !important;
+  }
+  
+  .hero-card__eyebrow {
+    font-size: 0.8rem !important;
+  }
+  
+  .hero-card__title {
+    font-size: 1.8rem !important;
+  }
+}
+
+/* PC Portrait */
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .hero-card {
+    max-width: 900px;
+    margin: 0 auto;
+  }
+}
+
+/* PC Landscape */
+@media (min-width: 1201px) {
+  .hero-card {
+    max-width: 1200px;
+  }
+}
+
+/* Button micro-interactions */
+.hero-btn,
+.btn-primary,
+.btn-secondary {
+  position: relative;
+  overflow: hidden;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-btn:hover,
+.btn-primary:hover,
+.btn-secondary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 16px rgba(var(--shadow-primary), 0.2);
+}
+
+.hero-btn:active,
+.btn-primary:active,
+.btn-secondary:active {
+  transform: translateY(0);
+}
+
+/* Ripple effect for clicks */
+.hero-btn::after,
+.btn-primary::after,
+.btn-secondary::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.hero-btn:active::after,
+.btn-primary:active::after,
+.btn-secondary:active::after {
+  width: 300px;
+  height: 300px;
+}
+
+/* Feature cards hover */
+.paket__card {
+  transition: all 250ms var(--ease);
+}
+
+.paket__card:hover {
+  transform: scale(1.02);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Stat counter animation on scroll */
+@keyframes countUp {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.stat-number {
+  display: inline-block;
+  animation: countUp 500ms ease forwards;
+}
+
+/* Lazy loading support */
+img[loading="lazy"] {
+  transition: opacity 300ms ease;
+}
+
+/* Scroll-driven animations */
+.hero-card__stats {
+  animation: fadeInSlide 600ms ease-out both;
+}
+
+.hero-card__stats:nth-child(1) { animation-delay: 100ms; }
+.hero-card__stats:nth-child(2) { animation-delay: 200ms; }
+.hero-card__stats:nth-child(3) { animation-delay: 300ms; }
+
+@keyframes fadeInSlide {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Touch-friendly spacing */
+@media (pointer: coarse) {
+  .hero-btn,
+  .paket__card,
+  .btn-primary,
+  .btn-secondary {
+    min-height: 44px;
+    padding: 12px 20px;
+  }
+}
+
+/* Better mobile tap targets */
+@media (max-width: 768px) {
+  .nav-link,
+  .menu-item {
+    min-height: 40px;
+    display: flex;
+    align-items: center;
+  }
+}
+
+/* ============================================================
+   PREMIUM POLISH (index.html) — lapisan kedua di atas clay hangat
+   Grain kertas, highlight kartu, shine tombol, motion GSAP-ready
+   ============================================================ */
+@keyframes float{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-16px) rotate(3deg)}}
+
+html{scroll-padding-top:6.2rem}
+body{text-rendering:optimizeLegibility;-webkit-font-smoothing:antialiased}
+
+/* tekstur kertas halus di seluruh halaman */
+body::after{
+  content:"";position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.05;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E");
+}
+.wrap{position:relative;z-index:1}
+section,.hero,footer{position:relative;z-index:1}
+h1,h2,h3{text-wrap:balance}
+
+/* shine saat hover di semua tombol */
+.btn{position:relative;overflow:hidden}
+.btn::after{
+  content:"";position:absolute;top:0;left:-80%;width:50%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,.45),transparent);
+  transform:skewX(-20deg);transition:left .55s var(--ease);
+}
+.btn:hover::after{left:130%}
+
+/* highlight kata kunci di headline */
+.hero h1{letter-spacing:-.02em}
+.hl{position:relative;white-space:nowrap}
+.hl::after{
+  content:"";position:absolute;left:0;right:0;bottom:.02em;height:.34em;z-index:-1;
+  background:linear-gradient(90deg,var(--sun-deep),var(--sun));border-radius:.2em;
+  animation:hlIn 1s var(--spring) .5s both;
+}
+@keyframes hlIn{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+
+/* ikon bento kenyal saat hover */
+.bento__item{overflow:hidden}
+.bento__item .icon{transition:transform .35s var(--spring)}
+.bento__item:hover .icon{transform:rotate(-8deg) scale(1.12)}
+
+/* kartu program: aksen gradien di pojok + tag aktif */
+.program{overflow:hidden;transition:transform .3s var(--spring),box-shadow .3s var(--ease)}
+.program::after{
+  content:"";position:absolute;right:-2.2rem;bottom:-2.2rem;width:8rem;height:8rem;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.09),transparent 70%);pointer-events:none;
+}
+.program__tag{transition:background .2s var(--ease),color .2s var(--ease)}
+.program:hover .program__tag{background:var(--blue);color:#fff}
+
+/* langkah: lift memakai `translate` (tidak merusak tangga nth-child) */
+.step{transition:box-shadow .3s var(--ease)}
+.step:hover{translate:0 -4px;box-shadow:var(--clay)}
+
+/* kartu jadwal kami */
+.jd-card{transition:transform .3s var(--spring),box-shadow .3s var(--ease)}
+.jd-card:hover{transform:translateY(-4px);box-shadow:var(--clay)}
+.jd-card li{transition:border-color .2s var(--ease)}
+.jd-card li:hover{border-color:var(--blue)}
+
+/* paket harga */
+.paket__card{transition:transform .3s var(--spring),box-shadow .3s var(--ease)}
+.paket__card:hover{transform:translateY(-6px);box-shadow:var(--clay)}
+.harga-item{transition:background .2s var(--ease),transform .2s var(--spring)}
+.harga-item:hover{background:var(--blue-soft);transform:translateX(3px)}
+.paket__flag{animation:flagIn 1s var(--spring) both}
+@keyframes flagIn{from{transform:translateX(30px);opacity:0}to{transform:translateX(0);opacity:1}}
+
+/* angka statistik: gradien & lebih besar */
+.stat b{
+  font-family:'Baloo 2',system-ui,sans-serif;font-size:2.05rem;line-height:1.15;display:block;
+  background:linear-gradient(120deg,var(--blue-deep),var(--blue));
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+}
+.stat span{color:var(--muted);font-weight:600;font-size:.9rem}
+
+/* FAQ + CTA */
+.faq-item{transition:transform .25s var(--spring),box-shadow .25s var(--ease)}
+.faq-item:hover{transform:translateY(-3px);box-shadow:var(--clay)}
+.faq-item summary{transition:background .2s var(--ease)}
+.faq-item:hover summary{background:var(--blue-soft)}
+.cta{
+  background:
+    radial-gradient(circle at 12% 20%,rgba(255,255,255,.5) 4px,transparent 6px),
+    radial-gradient(circle at 30% 82%,rgba(255,201,60,.95) 5px,transparent 7px),
+    radial-gradient(circle at 84% 22%,rgba(255,201,60,.85) 6px,transparent 8px),
+    radial-gradient(circle at 92% 72%,rgba(255,255,255,.45) 4px,transparent 6px),
+    linear-gradient(150deg,var(--blue),#5B9BFF 65%,#7FB6FF);
+  animation:ctaDrift 14s linear infinite;
+}
+@keyframes ctaDrift{
+  0%{background-position:0 0,0 0,0 0,0 0,0 0}
+  100%{background-position:180px -90px,120px 60px,-90px 120px,60px -60px,0 0}
+}
+
+/* footer glow halus */
+.footer__grid>div:first-child p{max-width:22rem}
+.footer__social a svg{fill:none;stroke:currentColor;stroke-width:2}
+
+/* presensi: angka badge lebih hidup */
+.presensi__chip b{-webkit-background-clip:text;background-clip:text}
+.presensi__chip--hadir b{background:linear-gradient(90deg,#0FA79A,#3DD68B);color:transparent}
+
+/* presensi: layer polish — panel, chips, baris kartu, dropdown */
+.presensi .wrap{position:relative;z-index:0}
+.presensi .wrap::before{
+  content:"";position:absolute;inset:-2.5rem -1.5rem -3.5rem;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(42% 60% at 10% 0%,rgba(16,185,129,.12),transparent 70%),
+    radial-gradient(46% 64% at 90% 100%,rgba(59,130,246,.12),transparent 70%);
+  border-radius:2.5rem;filter:blur(4px);
+}
+.presensi__toolbar{gap:1.1rem}
+.presensi__search{
+  border-radius:var(--r-md);background:rgba(255,255,255,.84);
+  padding:.6rem .95rem;box-shadow:var(--clay-sm),inset 0 1px 0 rgba(255,255,255,.9);backdrop-filter:blur(6px);
+}
+.presensi__search svg{transition:transform .2s var(--ease),color .2s}
+.presensi__search:focus-within svg{color:var(--blue);transform:scale(1.1)}
+.presensi__chip{
+  position:relative;background:linear-gradient(180deg,#fff,rgba(255,255,255,.86));
+  transition:transform .2s var(--ease),box-shadow .2s var(--ease),border-color .2s;
+}
+.presensi__chip::before{content:"";width:.55rem;height:.55rem;border-radius:50%;background:currentColor;box-shadow:0 0 0 3px rgba(15,23,42,.07)}
+.presensi__chip:hover{transform:translateY(-2px) scale(1.03);border-color:rgba(15,23,42,.28);box-shadow:var(--clay)}
+.presensi__chip--hadir::before{background:#0FA79A}
+.presensi__chip--izin::before{background:#F59E0B}
+.presensi__chip--sakit::before{background:#8B5CF6}
+.presensi__chip--alpha::before{background:#EF4444}
+.presensi__list{gap:1rem}
+.presensi__row{
+  border-radius:1.15rem;border:1px solid rgba(15,23,42,.06);
+  background:linear-gradient(180deg,#fff,rgba(255,255,255,.92));
+  box-shadow:0 1px 2px rgba(30,41,59,.06),0 10px 24px -14px rgba(30,41,59,.25);
+  transition:transform .22s var(--ease),box-shadow .22s var(--ease),border-color .22s;
+}
+.presensi__row:hover{transform:translateY(-3px);border-color:rgba(15,23,42,.14);box-shadow:0 2px 4px rgba(30,41,59,.08),0 16px 32px -14px rgba(30,41,59,.3)}
+.presensi__num{
+  border:0;background:linear-gradient(135deg,var(--blue),#6366F1);color:#fff;
+  box-shadow:0 4px 10px -4px rgba(37,99,235,.55);
+  transition:transform .22s var(--ease),box-shadow .22s var(--ease);
+}
+.presensi__row:hover .presensi__num{transform:scale(1.12) rotate(-4deg);box-shadow:0 6px 14px -4px rgba(37,99,235,.7)}
+.presensi__status{box-shadow:inset 0 1px 0 rgba(255,255,255,.7);transition:transform .2s var(--ease)}
+.presensi__row:hover .presensi__status{transform:scale(1.05)}
+.presensi__name{transition:color .2s}
+.presensi__row:hover .presensi__name{color:var(--blue)}
+.presensi__menu{
+  border-radius:1rem;padding:.4rem;border:1px solid rgba(15,23,42,.06);
+  box-shadow:0 18px 40px -16px rgba(15,23,42,.35);
+}
+.presensi__menu button{border-radius:.65rem;display:flex;align-items:center;gap:.5rem}
+.presensi__menu button[aria-selected="true"]::before{content:"";width:.45rem;height:.45rem;border-radius:50%;background:var(--blue);flex:none}
+.presensi__empty{font-weight:700}
+@media (prefers-reduced-motion:no-preference){
+  .presensi__chip:hover::before{animation:pulseDot 1.3s ease infinite}
+  @keyframes pulseDot{50%{box-shadow:0 0 0 6px rgba(15,23,42,.06)}}
+  .presensi__search svg{animation:searchGlint 3.5s ease-in-out infinite}
+  @keyframes searchGlint{8%{transform:scale(1.14);color:var(--blue)}16%{transform:scale(1)}}
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hl::after,.paket__flag,.cta,body::after{animation:none}
+  .btn::after{display:none}
+  .step:hover{translate:0}
+}
+</style>
+</head>
+<body>
+<div class="loading" id="loading" aria-hidden="true"><div class="loading__dot"></div></div>
+<a class="sr" href="#program">Lewati ke program</a>
+
+
+<nav class="nav" id="nav" aria-label="Navigasi utama">
+  <a class="logo" href="#top">
+    <span class="logo-mark" aria-hidden="true">A</span>
+    <span>AlifBimbel</span>
+  </a>
+  <div class="nav-links">
+    <a href="#fitur">Fitur</a>
+    <a href="#program">Program</a>
+    <a href="#jadwal">Jadwal</a>
+    <a href="#presensi">Presensi</a>
+    <a href="#harga">Harga</a>
+    <a href="#faq">FAQ</a>
+  </div>
+  <div class="nav-actions">
+    <details class="login-menu" id="loginMenu">
+      <summary class="btn btn-ghost btn-sm" type="button">Masuk</summary>
+      <div class="login-menu__panel">
+        <a href="portal.html"><b>Portal Guru &amp; Orang Tua</b><small>Absensi &amp; progress belajar</small></a>
+        <a href="dashboard.html"><b>Dashboard Admin</b><small>Kelola siswa, jadwal, pembayaran</small></a>
+      </div>
+    </details>
+    <a class="btn btn-ghost btn-sm" href="#daftar">Konsultasi</a>
+    <a class="btn btn-primary btn-sm" href="#harga">Lihat Paket</a>
+    <button class="menu-toggle" id="menuToggle" type="button" aria-label="Buka menu" aria-expanded="false" aria-controls="mobileMenu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+
+<div class="marquee" id="marquee" role="banner" aria-live="polite">
+  <div class="marquee__track" id="marqueeTrack"></div>
+  <button class="marquee__close" id="marqueeClose" type="button" aria-label="Tutup pengumuman">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>
+  </button>
+</div>
+
+<div class="mmenu" id="mobileMenu">
+  <div class="mmenu__backdrop" data-close></div>
+  <div class="mmenu__panel" role="dialog" aria-label="Menu">
+    <a href="#fitur">Fitur</a>
+    <a href="#program">Program</a>
+    <a href="#jadwal">Jadwal</a>
+    <a href="#presensi">Presensi</a>
+    <a href="#harga">Harga</a>
+    <a href="#faq">FAQ</a>
+    <a href="portal.html">Masuk: Portal Guru &amp; Orang Tua</a>
+    <a href="dashboard.html">Masuk: Dashboard Admin</a>
+    <div class="mmenu__cta">
+      <a class="btn btn-sun" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20bertanya%20soal%20program" target="_blank" rel="noopener">Chat WhatsApp</a>
+      <button class="btn btn-ghost" type="button" data-close>Tutup</button>
+    </div>
+  </div>
+</div>
+
+
+<header class="hero" id="top">
+  <div class="blob blob--1"></div>
+  <div class="blob blob--2"></div>
+  <div class="blob blob--3"></div>
+  <div class="wrap">
+    <div class="hero__grid">
+      <div class="hero__content">
+        <span class="eyebrow">Kelas baru dibuka minggu ini</span>
+        <h1>Belajar jadi <span class="hl">menyenangkan</span>, prestasi jadi <span class="hl">mungkin</span>.</h1>
+        <p class="hero__sub">
+          <b>AlifBimbel</b> bantu siswa <b>SD kelas 1–6</b> dan <b>SMP</b> paham pelajaran dengan cara yang personal,
+          sabar, dan sesuai gaya belajar masing-masing. Bukan sekadar les, tapi teman belajar anak.
+        </p>
+        <div class="hero__cta">
+          <a class="btn btn-pink" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20mendaftarkan%20anak" target="_blank" rel="noopener">
+            Daftar Sekarang
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13"/><path d="M12 5l7 7-7 7"/></svg>
+          </a>
+          <a class="btn btn-ghost" href="#program">Lihat Program</a>
+        </div>
+        <p class="hero__trust"><span class="dot" aria-hidden="true"></span>Teman belajar sejak 2020 · maksimal 6 anak per kelas</p>
+      </div>
+
+      <div class="hero__visual">
+        <span class="sticker sticker--sun">Kelas kecil, 6 anak</span>
+    <div class="hero-card">
+          <div class="hero-card__top">
+            <div>
+              <span class="hero-card__eyebrow">Jadwal aktif</span>
+              <h2 class="hero-card__title" id="lvTitle">Memuat jadwal…</h2>
+            </div>
+            <span class="hero-card__date" aria-hidden="true"><span id="lvBadge">--:--</span><small id="lvBadgeSub">WIB</small></span>
+          </div>
+          <div class="hero-card__days" id="lvTabs" role="group" aria-label="Pilih hari"></div>
+          <ul class="hero-card__list" id="lvList" aria-live="polite"><li class="jd-note">Mengambil jadwal terbaru…</li></ul>
+          <a class="btn btn-primary btn-sm hero-card__cta" id="lvCta" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20tanya%20jadwal%20kelas" target="_blank" rel="noopener">Tanya jadwal</a>
+        </div>
+        <span class="sticker sticker--mint">Laporan tiap bulan</span>
+      </div>
+    </div>
+
+    <div class="stats stagger">
+      <div class="stat"><b data-count="6">0</b><span>siswa maksimal per kelas</span></div>
+      <div class="stat"><b data-count="2">0</b><span>minggu sekali try out</span></div>
+      <div class="stat"><b data-count="30">0</b><span>menit tes penempatan</span></div>
+      <div class="stat"><b data-count="2020">0</b><span>teman belajar sejak</span></div>
+    </div>
+  </div>
+</header>
+
+
+<section id="fitur">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Kenapa AlifBimbel</span>
+      <h2>Bukan les biasa. <span class="hl">Partner belajar</span>.</h2>
+      <p>Setiap kelas dirancang supaya siswa benar-benar paham, bukan sekadar hafal.</p>
+    </div>
+
+    <div class="bento stagger">
+      <article class="bento__item bento__item--w3">
+        <span class="icon icon--blue" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.4"/><path d="M5 20c1.6-3.4 4-5 7-5s5.4 1.6 7 5"/></svg>
+        </span>
+        <h3>Tutor Pilihan</h3>
+        <p>Semua tutor sudah melewati seleksi ketat — bukan cuma pintar, tapi juga sabar dan bisa bikin siswa nyaman.</p>
+      </article>
+
+      <article class="bento__item bento__item--w3">
+        <span class="icon icon--mint" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c1.2-3 3-4.5 6-4.5s4.8 1.5 6 4.5"/><path d="M15.5 5.8a3 3 0 0 1 0 5.6"/><path d="M18 20c-.4-1.6-1-2.8-1.8-3.7"/></svg>
+        </span>
+        <h3>Kelas Kecil</h3>
+        <p>Maksimal 6 siswa per kelas. Cukup ruang untuk tanya, tapi tetap seru karena ada teman belajar.</p>
+      </article>
+
+      <article class="bento__item bento__item--w2">
+        <span class="icon icon--sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r="1"/></svg>
+        </span>
+        <h3>Kurikulum Adaptif</h3>
+        <p>Materi disesuaikan dengan kemampuan siswa. Yang belum paham dasar, kita bantu dari awal.</p>
+      </article>
+
+      <article class="bento__item bento__item--w2">
+        <span class="icon icon--pink" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 20V4"/><path d="M4 20h16"/><rect x="8" y="11" width="3" height="6" rx="1"/><rect x="14" y="7" width="3" height="10" rx="1"/></svg>
+        </span>
+        <h3>Laporan Bulanan</h3>
+        <p>Orang tua dapat laporan perkembangan tiap bulan — jelas, jujur, dan mudah dibaca.</p>
+      </article>
+
+      <article class="bento__item bento__item--w2">
+        <span class="icon icon--blue" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><rect x="5" y="4" width="14" height="17" rx="3"/><path d="M9 4V2.8h6V4"/><path d="M8.5 13l2.5 2.5 4.5-5"/></svg>
+        </span>
+        <h3>Try Out Rutin</h3>
+        <p>Latihan ujian tiap 2 minggu, dibahas bareng, biar siswa siap mental dan materi.</p>
+      </article>
+
+      <article class="bento__item bento__item--full">
+        <span class="icon icon--mint" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M4 6.5A3.5 3.5 0 0 1 7.5 3h9A3.5 3.5 0 0 1 20 6.5v6A3.5 3.5 0 0 1 16.5 16H10l-5 4v-4.4A3.5 3.5 0 0 1 4 12.5z"/></svg>
+        </span>
+        <div class="bento__text">
+          <h3>Konsultasi Ortu</h3>
+          <p>Grup WhatsApp khusus orang tua. Bisa tanya langsung ke tutor kapan saja.</p>
+        </div>
+        <a class="btn btn-ghost btn-sm" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20konsultasi" target="_blank" rel="noopener">Tanya tutor</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section class="how" id="cara">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Cara Mulai</span>
+      <h2>3 langkah <span class="hl">simpel</span>.</h2>
+      <p>Dari daftar sampai kelas pertama, cuma butuh 2 hari kerja.</p>
+    </div>
+    <div class="how-steps stagger">
+      <article class="step">
+        <span class="step__num">1</span>
+        <h3>Daftar Online</h3>
+        <p>Isi form singkat di web. Cukup nama, kelas, dan mata pelajaran yang ingin diambil.</p>
+      </article>
+      <article class="step">
+        <span class="step__num">2</span>
+        <h3>Tes Penempatan</h3>
+        <p>Sekitar 30 menit. Untuk tahu level siswa sekarang, biar kelasnya pas — tidak terlalu mudah, tidak terlalu sulit.</p>
+      </article>
+      <article class="step">
+        <span class="step__num">3</span>
+        <h3>Mulai Belajar</h3>
+        <p>Kelas pertama dijadwalkan. Orang tua dapat akses grup WhatsApp dan laporan bulanan.</p>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section id="program">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Program</span>
+      <h2>Cari program <span class="hl">yang sesuai</span>.</h2>
+      <p>Program untuk SD kelas 1–6 dan SMP. Ketersediaan kelas dan biaya dikonfirmasi langsung oleh admin.</p>
+    </div>
+
+    <div class="programs stagger">
+      <article class="program">
+        <span class="program__tag">KELAS 1–2 SD</span>
+        <h3>Calistung &amp; Dasar</h3>
+        <p>Bimbingan membaca, menulis, berhitung, serta pembentukan karakter dan percaya diri anak.</p>
+        <a class="btn btn-primary btn-sm" href="https://wa.me/62882003377569?text=Halo%2C%20saya%20mau%20tanya%20program%20Kelas%201-2%20SD" target="_blank" rel="noopener">Tanyakan Program</a>
+      </article>
+      <article class="program">
+        <span class="program__tag">KELAS 3–4 SD</span>
+        <h3>Pendampingan Mapel</h3>
+        <p>Pendampingan PR, tugas sekolah, Matematika, IPAS, dan Bahasa Indonesia secara interaktif.</p>
+        <a class="btn btn-primary btn-sm" href="https://wa.me/62882003377569?text=Halo%2C%20saya%20mau%20tanya%20program%20Kelas%203-4%20SD" target="_blank" rel="noopener">Tanyakan Program</a>
+      </article>
+      <article class="program">
+        <span class="program__tag">KELAS 5–6 SD</span>
+        <h3>Persiapan Ujian</h3>
+        <p>Pendalaman materi sekolah, pemantapan konsep dasar, dan latihan ujian SD hingga kelulusan.</p>
+        <a class="btn btn-primary btn-sm" href="https://wa.me/62882003377569?text=Halo%2C%20saya%20mau%20tanya%20program%20Kelas%205-6%20SD" target="_blank" rel="noopener">Tanyakan Program</a>
+      </article>
+    </div>
+
+    <div class="bento" style="margin-top:1.2rem">
+      <article class="bento__item bento__item--full">
+        <span class="icon icon--sun" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M12 4l8 4-8 4-8-4z"/><path d="M6 10.5V16c0 1.7 2.7 3 6 3s6-1.3 6-3v-5.5"/></svg>
+        </span>
+        <div class="bento__text">
+          <h3>SMP — Kelas 7–9</h3>
+          <p>Pendampingan belajar untuk siswa SMP, tersedia paket Private. Detail mata pelajaran dikonfirmasi admin.</p>
+        </div>
+        <a class="btn btn-ghost btn-sm" href="https://wa.me/62882003377569?text=Halo%2C%20saya%20mau%20tanya%20program%20SMP" target="_blank" rel="noopener">Tanya program SMP</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section id="jadwal">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Jadwal &amp; Kelas</span>
+      <h2>Tingkat kelas &amp; <span class="hl">materi</span>-nya.</h2>
+      <p>Hari dan jam tiap kelas dikonfirmasi admin lewat WhatsApp, supaya tidak bentrok dengan jadwal sekolah anak.</p>
+    </div>
+    <div class="jd-grid stagger">
+      <article class="jd-card">
+        <h3>SD Kelas 1–2</h3>
+        <div class="jd-card__meta">Calistung &amp; Dasar</div>
+        <ul>
+          <li><span>Bimbingan membaca</span></li>
+          <li><span>Latihan menulis</span></li>
+          <li><span>Dasar berhitung</span></li>
+        </ul>
+      </article>
+      <article class="jd-card">
+        <h3>SD Kelas 3–4</h3>
+        <div class="jd-card__meta">Pendampingan Mapel</div>
+        <ul>
+          <li><span>Matematika &amp; IPA</span></li>
+          <li><span>Bahasa Indonesia</span></li>
+          <li><span>PR &amp; tugas sekolah</span></li>
+        </ul>
+      </article>
+      <article class="jd-card">
+        <h3>SD Kelas 5–6</h3>
+        <div class="jd-card__meta">Persiapan Ujian</div>
+        <ul>
+          <li><span>Kelas intensif</span></li>
+          <li><span>Latihan ujian</span></li>
+          <li><span>Feedback tiap minggu</span></li>
+        </ul>
+      </article>
+      <article class="jd-card">
+        <h3>SMP Kelas 7–9</h3>
+        <div class="jd-card__meta">Paket Private</div>
+        <ul>
+          <li><span>Rp 25.000 per pertemuan</span></li>
+          <li><span>Detail mapel: konfirmasi admin</span></li>
+        </ul>
+      </article>
+      <p class="jd-empty">Jadwal hari &amp; jam belum tersedia otomatis di halaman ini — admin mengirim jadwal terbaru lewat WhatsApp. <a href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20tanya%20jadwal%20kelas" target="_blank" rel="noopener" style="color:var(--blue-deep);font-weight:800">Tanya jadwal →</a></p>
+    </div>
+  </div>
+</section>
+
+
+<section id="harga">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Harga</span>
+      <h2>2 paket: <span class="hl">Reguler</span> &amp; <span class="hl">Private</span>.</h2>
+      <p>Harga jelas sejak awal, tanpa biaya tersembunyi. Pendaftaran dan jadwal dikonfirmasi admin lewat WhatsApp.</p>
+    </div>
+
+    <div class="paket stagger">
+      
+      <article class="paket__card">
+        <span class="paket__name">Paket Private</span>
+        <p class="paket__lead">Satu anak satu tutor — fokus penuh, dan tutor bisa datang ke rumah untuk area dalam kota.</p>
+        <div class="harga-row">
+          <div class="harga-item">
+            <span class="harga-item__label">Private SD <small>Kelas 1–6</small></span>
+            <span class="harga-item__value">Rp 20.000 <small>per pertemuan</small></span>
+          </div>
+          <div class="harga-item">
+            <span class="harga-item__label">Private SMP <small>Kelas 7–9</small></span>
+            <span class="harga-item__value">Rp 25.000 <small>per pertemuan</small></span>
+          </div>
+        </div>
+        <ul class="paket__list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg><span>Fokus satu anak, tidak berbagi perhatian</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg><span>Materi menyesuaikan kemampuan anak</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg><span>Tutor bisa datang ke rumah (area dalam kota)</span></li>
+        </ul>
+        <a class="btn btn-ghost" href="https://wa.me/6285775434190?text=Halo%20AlifBimbel%2C%20saya%20ingin%20tanya%20paket%20Private" target="_blank" rel="noopener">Tanya paket Private</a>
+      </article>
+
+      
+      <article class="paket__card paket__card--hi">
+        <span class="paket__flag">PILIHAN HEMAT</span>
+        <span class="paket__name">Paket Reguler</span>
+        <p class="paket__lead">Belajar bareng di pusat belajar, kelas kecil maksimal 6 anak — tetap ada teman belajar.</p>
+        <div class="harga-row">
+          <div class="harga-item">
+            <span class="harga-item__label">Reguler SD <small>8 kali pertemuan</small></span>
+            <span class="harga-item__value">Rp 50.000 <small>/ 8 pertemuan</small></span>
+          </div>
+          <div class="harga-item">
+            <span class="harga-item__label">Reguler SMP <small>kelas 7–9</small></span>
+            <span class="harga-item__value">Tanya admin</span>
+          </div>
+        </div>
+        <ul class="paket__list">
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg><span>Maksimal 6 siswa per kelas</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg><span>Try out rutin tiap 2 minggu</span></li>
+          <li><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12.5l5 5L20 6.5"/></svg><span>Laporan perkembangan bulanan untuk orang tua</span></li>
+        </ul>
+        <p class="paket__note">Daftar 2 anak atau lebih: potongan 10% untuk anak kedua dan seterusnya. Harga Reguler SMP menyusul — silakan tanya admin.</p>
+        <a class="btn btn-pink" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20mendaftar%20paket%20Reguler" target="_blank" rel="noopener">Daftar paket Reguler</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+
+<section id="presensi" class="presensi">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">Presensi</span>
+      <h2>Kehadiran siswa <span class="hl">per pertemuan</span>.</h2>
+      <p>Orang tua bisa melihat rekapan hadir, izin, sakit, dan alpha siswa setelah admin mencatatnya.</p>
+    </div>
+
+    <div class="presensi__toolbar stagger">
+      <div class="presensi__search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
+        <input type="search" id="presSearch" placeholder="Cari nama siswa…" autocomplete="off">
+      </div>
+      <div class="presensi__meet" id="presMeetWrap">
+        <button type="button" class="presensi__toggle" id="presMeetToggle" aria-expanded="false" aria-controls="presMeetMenu">
+          <span id="presMeetLabel">Pertemuan ke-1</span>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+        <div class="presensi__menu" id="presMeetMenu" role="listbox" aria-label="Pilih pertemuan"></div>
+      </div>
+    </div>
+
+    <div class="presensi__summary stagger" id="presSummary">
+      <div class="presensi__chip presensi__chip--hadir"><b id="sumHadir">0</b><span>Hadir</span></div>
+      <div class="presensi__chip presensi__chip--izin"><b id="sumIzin">0</b><span>Izin</span></div>
+      <div class="presensi__chip presensi__chip--sakit"><b id="sumSakit">0</b><span>Sakit</span></div>
+      <div class="presensi__chip presensi__chip--alpha"><b id="sumAlpha">0</b><span>Alpha</span></div>
+    </div>
+
+    <div class="presensi__list" id="presList">
+      <div class="presensi__empty">Memuat data presensi…</div>
+    </div>
+  </div>
+</section>
+
+
+<section class="faq" id="faq">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Pertanyaan yang <span class="hl">sering muncul</span>.</h2>
+      <p>Belum ketemu jawabannya? Chat admin, kami bantu dari pemilihan paket sampai jadwal.</p>
+    </div>
+
+    <div class="faq-list stagger">
+      <details class="faq-item">
+        <summary>Apa bedanya paket Reguler dan Private?</summary>
+        <div class="faq-item__answer">Paket Reguler belajar bersama di pusat belajar kami, kelas kecil maksimal 6 anak, Rp 50.000 untuk 8 kali pertemuan (SD). Paket Private satu anak dengan satu tutor — Private SD Rp 20.000 dan Private SMP Rp 25.000 per pertemuan, dan tutor bisa datang ke rumah untuk area dalam kota.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Bagaimana cara mendaftar?</summary>
+        <div class="faq-item__answer">Chat admin lewat WhatsApp, sebutkan nama siswa, kelas, dan program yang diinginkan. Admin akan membantu jadwal dan tes penempatan.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Bagaimana kalau anak saya belum paham materi dasar?</summary>
+        <div class="faq-item__answer">Justru itu tujuan tes penempatan. Kami akan mulai dari level yang benar-benar sesuai — bukan memaksa mengikuti kelas yang terlalu sulit. Yang penting anak paham, bukan cepat.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Di mana lokasi kelasnya?</summary>
+        <div class="faq-item__answer">Kelas reguler dan intensif diadakan di pusat belajar kami. Untuk paket Privat, tutor bisa datang ke rumah (area dalam kota). Detail lengkap akan diinfokan setelah pendaftaran.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Bisa ganti jadwal kalau bentrok?</summary>
+        <div class="faq-item__answer">Bisa. Cukup kabari admin minimal 1 hari sebelumnya. Kami akan bantu cari jadwal pengganti di kelas lain dengan materi yang sama.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Apakah ada diskon untuk saudara kandung?</summary>
+        <div class="faq-item__answer">Ada. Kalau mendaftarkan 2 anak atau lebih, otomatis dapat potongan 10% untuk anak kedua dan seterusnya. Info detail lewat WhatsApp admin.</div>
+      </details>
+      <details class="faq-item">
+        <summary>Metode pembayarannya bagaimana?</summary>
+        <div class="faq-item__answer">Transfer bank, e-wallet (GoPay, OVO, Dana), atau QRIS. Bisa juga bayar per bulan atau per 3 bulan (dapat diskon).</div>
+      </details>
+    </div>
+  </div>
+</section>
+
+
+<section id="daftar">
+  <div class="wrap">
+    <div class="cta reveal">
+      <h2>Siap bikin belajar jadi <span class="hl">menyenangkan</span>?</h2>
+      <p>Hubungi admin AlifBimbel untuk menanyakan program, biaya, dan jadwal yang tersedia. Kami bantu cari paket yang paling pas untuk anak Anda.</p>
+      <div class="cta__row">
+        <a class="btn btn-sun" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20menanyakan%20program" target="_blank" rel="noopener">
+          Chat via WhatsApp
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h13"/><path d="M12 5l7 7-7 7"/></svg>
+        </a>
+        <a class="btn btn-ghost" href="#harga">Lihat paket harga</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__grid">
+      <div>
+        <h3>AlifBimbel</h3>
+        <p>Bimbel yang percaya bahwa setiap anak bisa pintar, asal diajar dengan cara yang tepat.</p>
+        <span class="footer__stamp">★ Teman belajar sejak 2020</span>
+      </div>
+      <div class="footer__col">
+        <h4>Program</h4>
+        <a href="#program">Calistung (Kelas 1–2)</a>
+        <a href="#program">Mapel (Kelas 3–4)</a>
+        <a href="#program">Persiapan Ujian (Kelas 5–6)</a>
+        <a href="#program">SMP (Kelas 7–9)</a>
+      </div>
+      <div class="footer__col">
+        <h4>Paket</h4>
+        <a href="#harga">Paket Reguler</a>
+        <a href="#harga">Paket Private</a>
+        <a href="#jadwal">Jadwal Kelas</a>
+        <a href="#faq">FAQ</a>
+      </div>
+      <div class="footer__col">
+        <h4>Kontak</h4>
+        <a href="https://wa.me/62882003377569" target="_blank" rel="noopener">WhatsApp Admin</a>
+        <a href="https://wa.me/6285775434190" target="_blank" rel="noopener">WhatsApp Sesi Private</a>
+        <a href="#daftar">Konsultasi Program</a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 AlifBimbel. Dibuat dengan sabar untuk anak-anak hebat.</span>
+      <div class="footer__social">
+        <a href="#top" aria-label="Instagram">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.4" cy="6.6" r=".9" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="#top" aria-label="TikTok">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M14 3v11.5a3.5 3.5 0 1 1-3.5-3.5"/><path d="M14 5.5A5.5 5.5 0 0 0 19 9"/></svg>
+        </a>
+        <a href="#top" aria-label="YouTube">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2.5" y="5" width="19" height="14" rx="4.5"/><path d="M10.5 9.2l4.5 2.8-4.5 2.8z"/></svg>
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-float" id="waFloat" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20bertanya" target="_blank" rel="noopener" aria-label="Chat WhatsApp AlifBimbel">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12.04 2C6.6 2 2.2 6.4 2.2 11.84c0 1.9.53 3.68 1.46 5.2L2 22l5.1-1.62a9.8 9.8 0 0 0 4.94 1.34c5.44 0 9.84-4.4 9.84-9.84S17.48 2 12.04 2Zm5.7 13.9c-.24.68-1.4 1.32-1.94 1.36-.54.05-1.02.14-2.6-.62-1.9-.92-3.1-3.02-3.2-3.16-.1-.14-.78-1.08-.78-2.06 0-.98.5-1.46.7-1.66.2-.2.44-.25.6-.25l.42.01c.14 0 .33-.05.5.4.18.46.62 1.6.68 1.72.06.12.1.26.01.42-.09.16-.16.26-.32.42-.16.16-.25.26-.35.42-.1.16-.22.34-.09.56.13.22.6 1 1.28 1.6.86.78 1.6 1.02 1.82 1.13.22.11.36.1.5-.05.14-.15.6-.7.76-.94.16-.24.32-.2.53-.12.21.08 1.34.63 1.57.75.23.11.38.17.44.27.05.1.05.6-.19 1.28Z"/></svg>
+</a>
+
+<script>
+/* ponytail: fetch WA dari API pengaturan, update semua link nomor utama */
+(function(){
+  var API_INFO = 'https://alifbimbel.septiartojuna.workers.dev/api/public/info';
+  if(!('fetch' in window)) return;
+  fetch(API_INFO).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
+    if(!d.wa) return;
+    var wa = String(d.wa).replace(/^0/, '62').replace(/\D/g, '');
+    if(wa.length < 10) return;
+    var links = document.querySelectorAll('a[href*="wa.me/62882003377569"]');
+    Array.prototype.forEach.call(links, function(link){
+      link.href = link.href.replace(/62882003377569/, wa);
+    });
+  }).catch(function(){});
+})();
+</script>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* 1. Loading overlay */
+  var loading = document.getElementById('loading');
+  function hideLoading(){ if(loading) loading.classList.add('is-done'); }
+  window.addEventListener('load', hideLoading);
+  setTimeout(hideLoading, 1400);
+
+  /* 2. Nav shadow saat scroll */
+  var nav = document.getElementById('nav');
+  var ticking = false;
+  function onScroll(){
+    if(ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      if(nav) nav.classList.toggle('is-scrolled', window.scrollY > 24);
+      ticking = false;
+    });
+  }
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  /* 3. Menu mobile */
+  var toggle = document.getElementById('menuToggle');
+  var menu = document.getElementById('mobileMenu');
+  function setMenu(open){
+    if(!menu || !toggle) return;
+    menu.classList.toggle('is-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Tutup menu' : 'Buka menu');
+  }
+  if(toggle && menu){
+    toggle.addEventListener('click', function(){ setMenu(!menu.classList.contains('is-open')); });
+    menu.addEventListener('click', function(e){
+      if(e.target.closest('[data-close]') || e.target.tagName === 'A') setMenu(false);
+    });
+  }
+  document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setMenu(false); });
+
+  /* 4. Reveal saat masuk viewport */
+  var revealables = document.querySelectorAll('.reveal, .stagger');
+  if('IntersectionObserver' in window && !reduce){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ en.target.classList.add('is-in'); io.unobserve(en.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
+    Array.prototype.forEach.call(revealables, function(el){ io.observe(el); });
+  } else {
+    Array.prototype.forEach.call(revealables, function(el){ el.classList.add('is-in'); });
+  }
+
+  /* 5. Angka naik saat terlihat */
+  function runCount(el){
+    var target = parseInt(el.getAttribute('data-count'), 10) || 0;
+    if(reduce){ el.textContent = String(target); return; }
+    var start = null;
+    function step(ts){
+      if(start === null) start = ts;
+      var p = Math.min((ts - start) / 900, 1);
+      el.textContent = String(Math.round(target * (1 - Math.pow(1 - p, 3))));
+      if(p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  if('IntersectionObserver' in window && !reduce){
+    var io2 = new IntersectionObserver(function(entries){
+      entries.forEach(function(en){
+        if(en.isIntersecting){ runCount(en.target); io2.unobserve(en.target); }
+      });
+    }, { threshold: 0.5 });
+    Array.prototype.forEach.call(counters, function(el){ io2.observe(el); });
+  } else {
+    Array.prototype.forEach.call(counters, function(el){ el.textContent = el.getAttribute('data-count'); });
+  }
+
+  /* 5b. Presensi siswa (data dari worker /api/public/presensi) */
+  (function presensiLanding(){
+    var API_PRESENSI = 'https://alifbimbel.septiartojuna.workers.dev/api/public/presensi';
+    var PRES_STATUS = ['hadir','izin','sakit','alpha'];
+    var data = [];
+    var currentPertemuan = '';
+    var search = document.getElementById('presSearch');
+    var meetWrap = document.getElementById('presMeetWrap');
+    var meetToggle = document.getElementById('presMeetToggle');
+    var meetMenu = document.getElementById('presMeetMenu');
+    var meetLabel = document.getElementById('presMeetLabel');
+    var list = document.getElementById('presList');
+    var sum = { hadir:document.getElementById('sumHadir'), izin:document.getElementById('sumIzin'), sakit:document.getElementById('sumSakit'), alpha:document.getElementById('sumAlpha') };
+
+    function esc(s){
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; });
+    }
+    function fmtStatus(st){
+      var map = { hadir:'Hadir', izin:'Izin', sakit:'Sakit', alpha:'Alpha' };
+      return map[st] || '-';
+    }
+    function pertemuanKey(p){ return String(p.pertemuan || '1'); }
+    function listPertemuan(){
+      var set = {};
+      data.forEach(function(p){ set[pertemuanKey(p)] = true; });
+      return Object.keys(set).sort(function(a,b){ return Number(a) - Number(b); });
+    }
+    function findLatestPertemuan(){
+      var all = listPertemuan();
+      return all.length ? all[all.length-1] : '1';
+    }
+    function renderSummary(rows){
+      var counts = { hadir:0, izin:0, sakit:0, alpha:0 };
+      rows.forEach(function(r){ if(counts[r.status] != null) counts[r.status]++; });
+      PRES_STATUS.forEach(function(st){ if(sum[st]) sum[st].textContent = String(counts[st]); });
+    }
+    function renderList(){
+      if(!list) return;
+      var rows = data.filter(function(p){ return pertemuanKey(p) === currentPertemuan; });
+      var q = search ? String(search.value || '').toLowerCase().trim() : '';
+      if(q) rows = rows.filter(function(p){ return String(p.nama).toLowerCase().indexOf(q) > -1 || String(p.kelas).toLowerCase().indexOf(q) > -1; });
+      rows.sort(function(a,b){ return String(a.nama).localeCompare(String(b.nama)); });
+      renderSummary(rows);
+      if(!rows.length){
+        list.innerHTML = '<div class="presensi__empty">Belum ada data presensi untuk pertemuan ini.</div>';
+        return;
+      }
+      list.innerHTML = rows.map(function(p, i){
+        var st = PRES_STATUS.indexOf(p.status) > -1 ? p.status : 'hadir';
+        var dateStr = p.tanggal ? new Date(p.tanggal + 'T00:00:00').toLocaleDateString('id-ID',{day:'numeric', month:'short'}) : '';
+        return '<div class="presensi__row" style="animation-delay:' + (i*0.05) + 's">' +
+          '<span class="presensi__num">' + (i+1) + '</span>' +
+          '<div><div class="presensi__name" style="cursor:pointer" onclick="openModalSiswa(\'' + esc(p.nama) + '\',\'' + esc(p.kelas || '-') + '\')">' + esc(p.nama) + '</div><div class="presensi__kelas">' + esc(p.kelas || '-') + (dateStr ? ' · ' + dateStr : '') + '</div></div>' +
+          '<span class="presensi__status presensi__status--' + st + '">' + esc(fmtStatus(st)) + '</span>' +
+        '</div>';
+      }).join('');
+    }
+    function renderMenu(){
+      if(!meetMenu) return;
+      var all = listPertemuan();
+      if(!all.length) all = ['1'];
+      meetMenu.innerHTML = all.map(function(k){
+        return '<button type="button" role="option" data-value="' + esc(k) + '" aria-selected="' + (k === currentPertemuan ? 'true' : 'false') + '">Pertemuan ke-' + esc(k) + '</button>';
+      }).join('');
+      if(meetLabel) meetLabel.textContent = 'Pertemuan ke-' + currentPertemuan;
+    }
+    function openMenu(open){
+      if(!meetToggle || !meetMenu) return;
+      meetToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      meetMenu.classList.toggle('is-open', open);
+    }
+    if(meetToggle && meetMenu){
+      meetToggle.addEventListener('click', function(){ var open = meetToggle.getAttribute('aria-expanded') !== 'true'; openMenu(open); });
+      meetMenu.addEventListener('click', function(e){
+        var btn = e.target.closest('button[data-value]');
+        if(!btn) return;
+        currentPertemuan = btn.getAttribute('data-value');
+        renderMenu(); renderList(); openMenu(false);
+      });
+      document.addEventListener('click', function(e){ if(meetWrap && !meetWrap.contains(e.target)) openMenu(false); });
+      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') openMenu(false); });
+    }
+    if(search) search.addEventListener('input', renderList);
+
+    if('fetch' in window){
+      fetch(API_PRESENSI).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
+        data = (d && Array.isArray(d.presensi)) ? d.presensi : [];
+        currentPertemuan = findLatestPertemuan();
+        renderMenu(); renderList();
+      }).catch(function(){
+        if(list) list.innerHTML = '<div class="presensi__empty">Data presensi belum bisa dimuat. Tanya admin lewat WhatsApp.</div>';
+      });
+    } else {
+      if(list) list.innerHTML = '<div class="presensi__empty">Browser tidak mendukung pemuatan presensi.</div>';
+    }
+
+    /* ponytail: openModalSiswa global, bisa dipanggil dari onclick inline */
+    window.openModalSiswa = function(nama, kelas){
+      var modal = document.getElementById('modalSiswa');
+      var namaEl = document.getElementById('modalSiswaNama');
+      var kelasEl = document.getElementById('modalSiswaKelas');
+      var tbody = document.getElementById('modalSiswaTableBody');
+      var progressText = document.getElementById('modalProgressText');
+      var progressFill = document.getElementById('modalProgressFill');
+      if(!modal) return;
+      if(namaEl) namaEl.textContent = nama;
+      if(kelasEl) kelasEl.textContent = kelas;
+      var rows = data.filter(function(p){ return p.nama === nama; });
+      rows.sort(function(a,b){ return Number(pertemuanKey(a)) - Number(pertemuanKey(b)); });
+      if(!rows.length){
+        if(tbody) tbody.innerHTML = '<tr><td colspan="4" class="modal-siswa__empty">Tidak ada riwayat presensi.</td></tr>';
+        if(progressText) progressText.textContent = '0%';
+        if(progressFill) progressFill.style.width = '0';
+      } else {
+        var hadir = rows.filter(function(r){ return r.status === 'hadir'; }).length;
+        var pct = Math.round((hadir / rows.length) * 100);
+        if(progressText) progressText.textContent = pct + '% (' + hadir + '/' + rows.length + ')';
+        if(progressFill) progressFill.style.width = pct + '%';
+        if(tbody){
+          tbody.innerHTML = rows.map(function(r, i){
+            var st = PRES_STATUS.indexOf(r.status) > -1 ? r.status : 'hadir';
+            var dateStr = r.tanggal ? new Date(r.tanggal + 'T00:00:00').toLocaleDateString('id-ID',{day:'numeric', month:'short', year:'numeric'}) : '-';
+            var badgeClass = 'presensi__status presensi__status--' + st;
+            return '<tr>' +
+              '<td class="col-num">' + (i+1) + '</td>' +
+              '<td class="col-pertemuan">Pertemuan ' + esc(pertemuanKey(r)) + '</td>' +
+              '<td class="col-tanggal">' + dateStr + '</td>' +
+              '<td class="col-status"><span class="' + badgeClass + '">' + esc(fmtStatus(st)) + '</span></td>' +
+            '</tr>';
+          }).join('');
+        }
+      }
+      modal.classList.add('show');
+      document.body.style.overflow = 'hidden';
+    };
+    window.closeModalSiswa = function(){
+      var modal = document.getElementById('modalSiswa');
+      if(!modal) return;
+      modal.classList.remove('show');
+      document.body.style.overflow = '';
+    };
+    document.addEventListener('keydown', function(e){
+      if(e.key === 'Escape') window.closeModalSiswa();
+    });
+    var modalSiswa = document.getElementById('modalSiswa');
+    if(modalSiswa){
+      modalSiswa.addEventListener('click', function(e){
+        if(e.target === modalSiswa) window.closeModalSiswa();
+      });
+    }
+  })();
+
+  /* 6. Jadwal aktif (data dari worker /api/public/jadwal, waktu WIB = GMT+7) */
+  var API_JADWAL = 'https://alifbimbel.septiartojuna.workers.dev/api/public/jadwal';
+  var HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
+  var ORDER = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
+  var BULAN = ['Jan','Feb','Mar','Apr','Mei','Jun','Jul','Agu','Sep','Okt','Nov','Des'];
+  var jadwal = null;
+  var selected = null;
+  var tabs = document.getElementById('lvTabs');
+  var list = document.getElementById('lvList');
+  var titleEl = document.getElementById('lvTitle');
+  var badgeEl = document.getElementById('lvBadge');
+  var badgeSubEl = document.getElementById('lvBadgeSub');
+
+  function wib(){ return new Date(Date.now() + 7 * 3600000); }
+  function p2(n){ return (n < 10 ? '0' : '') + n; }
+  function esc(s){
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function toMin(jam){
+    var m = /^(\d{1,2}):(\d{2})/.exec(String(jam || ''));
+    return m ? parseInt(m[1], 10) * 60 + parseInt(m[2], 10) : -1;
+  }
+  function fmt(min){ return p2(Math.floor(min / 60) % 24) + ':' + p2(min % 60); }
+
+  function renderDay(day){
+    selected = day;
+    var now = wib();
+    var today = HARI[now.getUTCDay()];
+    var nowMin = now.getUTCHours() * 60 + now.getUTCMinutes();
+    if(titleEl){
+      titleEl.textContent = day === today
+        ? 'Hari ini, ' + now.getUTCDate() + ' ' + BULAN[now.getUTCMonth()] + ' ' + now.getUTCFullYear()
+        : 'Jadwal hari ' + day;
+    }
+    if(tabs){
+      Array.prototype.forEach.call(tabs.children, function(btn){
+        btn.setAttribute('aria-pressed', btn.getAttribute('data-day') === day ? 'true' : 'false');
+      });
+    }
+    if(!list || !jadwal) return;
+    var rows = jadwal.filter(function(j){ return j.hari === day; })
+      .sort(function(a, b){ return toMin(a.jam) - toMin(b.jam); });
+    if(!rows.length){
+      list.innerHTML = '<li class="jd-note">Tidak ada kelas hari ' + esc(day) + '. Pilih hari lain atau tanya admin.</li>';
+      return;
+    }
+    list.innerHTML = rows.map(function(j, i){
+      var s = toMin(j.jam);
+      var e = s + (parseInt(j.durasi, 10) || 60);
+      var cls = '', chip = fmt(s) + '–' + fmt(e), dot = '';
+      if(day === today && s >= 0){
+        if(nowMin >= e){ cls = ' is-done'; }
+        else if(nowMin >= s){ cls = ' is-live'; dot = '<i class="jd-dot"></i>'; chip = 'Berlangsung'; }
+      }
+      return '<li class="' + cls + '" style="--i:' + i + '">' +
+        '<span class="hero-card__time">' + esc(j.jam) + '</span>' +
+        '<span><b>' + esc(j.kelas) + '</b><small>' + esc(j.mapel) + (j.guruNama ? ' · ' + esc(j.guruNama) : '') + '</small></span>' +
+        '<span class="jd-chip">' + dot + esc(chip) + '</span></li>';
+    }).join('');
+  }
+
+  function tickClock(){
+    var n = wib();
+    if(badgeEl) badgeEl.textContent = p2(n.getUTCHours()) + ':' + p2(n.getUTCMinutes());
+    if(badgeSubEl) badgeSubEl.textContent = 'WIB';
+  }
+
+  function buildTabs(){
+    if(!tabs) return;
+    var today = HARI[wib().getUTCDay()];
+    tabs.innerHTML = '';
+    ORDER.forEach(function(d){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('data-day', d);
+      if(d === today) btn.setAttribute('data-today', '1');
+      btn.innerHTML = '<b>' + d.slice(0, 3) + '</b>';
+      btn.addEventListener('click', function(){ renderDay(d); });
+      tabs.appendChild(btn);
+    });
+  }
+
+  if(tabs && list){
+    buildTabs();
+    tickClock();
+    setInterval(function(){ tickClock(); if(jadwal && selected) renderDay(selected); }, 30000);
+    if('fetch' in window){
+      fetch(API_JADWAL).then(function(r){
+        if(!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      }).then(function(d){
+        jadwal = (d && Array.isArray(d.jadwal)) ? d.jadwal : [];
+        renderDay(HARI[wib().getUTCDay()]);
+      }).catch(function(){
+        if(titleEl) titleEl.textContent = 'Jadwal belum termuat';
+        list.innerHTML = '<li class="jd-note">Jadwal tidak bisa dimuat sekarang. Silakan tanya admin lewat tombol di bawah.</li>';
+      });
+    } else {
+      if(titleEl) titleEl.textContent = 'Jadwal belum termuat';
+      list.innerHTML = '<li class="jd-note">Browser tidak mendukung pemuatan jadwal. Tanya admin lewat tombol di bawah.</li>';
+    }
+  }
+})();
+</script>
+<script>
+(function(){
+  var m = document.getElementById('loginMenu');
+  if (!m) return;
+  document.addEventListener('click', function(e){
+    if (m.open && !m.contains(e.target)) m.removeAttribute('open');
+  }, true);
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && m.open) m.removeAttribute('open');
+  });
+})();
+</script>
+
+
+<div class="modal-siswa" id="modalSiswa">
+  <div class="modal-siswa__card">
+    <div class="modal-siswa__head">
+      <div>
+        <div class="modal-siswa__title" id="modalSiswaNama">—</div>
+        <div class="modal-siswa__subtitle" id="modalSiswaKelas">—</div>
+      </div>
+      <button class="modal-siswa__close" type="button" onclick="closeModalSiswa()" aria-label="Tutup">×</button>
+    </div>
+    <div class="modal-siswa__body">
+      <div class="modal-siswa__progress">
+        <div class="modal-siswa__progress-label">
+          <strong>Progress Mapel</strong>
+          <span id="modalProgressText">0%</span>
+        </div>
+        <div class="modal-siswa__progress-bar">
+          <div class="modal-siswa__progress-fill" id="modalProgressFill" style="width:0"></div>
+        </div>
+      </div>
+      <table class="modal-siswa__table">
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th class="col-pertemuan">Pertemuan</th>
+            <th class="col-tanggal">Tanggal</th>
+            <th class="col-status">Status</th>
+          </tr>
+        </thead>
+        <tbody id="modalSiswaTableBody">
+          <tr><td colspan="4" class="modal-siswa__empty">Memuat data...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ponytail: fetch announcement, render marquee infinite scroll, dismissible localStorage */
+(function(){
+  var API = 'https://alifbimbel.septiartojuna.workers.dev/api/public/announcement';
+  var marquee = document.getElementById('marquee');
+  var track = document.getElementById('marqueeTrack');
+  var closeBtn = document.getElementById('marqueeClose');
+  if(!marquee || !track || !closeBtn || !('fetch' in window)) return;
+  
+  var STORAGE_KEY = 'marquee_dismissed';
+  if(localStorage.getItem(STORAGE_KEY)) return;
+  
+  fetch(API).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
+    if(!d.announcement || !d.announcement.content) return;
+    var icon = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 22c1.1 0 2-.9 2-2h-4c0 1.1.9 2 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z"/></svg>';
+    var item = '<span class="marquee__item">' + icon + d.announcement.content + '</span>';
+    track.innerHTML = item + item + item + item;
+    marquee.setAttribute('data-visible', '');
+  }).catch(function(){});
+  
+  closeBtn.addEventListener('click', function(){
+    marquee.removeAttribute('data-visible');
+    localStorage.setItem(STORAGE_KEY, Date.now());
+  });
+})();
+</script>
+
+<!-- ===== Premium motion: GSAP + ScrollTrigger (cdnjs 3.12.5) ===== -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+(function(){
+  'use strict';
+  if(!window.gsap || !window.ScrollTrigger) return;  /* CDN gagal → halaman tetap normal */
+  if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  gsap.registerPlugin(ScrollTrigger);
+  var fine = !window.matchMedia || window.matchMedia('(pointer:fine)').matches;
+
+  /* ---------- HERO: intro timeline (elemen langsung di-set ke from-state, tanpa flash) ---------- */
+  var tl = gsap.timeline({ defaults:{ ease:'power3.out' } });
+  tl.from('.hero .eyebrow', { y:20, autoAlpha:0, duration:.5 })
+    .from('.hero h1', { y:44, autoAlpha:0, duration:.8 }, '-=.25')
+    .from('.hero__sub', { y:26, autoAlpha:0, duration:.6 }, '-=.5')
+    .from('.hero__cta .btn', { y:20, autoAlpha:0, stagger:.08, duration:.5 }, '-=.45')
+    .from('.hero__trust', { autoAlpha:0, duration:.4 }, '-=.3')
+    .from('.hero__visual', { y:60, autoAlpha:0, scale:.96, duration:.9, ease:'back.out(1.4)' }, '-=.8')
+    .from('.hero-card', { y:40, autoAlpha:0, duration:.8, ease:'back.out(1.3)' }, '-=.8')
+    .from('.sticker', { scale:0, autoAlpha:0, stagger:.1, duration:.5, ease:'back.out(2)' }, '-=.7')
+    .from('.blob', { autoAlpha:0, scale:.85, duration:.8 }, '-=1')
+    .from('.stat', { y:26, autoAlpha:0, stagger:.08, duration:.5 }, '-=.6');
+  tl.pause();
+  var started = false;
+  function play(){ if(started) return; started = true; tl.play(); }
+  window.addEventListener('load', play);
+  setTimeout(play, 1700); /* pengaman: loader hilang via timeout 1400ms */
+
+  /* ---------- SECTION-HEAD: reveal tiap bagian (tdk menyentuh .reveal/.stagger lama) ---------- */
+  document.querySelectorAll('.section-head').forEach(function(head){
+    gsap.fromTo(head.children,
+      { y:26, autoAlpha:0 },
+      { y:0, autoAlpha:1, stagger:.09, duration:.55, ease:'power3.out',
+        scrollTrigger:{ trigger:head, start:'top 85%', once:true } });
+  });
+
+  /* ---------- FOOTER: stagger masuk ---------- */
+  gsap.fromTo('.footer__grid > div', { y:24, autoAlpha:0 },
+    { y:0, autoAlpha:1, stagger:.08, duration:.5, ease:'power3.out',
+      scrollTrigger:{ trigger:'.footer', start:'top 85%', once:true } });
+  gsap.fromTo('.footer__bottom', { y:14, autoAlpha:0 },
+    { y:0, autoAlpha:1, duration:.5, ease:'power3.out',
+      scrollTrigger:{ trigger:'.footer', start:'top 92%', once:true } });
+
+  /* ---------- PARALLAX: blob & kartu hero saat scroll ---------- */
+  var heroPar = { trigger:'.hero', start:'top top', end:'bottom top', scrub:.6 };
+  gsap.to('.blob--1', { y:-60, ease:'none', scrollTrigger:heroPar });
+  gsap.to('.blob--2', { y:50,  ease:'none', scrollTrigger:heroPar });
+  gsap.to('.blob--3', { y:-30, ease:'none', scrollTrigger:heroPar });
+  gsap.to('.hero__visual', { y:-50, ease:'none', scrollTrigger:heroPar });
+  gsap.to('.stats', { y:-18, ease:'none', scrollTrigger:heroPar });
+
+  /* ---------- 3D TILT kartu (perangkat pointer halus saja) ---------- */
+  if(fine){
+    document.querySelectorAll('.bento__item, .program, .jd-card, .paket__card').forEach(function(card){
+      var rx = gsap.quickTo(card, 'rotationX', { duration:.3, ease:'power3.out' });
+      var ry = gsap.quickTo(card, 'rotationY', { duration:.3, ease:'power3.out' });
+      card.addEventListener('mouseenter', function(){ gsap.to(card, { y:-6, duration:.3, ease:'power3.out' }); });
+      card.addEventListener('mousemove', function(e){
+        var r = card.getBoundingClientRect();
+        ry(((e.clientX - r.left) / r.width - .5) * 8);
+        rx(-((e.clientY - r.top) / r.height - .5) * 8);
+      });
+      card.addEventListener('mouseleave', function(){ rx(0); ry(0); gsap.to(card, { y:0, duration:.4, ease:'power3.out' }); });
+    });
+  }
+})();
+</script>
+</body>
+</html>
+
