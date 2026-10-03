@@ -136,11 +136,12 @@ section{padding:4.6rem 0;position:relative}
 .mmenu.is-open{display:block}
 .mmenu__backdrop{position:absolute;inset:0;background:rgba(36,31,61,.42);backdrop-filter:blur(3px)}
 .mmenu__panel{
-  position:absolute;top:.9rem;left:1rem;right:1rem;padding:1.1rem;
+  position:absolute;top:calc(2.6rem + 44px);left:1rem;right:1rem;padding:.9rem;
+  max-height:calc(100vh - 6.5rem);max-height:calc(100dvh - 6.5rem);overflow-y:auto;
   background:var(--paper);border-radius:var(--r-xl);box-shadow:var(--clay);
-  display:grid;gap:.2rem;animation:drop .32s var(--spring) both;
+  display:grid;gap:.15rem;animation:drop .32s var(--spring) both;
 }
-.mmenu__panel a{padding:.8rem 1rem;border-radius:var(--r-md);font-weight:700}
+.mmenu__panel a{padding:.62rem .9rem;border-radius:var(--r-md);font-weight:700;font-size:.95rem}
 .mmenu__panel a:hover{background:var(--blue-soft)}
 .mmenu__cta{display:grid;gap:.55rem;margin-top:.7rem}
 @keyframes drop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
@@ -440,6 +441,13 @@ html.js .loading{display:grid}
   .sticker--sun{right:0}
   .sticker--mint{left:0}
   .gal-hero{width:72px;left:-8px;top:-16px}
+  .nav-actions .login-menu,.nav-actions>a{display:none}
+  .programs{display:flex;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:.4rem 0 .9rem}
+  .programs::-webkit-scrollbar{display:none}
+  .programs .program{flex:0 0 80%;scroll-snap-align:start}
+  .jd-grid{display:flex;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding:.3rem 0 .7rem}
+  .jd-grid::-webkit-scrollbar{display:none}
+  .jd-grid .jd-card{flex:0 0 84%;scroll-snap-align:start}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important;transition-duration:.01ms!important}
@@ -636,7 +644,7 @@ html.js .loading{display:grid}
   100%{transform:translateX(-50%)}
 }
 @media(max-width:768px){
-  .marquee{height:44px;margin-top:4.8rem}
+  .marquee{height:44px;margin-top:5.4rem}
   .marquee__item{font-size:.82rem;gap:.4rem}
   .marquee__close{right:.75rem;width:26px;height:26px}
   .marquee::before,.marquee::after{width:2rem}
@@ -1029,6 +1037,8 @@ h1,h2,h3{text-wrap:balance}
     <a href="#faq">FAQ</a>
     <a href="portal.html">Masuk: Portal Guru &amp; Orang Tua</a>
     <a href="dashboard.html">Masuk: Dashboard Admin</a>
+    <a href="#daftar">Konsultasi</a>
+    <a href="#harga">Lihat Paket</a>
     <div class="mmenu__cta">
       <a class="btn btn-sun" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20ingin%20bertanya%20soal%20program" target="_blank" rel="noopener">Chat WhatsApp</a>
       <button class="btn btn-ghost" type="button" data-close>Tutup</button>
