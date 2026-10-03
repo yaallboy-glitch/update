@@ -8,7 +8,7 @@
 <script>document.documentElement.classList.add('js');</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@500;600;700;800&family=Caveat:wght@600;700&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 /* ============================================================
    AlifBimbel — redesign (folder: Downloads/cline)
@@ -112,11 +112,108 @@ section{padding:4.6rem 0;position:relative}
   transition:box-shadow .3s var(--ease),background .3s var(--ease);
 }
 .nav.is-scrolled{box-shadow:var(--clay)}
-.logo{display:inline-flex;align-items:center;gap:.6rem;font-family:'Baloo 2',system-ui,sans-serif;font-weight:800;font-size:1.16rem}
-.logo-mark{
-  width:38px;height:38px;border-radius:14px;display:grid;place-items:center;
-  background:linear-gradient(150deg,var(--blue-deep),var(--sun));color:#fff;
-  box-shadow:var(--clay-in);font-size:1.05rem;
+.logo{
+  display:inline-flex;align-items:center;text-decoration:none;
+  padding:.1rem 0;position:relative;
+}
+.hw-wrap{
+  position:relative;display:inline-flex;align-items:center;
+  font-family:'Caveat','Comic Neue','Baloo 2',cursive,sans-serif;
+  font-weight:700;font-size:1.82rem;line-height:1;letter-spacing:.02em;
+  padding-bottom:5px;
+}
+.hw-ghost{
+  color:transparent;user-select:none;opacity:0;pointer-events:none;
+}
+.hw-ink{
+  position:absolute;inset:0;bottom:5px;
+  background:linear-gradient(125deg,#78350F 0%,#B45309 38%,#D97706 72%,#0D9488 100%);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+  white-space:nowrap;
+  clip-path:inset(0 100% 0 0);
+  transition:filter .3s var(--ease);
+}
+.hw-wrap.is-drawn .hw-ink{
+  animation:hwReveal 1.35s cubic-bezier(.32,.02,.22,1) forwards;
+}
+.hw-flourish{
+  position:absolute;left:-2px;right:-4px;bottom:0;
+  width:calc(100% + 6px);height:14px;
+  overflow:visible;pointer-events:none;
+}
+.hw-flourish-path{
+  stroke-dasharray:140;
+  stroke-dashoffset:140;
+  transition:filter .3s var(--ease);
+}
+.hw-wrap.is-drawn .hw-flourish-path{
+  animation:hwFlourish .48s 1.22s cubic-bezier(.22,1,.36,1) forwards;
+}
+.hw-pen{
+  position:absolute;
+  width:22px;height:22px;
+  pointer-events:none;
+  opacity:0;
+  z-index:2;
+  transform-origin:16% 88%;
+}
+.hw-wrap.is-drawn .hw-pen{
+  animation:hwPenMove 1.72s cubic-bezier(.32,.02,.22,1) forwards;
+}
+.hw-sparkle{
+  position:absolute;right:-7px;bottom:1px;
+  font-size:.78rem;line-height:1;
+  color:var(--sun-deep);
+  text-shadow:0 0 6px rgba(245,158,11,.65);
+  opacity:0;pointer-events:none;
+}
+.hw-wrap.is-drawn .hw-sparkle{
+  animation:hwSparkle .38s 1.58s var(--spring) forwards;
+}
+
+@keyframes hwReveal{
+  0%{clip-path:inset(0 100% 0 0)}
+  92%{clip-path:inset(0 0% 0 0)}
+  100%{clip-path:inset(0 0% 0 0)}
+}
+@keyframes hwPenMove{
+  0%{left:0;top:66%;transform:translate(-16%,-88%) rotate(-10deg) scale(.6);opacity:0}
+  7%{left:7%;top:64%;transform:translate(-16%,-88%) rotate(-14deg) scale(1);opacity:1}
+  20%{left:20%;top:58%;transform:translate(-16%,-88%) rotate(-7deg)}
+  35%{left:36%;top:68%;transform:translate(-16%,-88%) rotate(-15deg)}
+  50%{left:52%;top:59%;transform:translate(-16%,-88%) rotate(-9deg)}
+  65%{left:68%;top:69%;transform:translate(-16%,-88%) rotate(-16deg)}
+  80%{left:84%;top:60%;transform:translate(-16%,-88%) rotate(-11deg)}
+  92%{left:98%;top:67%;transform:translate(-16%,-88%) rotate(-14deg);opacity:1}
+  96%{left:100%;top:84%;transform:translate(-16%,-88%) rotate(8deg);opacity:1}
+  100%{left:104%;top:48%;transform:translate(8px,-16px) rotate(-32deg) scale(.75);opacity:0}
+}
+@keyframes hwFlourish{
+  to{stroke-dashoffset:0}
+}
+@keyframes hwSparkle{
+  0%{opacity:0;transform:scale(0) rotate(-30deg)}
+  60%{opacity:1;transform:scale(1.4) rotate(15deg)}
+  100%{opacity:.95;transform:scale(1) rotate(0deg)}
+}
+
+.logo:hover .hw-ink{
+  filter:drop-shadow(0 2px 7px rgba(217,119,6,.32));
+}
+.logo:hover .hw-flourish-path{
+  filter:drop-shadow(0 0 3px rgba(13,148,136,.5));
+}
+.logo:hover .hw-sparkle{
+  transform:scale(1.3) rotate(45deg);
+  transition:transform .3s var(--spring);
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hw-ink{clip-path:none !important;animation:none !important}
+  .hw-pen{display:none !important}
+  .hw-flourish-path{stroke-dashoffset:0 !important;animation:none !important}
+  .hw-sparkle{opacity:.95 !important;animation:none !important}
 }
 .nav-links{display:flex;gap:.35rem}
 .nav-links a{
@@ -1017,9 +1114,38 @@ img[loading="lazy"] {
 
 
 <nav class="nav" id="nav" aria-label="Navigasi utama">
-  <a class="logo" href="#top">
-    <span class="logo-mark" aria-hidden="true">A</span>
-    <span>AlifBimbel</span>
+  <a class="logo" href="#top" id="brandLogo" aria-label="AlifBimbel — Beranda">
+    <span class="hw-wrap is-drawn" aria-hidden="true">
+      <span class="hw-ghost">AlifBimbel</span>
+      <span class="hw-ink">AlifBimbel</span>
+      <svg class="hw-flourish" viewBox="0 0 130 14" fill="none" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="hwFlourishGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="50%" stop-color="#D97706"/>
+            <stop offset="100%" stop-color="#0D9488"/>
+          </linearGradient>
+        </defs>
+        <path d="M 3 7 C 35 14, 80 14, 126 5" stroke="url(#hwFlourishGrad)" stroke-width="2.6" stroke-linecap="round" class="hw-flourish-path"/>
+      </svg>
+      <svg class="hw-pen" viewBox="0 0 24 24" width="22" height="22" fill="none">
+        <defs>
+          <linearGradient id="hwPenGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FDE68A"/>
+            <stop offset="45%" stop-color="#F59E0B"/>
+            <stop offset="100%" stop-color="#92400E"/>
+          </linearGradient>
+        </defs>
+        <path d="M19.5 2.5L8 14L4.5 20.5L11 17L22.5 5.5L19.5 2.5Z" fill="url(#hwPenGold)" stroke="#78350F" stroke-width="1.1" stroke-linejoin="round"/>
+        <path d="M15.5 6.5L18.5 9.5" stroke="#92400E" stroke-width="1"/>
+        <circle cx="9.2" cy="15.2" r="0.9" fill="#78350F"/>
+        <path d="M4.5 20.5L9.2 15.2" stroke="#78350F" stroke-width="1.1"/>
+        <circle cx="3.8" cy="21.2" r="1.8" fill="#F59E0B"/>
+        <circle cx="3.8" cy="21.2" r="0.8" fill="#FFF2C9"/>
+      </svg>
+      <span class="hw-sparkle">✦</span>
+    </span>
+    <span class="sr">AlifBimbel</span>
   </a>
   <div class="nav-links">
     <a href="#fitur">Fitur</a>
@@ -1551,6 +1677,18 @@ img[loading="lazy"] {
   function hideLoading(){ if(loading) loading.classList.add('is-done'); }
   window.addEventListener('load', hideLoading);
   setTimeout(hideLoading, 1400);
+
+  /* 1b. Logo handwriting replay saat klik */
+  var brandLogo = document.getElementById('brandLogo');
+  if(brandLogo && !reduce){
+    brandLogo.addEventListener('click', function(){
+      var wrap = brandLogo.querySelector('.hw-wrap');
+      if(!wrap) return;
+      wrap.classList.remove('is-drawn');
+      void wrap.offsetWidth;
+      wrap.classList.add('is-drawn');
+    });
+  }
 
   /* 2. Nav shadow saat scroll */
   var nav = document.getElementById('nav');
