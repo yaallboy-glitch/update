@@ -700,11 +700,45 @@ html.js .stagger.is-in>*{opacity:1;translate:0}
 .stagger.is-in>*:nth-child(4){transition-delay:.21s}
 .stagger.is-in>*:nth-child(5){transition-delay:.28s}
 .stagger.is-in>*:nth-child(6){transition-delay:.35s}
-.loading{position:fixed;inset:0;z-index:99;background:var(--bg);display:none;place-items:center;transition:opacity .4s var(--ease)}
+/* ---------- loading screen dengan handwriting splash ---------- */
+.loading{
+  position:fixed;inset:0;z-index:999;
+  background:var(--bg);
+  display:none;place-items:center;justify-content:center;
+  transition:opacity .55s cubic-bezier(.22,1,.36,1),visibility .55s,transform .55s cubic-bezier(.22,1,.36,1);
+}
 html.js .loading{display:grid}
-.loading.is-done{opacity:0;pointer-events:none;visibility:hidden}
-.loading__dot{width:52px;height:52px;border-radius:50%;background:var(--blue);box-shadow:var(--clay-in);animation:pulse 1.1s var(--ease) infinite}
-@keyframes pulse{50%{transform:scale(.72);background:var(--sun)}}
+.loading.is-done{
+  opacity:0;pointer-events:none;visibility:hidden;transform:scale(1.02);
+}
+.loading__box{
+  display:flex;flex-direction:column;align-items:center;gap:.6rem;
+  padding:2rem 1.5rem;text-align:center;
+}
+.loading__hw{
+  font-size:clamp(2.4rem,7.5vw,3.6rem);
+}
+.loading__hw .hw-pen{
+  width:28px;height:28px;
+}
+.loading__hw .hw-sparkle{
+  font-size:1.1rem;right:-10px;bottom:2px;
+}
+.loading__tag{
+  font-family:'Baloo 2',system-ui,sans-serif;
+  font-weight:700;font-size:.85rem;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--muted);
+  opacity:0;
+  animation:loadingTagIn .6s 1.25s var(--ease) forwards;
+}
+@keyframes loadingTagIn{
+  from{opacity:0;transform:translateY(6px)}
+  to{opacity:.85;transform:translateY(0)}
+}
+@media (prefers-reduced-motion:reduce){
+  .loading{display:none !important}
+  .loading__tag{animation:none;opacity:.85}
+}
 
 /* ---------- responsif ---------- */
 @media (max-width:1000px){
@@ -1109,7 +1143,41 @@ img[loading="lazy"] {
 </style>
 </head>
 <body>
-<div class="loading" id="loading" aria-hidden="true"><div class="loading__dot"></div></div>
+<div class="loading" id="loading" aria-hidden="true">
+  <div class="loading__box">
+    <div class="loading__hw hw-wrap is-drawn">
+      <span class="hw-ghost">AlifBimbel</span>
+      <span class="hw-ink">AlifBimbel</span>
+      <svg class="hw-flourish" viewBox="0 0 130 14" fill="none" preserveAspectRatio="none">
+        <defs>
+          <linearGradient id="hwLoadingFlourishGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stop-color="#B45309"/>
+            <stop offset="50%" stop-color="#D97706"/>
+            <stop offset="100%" stop-color="#0D9488"/>
+          </linearGradient>
+        </defs>
+        <path d="M 3 7 C 35 14, 80 14, 126 5" stroke="url(#hwLoadingFlourishGrad)" stroke-width="2.6" stroke-linecap="round" class="hw-flourish-path"/>
+      </svg>
+      <svg class="hw-pen" viewBox="0 0 24 24" fill="none">
+        <defs>
+          <linearGradient id="hwLoadingPenGold" x1="0" y1="0" x2="1" y2="1">
+            <stop offset="0%" stop-color="#FDE68A"/>
+            <stop offset="45%" stop-color="#F59E0B"/>
+            <stop offset="100%" stop-color="#92400E"/>
+          </linearGradient>
+        </defs>
+        <path d="M19.5 2.5L8 14L4.5 20.5L11 17L22.5 5.5L19.5 2.5Z" fill="url(#hwLoadingPenGold)" stroke="#78350F" stroke-width="1.1" stroke-linejoin="round"/>
+        <path d="M15.5 6.5L18.5 9.5" stroke="#92400E" stroke-width="1"/>
+        <circle cx="9.2" cy="15.2" r="0.9" fill="#78350F"/>
+        <path d="M4.5 20.5L9.2 15.2" stroke="#78350F" stroke-width="1.1"/>
+        <circle cx="3.8" cy="21.2" r="1.8" fill="#F59E0B"/>
+        <circle cx="3.8" cy="21.2" r="0.8" fill="#FFF2C9"/>
+      </svg>
+      <span class="hw-sparkle">✦</span>
+    </div>
+    <div class="loading__tag">Bimbel SD 1–6 &amp; SMP</div>
+  </div>
+</div>
 <a class="sr" href="#program">Lewati ke program</a>
 
 
@@ -1672,11 +1740,27 @@ img[loading="lazy"] {
   'use strict';
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  /* 1. Loading overlay */
+  /* 1. Loading intro handwriting */
   var loading = document.getElementById('loading');
-  function hideLoading(){ if(loading) loading.classList.add('is-done'); }
-  window.addEventListener('load', hideLoading);
-  setTimeout(hideLoading, 1400);
+  function hideLoading(){
+    if(!loading || loading.classList.contains('is-done')) return;
+    loading.classList.add('is-done');
+  }
+  if(reduce){
+    hideLoading();
+  } else {
+    var animDone = false;
+    var pageLoaded = document.readyState === 'complete';
+    setTimeout(function(){
+      animDone = true;
+      if(pageLoaded) hideLoading();
+    }, 1850);
+    window.addEventListener('load', function(){
+      pageLoaded = true;
+      if(animDone) hideLoading();
+    });
+    setTimeout(hideLoading, 3200);
+  }
 
   /* 1b. Logo handwriting replay saat klik */
   var brandLogo = document.getElementById('brandLogo');
