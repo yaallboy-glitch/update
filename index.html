@@ -22,9 +22,9 @@
   --muted:#57534E;
   --line:rgba(28,25,23,.10);
 
-  --blue:#D97706;
-  --blue-deep:#B45309;
-  --blue-soft:#FEF3C7;
+  --blue:#157A46;
+  --blue-deep:#0B5C2C;
+  --blue-soft:#E4F0E5;
 
   --sun:#FFC93C;
   --sun-deep:#F59E0B;
@@ -45,7 +45,7 @@
   --clay-sm:0 12px 22px -14px rgba(28,25,23,.18), inset 0 1px 0 rgba(255,255,255,.95);
   --clay-in:inset 0 5px 12px rgba(28,25,23,.10), inset 0 -2px 0 rgba(255,255,255,.7);
 
-  --ring:0 0 0 4px rgba(217,119,6,.30);
+  --ring:0 0 0 4px rgba(21,122,70,.30);
   --ease:cubic-bezier(.22,1,.36,1);
   --spring:cubic-bezier(.34,1.56,.64,1);
 }
@@ -73,7 +73,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
   will-change:transform;
 }
 .btn:active{transform:translateY(2px) scale(.985)}
-.btn-primary{background:var(--blue-deep);color:#fff;box-shadow:0 12px 22px -14px rgba(146,64,14,.85)}
+.btn-primary{background:var(--blue-deep);color:#fff;box-shadow:0 12px 22px -14px rgba(11,92,44,.6)}
 .btn-primary:hover{background:var(--blue-deep);transform:translateY(-2px)}
 .btn-sun{background:var(--sun);color:#3A2C00;box-shadow:0 12px 22px -14px rgba(245,158,11,.9)}
 .btn-sun:hover{background:#FFD75E;transform:translateY(-2px)}
@@ -127,7 +127,7 @@ section{padding:4.6rem 0;position:relative}
 }
 .hw-ink{
   position:absolute;inset:0;bottom:5px;
-  background:linear-gradient(125deg,#78350F 0%,#B45309 38%,#D97706 72%,#0D9488 100%);
+  background:linear-gradient(125deg,#0B5C2C 0%,#0E6E3A 38%,#157A46 72%,#0D9488 100%);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
   white-space:nowrap;
@@ -199,7 +199,7 @@ section{padding:4.6rem 0;position:relative}
 }
 
 .logo:hover .hw-ink{
-  filter:drop-shadow(0 2px 7px rgba(217,119,6,.32));
+  filter:drop-shadow(0 2px 7px rgba(21,122,70,.35));
 }
 .logo:hover .hw-flourish-path{
   filter:drop-shadow(0 0 3px rgba(13,148,136,.5));
@@ -281,7 +281,7 @@ section{padding:4.6rem 0;position:relative}
 .hero-card__days--4{grid-template-columns:repeat(4,1fr)}
 .hero-card__days button b{font-size:.85rem}
 .hero-card__days button:hover{transform:translateY(-2px)}
-.hero-card__days button[aria-pressed="true"]{background:var(--blue-deep);color:#fff;box-shadow:0 8px 14px -10px rgba(146,64,14,.95)}
+.hero-card__days button[aria-pressed="true"]{background:var(--blue-deep);color:#fff;box-shadow:0 8px 14px -10px rgba(11,92,44,.75)}
 .hero-card__list{list-style:none;margin:0;padding:0;display:grid;gap:.55rem;min-height:132px}
 .hero-card__list li{
   display:flex;align-items:center;gap:.7rem;background:#F8F6FE;
@@ -480,8 +480,8 @@ section{padding:4.6rem 0;position:relative}
   padding:3.8rem 2.2rem;
   text-align:center;
   color:#fff;
-  background:linear-gradient(145deg,#92400E 0%,#B45309 30%,#D97706 70%,#F59E0B 100%);
-  box-shadow:var(--clay),0 25px 50px -12px rgba(180,83,9,.35);
+  background:linear-gradient(145deg,#0B5A2A 0%,#0E6E3A 30%,#157A46 70%,#1B7F46 100%);
+  box-shadow:var(--clay),0 25px 50px -12px rgba(11,92,44,.45);
   transform-style:preserve-3d;
   perspective:1000px;
   isolation:isolate;
@@ -651,9 +651,9 @@ html.js .cta.reveal.is-in .hl{
 .cta__btn-primary{
   position:relative;
   overflow:hidden;
-  background:#FFC93C;
-  color:#3A2C00;
-  box-shadow:0 14px 26px -10px rgba(245,158,11,.8),0 0 0 1px rgba(255,255,255,.4) inset;
+  background:var(--blue);
+  color:#fff;
+  box-shadow:0 14px 26px -10px rgba(21,122,70,.55),0 0 0 1px rgba(255,255,255,.4) inset;
 }
 .cta__btn-primary::before{
   content:"";
@@ -684,8 +684,8 @@ html.js .cta.reveal.is-in .hl{
 }
 .cta__btn-secondary:hover{
   background:#FFFFFF;
-  border-color:#FFC93C;
-  color:#B45309;
+  border-color:var(--blue);
+  color:var(--blue-deep);
 }
 
 /* ---------- footer ---------- */
@@ -940,7 +940,7 @@ html.js .loading{display:grid}
 .modal-siswa__progress-label strong{font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:1rem}
 .modal-siswa__progress-label span{font-size:.85rem;color:var(--muted);font-weight:600}
 .modal-siswa__progress-bar{height:14px;background:var(--line);border-radius:999px;overflow:hidden;position:relative}
-.modal-siswa__progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#6366F1);border-radius:999px;transition:width .5s var(--ease);box-shadow:inset 0 1px 2px rgba(255,255,255,.3)}
+.modal-siswa__progress-fill{height:100%;background:linear-gradient(90deg,var(--blue),#2E9E5B);border-radius:999px;transition:width .5s var(--ease);box-shadow:inset 0 1px 2px rgba(255,255,255,.3)}
 .modal-siswa__table{width:100%;border-collapse:separate;border-spacing:0}
 .modal-siswa__table thead{position:sticky;top:0;z-index:1;background:var(--paper)}
 .modal-siswa__table th{text-align:left;font-family:'Baloo 2',system-ui,sans-serif;font-weight:700;font-size:.88rem;color:var(--muted);padding:.75rem .9rem;border-bottom:2px solid var(--line)}
@@ -1188,8 +1188,8 @@ img[loading="lazy"] {
       <svg class="hw-flourish" viewBox="0 0 130 14" fill="none" preserveAspectRatio="none">
         <defs>
           <linearGradient id="hwLoadingFlourishGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#B45309"/>
-            <stop offset="50%" stop-color="#D97706"/>
+            <stop offset="0%" stop-color="#0E6E3A"/>
+            <stop offset="50%" stop-color="#157A46"/>
             <stop offset="100%" stop-color="#0D9488"/>
           </linearGradient>
         </defs>
@@ -1226,8 +1226,8 @@ img[loading="lazy"] {
       <svg class="hw-flourish" viewBox="0 0 130 14" fill="none" preserveAspectRatio="none">
         <defs>
           <linearGradient id="hwFlourishGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="#B45309"/>
-            <stop offset="50%" stop-color="#D97706"/>
+            <stop offset="0%" stop-color="#0E6E3A"/>
+            <stop offset="50%" stop-color="#157A46"/>
             <stop offset="100%" stop-color="#0D9488"/>
           </linearGradient>
         </defs>

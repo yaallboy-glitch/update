@@ -25,8 +25,8 @@
 
 :root {
   /* Colors - Friendly & Trustworthy */
-  --color-primary: #D97706;        /* Friendly blue */
-  --color-primary-dark: #B45309;
+  --color-primary: #157A46;        /* Friendly green */
+  --color-primary-dark: #0B5C2C;
   --color-secondary: #FFC93C;      /* Warm yellow */
   --color-success: #0D9488;        /* Mint green */
   --color-success-soft: #CCFBF1;
@@ -571,8 +571,8 @@ input::placeholder {
 
 /* AlifBimbel responsive finish: calm, parent-trustworthy, child-welcoming. */
 :root{
-  --color-primary:#D97706;
-  --color-primary-dark:#B45309;
+  --color-primary:#157A46;
+  --color-primary-dark:#0B5C2C;
   --color-secondary:#FFC93C;
   --color-success:#0D9488;
   --color-bg:#FAF6EE;
@@ -591,23 +591,23 @@ body{background:radial-gradient(ellipse at 50% -20%,#fff 0%,var(--color-bg) 66%)
 @keyframes portalIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
 .top{margin-bottom:clamp(20px,4vw,40px);padding:8px 0}
 .logo{font-size:21px;letter-spacing:-.035em}
-.logo-icon{background:linear-gradient(145deg,#D97706,#0D9488);box-shadow:0 5px 14px rgba(217,119,6,.17)}
+.logo-icon{background:linear-gradient(145deg,#157A46,#0D9488);box-shadow:0 5px 14px rgba(21,122,70,.18)}
 /* On the logged-out screen, keep the entry action available but visually quiet. */
 .top #out{min-height:40px;background:rgba(255,255,255,.68);border-color:var(--color-line);color:var(--color-muted);box-shadow:none}
 #login{max-width:560px;margin:clamp(22px,5vh,56px) auto 36px;padding:clamp(22px,5vw,40px);border:1px solid var(--color-line);border-radius:20px;background:rgba(255,255,255,.94);box-shadow:0 18px 55px rgba(28,25,23,.075)}
 #login h2{font-size:clamp(26px,5vw,34px);letter-spacing:-.04em}
-#go{background:#C2670A;box-shadow:0 2px 7px rgba(217,119,6,.12);font-weight:700}
-#go:hover:not(:disabled){background:#B45309;box-shadow:0 5px 12px rgba(217,119,6,.17)}
+#go{background:#157A46;box-shadow:0 2px 7px rgba(21,122,70,.12);font-weight:700}
+#go:hover:not(:disabled){background:#0B5C2C;box-shadow:0 5px 12px rgba(21,122,70,.18)}
 #login>.sub{max-width:42ch;font-size:15px}
 .tabs{gap:8px;border-radius:14px;background:#F5EFE2;border:1px solid var(--color-line)}
 .tabs .btn{min-height:46px;border-radius:10px}
 .btn{min-height:44px;border-radius:10px;font-family:var(--font-body);font-weight:800;transition:transform .18s var(--ease),background-color .18s ease,border-color .18s ease,box-shadow .18s ease}
-.btn-primary{background:linear-gradient(135deg,#D97706,#B45309);box-shadow:0 5px 13px rgba(217,119,6,.16)}
-.btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#B45309,#92400E);box-shadow:0 8px 18px rgba(217,119,6,.2)}
+.btn-primary{background:linear-gradient(135deg,#157A46,#0B5C2C);box-shadow:0 5px 13px rgba(21,122,70,.16)}
+.btn-primary:hover:not(:disabled){background:linear-gradient(135deg,#0B5C2C,#0A4E26);box-shadow:0 8px 18px rgba(21,122,70,.2)}
 .card{border:1px solid var(--color-line);border-radius:16px;box-shadow:0 2px 10px rgba(28,25,23,.04);transition:transform .22s var(--ease),box-shadow .22s ease,border-color .22s ease}
-.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:rgba(217,119,6,.2)}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md);border-color:rgba(21,122,70,.2)}
 input,select,textarea{min-height:46px;border-radius:10px}
-button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid rgba(217,119,6,.48);outline-offset:3px}
+button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible,a:focus-visible{outline:3px solid rgba(21,122,70,.45);outline-offset:3px}
 .btn:active:not(:disabled){transform:translateY(1px) scale(.99)}
 @media(min-width:700px){
   .wrap{padding:32px 40px}
@@ -690,7 +690,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-vis
 }
 /* Input focus glow */
 input:focus{
-  box-shadow:0 0 0 4px rgba(217,119,6,.12),0 0 0 2px rgba(217,119,6,.25)!important;
+  box-shadow:0 0 0 4px rgba(21,122,70,.12),0 0 0 2px rgba(21,122,70,.25)!important;
   transform:translateY(-1px);
   transition:transform .2s,box-shadow .2s;
 }
@@ -713,15 +713,15 @@ input:focus{
 
 /* Soft ambient orbs behind everything (static, no blur) */
 body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;background:
-  radial-gradient(38vw 34vh at 8% 6%,rgba(217,119,6,.07),transparent 60%),
+  radial-gradient(38vw 34vh at 8% 6%,rgba(21,122,70,.08),transparent 60%),
   radial-gradient(30vw 30vh at 96% 12%,rgba(232,189,101,.09),transparent 62%),
   radial-gradient(42vw 40vh at 50% 96%,rgba(13,148,136,.06),transparent 65%)}
 
-::selection{background:rgba(217,119,6,.22);color:var(--color-ink)}
+::selection{background:rgba(21,122,70,.22);color:var(--color-ink)}
 
 /* Login card: top accent strip + inner top light (double-bezel feel) */
 #login{position:relative;box-shadow:0 18px 55px rgba(28,25,23,.075),inset 0 1px 0 rgba(255,255,255,.65)}
-#login::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:0 0 8px 8px;background:linear-gradient(90deg,rgba(217,119,6,.55),rgba(232,189,101,.3),rgba(13,148,136,.55))}
+#login::before{content:'';position:absolute;top:0;left:0;right:0;height:4px;border-radius:0 0 8px 8px;background:linear-gradient(90deg,rgba(21,122,70,.55),rgba(124,170,128,.3),rgba(13,148,136,.55))}
 
 /* Input icons (inline SVG data-URI, no dependency) */
 #wa,#pin{background-repeat:no-repeat;background-position:14px center;background-size:19px;padding-left:44px}
@@ -730,7 +730,7 @@ body::before{content:'';position:fixed;inset:0;z-index:-1;pointer-events:none;ba
 input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #fff inset;-webkit-text-fill-color:var(--color-ink)}
 
 /* Buttons: glossy top pellicle over existing gradients */
-.btn-primary,.btn-success,.btn-wa{box-shadow:0 5px 13px rgba(217,119,6,.16),inset 0 1px 0 rgba(255,255,255,.22)}
+.btn-primary,.btn-success,.btn-wa{box-shadow:0 5px 13px rgba(21,122,70,.16),inset 0 1px 0 rgba(255,255,255,.22)}
 
 /* Status badges: color dot + soft float shadow */
 .badge{box-shadow:0 1px 3px rgba(28,25,23,.08)}
@@ -738,11 +738,11 @@ input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #fff inset;-webkit-text-fil
 
 /* Schedule rows: dashed list -> soft cards with hover lift */
 #app .row{background:#F8F4EA;border:1px solid rgba(28,25,23,.07);border-radius:12px;padding:12px 14px;margin:0 0 10px;transition:transform .18s cubic-bezier(.2,.7,.25,1),box-shadow .18s ease,border-color .18s ease}
-#app .row:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(28,25,23,.07);border-color:rgba(217,119,6,.16)}
+#app .row:hover{transform:translateY(-1px);box-shadow:0 6px 14px rgba(28,25,23,.07);border-color:rgba(21,122,70,.16)}
 #app .row:last-child{margin-bottom:4px}
 
 /* Day separators: quiet chip */
-.hari{background:rgba(217,119,6,.08);border-radius:8px;padding:5px 10px;display:inline-block}
+.hari{background:rgba(21,122,70,.09);border-radius:8px;padding:5px 10px;display:inline-block}
 
 /* Divider label: soft pill */
 .divider span{background:#fff;padding:2px 14px;border-radius:100px;border:1px solid rgba(28,25,23,.1);font-weight:800}
