@@ -1191,6 +1191,229 @@ img[loading="lazy"] {
   }
 }
 
+
+/* ============================================================
+   MOBILE LAYOUT — komposisi sama seperti desktop, ukuran disesuaikan
+   (grid tetap multi-kolom, kartu lebih ringkas, carousel untuk deret kartu)
+   Blok ini sengaja di paling bawah supaya mengalahkan aturan lama.
+   ============================================================ */
+
+/* perbaikan bug kecil: variabel yang dipakai tapi belum pernah didefinisikan */
+:root{--shadow-lg:var(--clay);--shadow-primary:11,92,44}
+
+/* layar sentuh: .paket__card dulu ikut kena padding 12px 20px (tombol) -> kartu terlalu sempit */
+@media (pointer:coarse){.paket__card{padding:1.6rem;min-height:0}}
+@media (hover:none){.paket__card:hover{transform:none}}
+
+.swipe-dots{display:none}
+
+@media (max-width:760px){
+  html{scroll-padding-top:4.8rem}
+  body{font-size:15px;line-height:1.55}
+  .wrap{width:calc(100% - 1.6rem)}
+  section{padding:2.5rem 0}
+  .galeri,.presensi{padding:2.5rem 0}
+
+  /* judul section */
+  .section-head{max-width:none;margin-bottom:1.4rem}
+  .section-head h2{font-size:clamp(1.45rem,6.6vw,1.85rem);margin:.7rem 0 .45rem}
+  .section-head p{font-size:.92rem}
+  .eyebrow{font-size:.66rem;padding:.3rem .7rem}
+
+  /* tombol */
+  .btn{font-size:.9rem;padding:.7rem 1.1rem;min-height:42px;justify-content:center}
+  .btn-sm{font-size:.84rem;padding:.5rem .95rem;min-height:38px}
+
+  /* nav */
+  .nav{top:.5rem;width:calc(100% - 1rem);padding:.38rem .45rem .38rem .85rem;gap:.4rem}
+  .hw-wrap{font-size:1.55rem}
+  .nav-actions{gap:.4rem}
+  .menu-toggle{width:40px;height:40px;border-radius:12px}
+  .login-menu__panel{min-width:14rem}
+
+  /* menu hamburger: 2 kolom, tidak pernah lebih tinggi dari layar */
+  .mmenu__panel{
+    top:.5rem;left:.6rem;right:.6rem;padding:.75rem;border-radius:26px;
+    grid-template-columns:1fr 1fr;gap:.35rem;
+    max-height:calc(100vh - 1rem);max-height:calc(100dvh - 1rem);overflow-y:auto;overscroll-behavior:contain;
+  }
+  .mmenu__panel a{padding:.65rem .85rem;font-size:.92rem;background:var(--bg);border-radius:14px}
+  .mmenu__panel a[href^="portal"],.mmenu__panel a[href^="dashboard"]{grid-column:1/-1;background:var(--blue-soft);color:var(--blue-deep)}
+  .mmenu__cta{grid-column:1/-1;grid-template-columns:1fr 1fr;margin-top:.4rem}
+  .mmenu__cta .btn{padding:.65rem .5rem}
+  .mmenu__panel a.btn-sun{background:var(--sun)}
+  .mmenu__panel .mmenu__cta .btn{border-radius:999px}
+
+  /* hero */
+  .hero{padding:5.4rem 0 2rem}
+  .hero__grid{gap:1.7rem}
+  .blob--1{width:220px;height:220px;top:-50px;right:-70px}
+  .blob--2{width:180px;height:180px}
+  .blob--3{display:none}
+  .hero h1{font-size:clamp(1.75rem,8.3vw,2.3rem);margin:.8rem 0 .65rem;line-height:1.12}
+  .hero__sub{font-size:.94rem}
+  .hero__cta{flex-wrap:nowrap;gap:.5rem;margin-top:1.15rem}
+  .hero__cta .btn{flex:1 1 0;min-width:0;padding:.72rem .5rem;white-space:nowrap}
+  .hero__trust{font-size:.8rem;margin-top:1rem;align-items:flex-start}
+  .hero__trust .dot{margin-top:.4rem;flex:none}
+  .hero__visual{max-width:none}
+
+  /* kartu jadwal di hero */
+  .hero-card{padding:1rem !important;border-radius:24px;rotate:0deg;max-width:none}
+  .hero-card__title{font-size:1.05rem !important;margin-top:.15rem}
+  .hero-card__eyebrow{font-size:.62rem !important}
+  .hero-card__date{padding:.4rem .6rem;font-size:.95rem}
+  .hero-card__date small{font-size:.6rem}
+  .hero-card__days{gap:.25rem;margin:.8rem 0 .65rem}
+  .hero-card__days button{padding:.4rem 0;font-size:.6rem;border-radius:10px}
+  .hero-card__days button b{font-size:.76rem}
+  .hero-card__list{gap:.4rem;min-height:104px;max-height:14rem}
+  .hero-card__list li{padding:.5rem .65rem;font-size:.82rem;gap:.5rem;border-radius:14px}
+  .hero-card__time{font-size:.72rem;padding:.15rem .5rem}
+  .hero-card__list li small{font-size:.68rem}
+  .jd-chip{font-size:.6rem;padding:.15rem .45rem}
+  .hero-card__cta{margin-top:.75rem;width:100%}
+  .sticker{font-size:.7rem;padding:.38rem .7rem;border-radius:12px}
+  .sticker--sun{top:-13px;right:6px}
+  .sticker--mint{left:6px;bottom:-13px}
+
+  /* angka: tetap 4 kolom seperti desktop */
+  .stats{grid-template-columns:repeat(4,1fr);gap:.4rem;margin-top:1.9rem}
+  .stat{padding:.65rem .25rem;border-radius:16px}
+  .stat b{font-size:1.2rem;line-height:1.2}
+  .stat span{display:block;font-size:.6rem;line-height:1.25;margin-top:.1rem}
+
+  /* fitur: grid 6 kolom tetap dipakai (2 kartu per baris) */
+  .bento{gap:.55rem}
+  .bento__item{padding:.95rem;border-radius:20px}
+  .bento__item--w3,.bento__item--w2{grid-column:span 3}
+  .bento__item h3{font-size:.98rem;margin:.6rem 0 .25rem}
+  .bento__item p{font-size:.82rem;line-height:1.45}
+  .icon{width:40px;height:40px;border-radius:13px}
+  .icon svg{width:21px;height:21px}
+  /* kartu ke-5 (Try Out) melebar horizontal supaya baris tetap rapi */
+  .bento>.bento__item--w2:nth-child(5){
+    grid-column:span 6;display:grid;grid-template-columns:auto 1fr;column-gap:.8rem;align-items:center;
+  }
+  .bento>.bento__item--w2:nth-child(5) .icon{grid-row:1/3}
+  .bento>.bento__item--w2:nth-child(5) h3{margin:0 0 .2rem}
+  .bento__item--full{grid-column:span 6;flex-direction:row;align-items:center;flex-wrap:wrap;gap:.75rem}
+  .bento__item--full .bento__text{flex:1 1 0;min-width:0}
+  .bento__item--full h3{margin:0 0 .2rem}
+  .bento__item--full .btn{flex:1 1 100%}
+
+  /* galeri + program: deret kartu jadi carousel geser (seperti 3 kolom di desktop) */
+  .galeri__grid,.programs{
+    display:flex;gap:.75rem;overflow-x:auto;overflow-y:hidden;
+    scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;overscroll-behavior-x:contain;
+    margin-inline:-.8rem;padding:.4rem .8rem .9rem;scroll-padding-inline:.8rem;
+    scrollbar-width:none;
+  }
+  .galeri__grid::-webkit-scrollbar,.programs::-webkit-scrollbar{display:none}
+  .galeri__card{flex:0 0 76%;scroll-snap-align:start;border-radius:22px}
+  .galeri__media{height:150px}
+  .galeri__tag{font-size:.64rem;bottom:9px;left:10px;padding:.25rem .6rem}
+  .galeri__body{padding:.9rem 1rem 1.1rem}
+  .galeri__body h3{font-size:1rem;margin-bottom:.3rem}
+  .galeri__body p{font-size:.84rem;line-height:1.5}
+  .programs .program:nth-child(n){flex:0 0 72%;scroll-snap-align:start;rotate:0deg;translate:0;display:flex;flex-direction:column;padding:1.1rem;border-radius:22px}
+  .program h3{font-size:1.1rem;margin:.65rem 0 .35rem}
+  .program p{font-size:.85rem;flex:1;margin-bottom:.9rem}
+  .program .btn{align-self:flex-start}
+  .program__tag{font-size:.66rem}
+
+  .swipe-dots{display:flex;justify-content:center;gap:.4rem;margin-top:-.1rem}
+  .swipe-dots i{width:7px;height:7px;border-radius:99px;background:rgba(28,25,23,.16);transition:width .25s var(--ease),background .25s var(--ease)}
+  .swipe-dots i.on{width:20px;background:var(--blue)}
+  .programs+.swipe-dots{margin-bottom:.2rem}
+
+  /* 3 langkah: nomor di kiri, teks di kanan */
+  .how-steps{gap:.55rem}
+  .step{display:grid;grid-template-columns:auto 1fr;column-gap:.85rem;align-items:start;padding:.95rem 1rem;border-radius:20px}
+  .step__num{width:38px;height:38px;font-size:1.05rem;margin:0;grid-row:1/3}
+  .step h3{font-size:1rem}
+  .step p{font-size:.84rem;margin-top:.1rem}
+
+  /* jadwal kelas: 2 kolom */
+  .jd-grid{grid-template-columns:1fr 1fr;gap:.55rem}
+  .jd-card{padding:.9rem;border-radius:18px}
+  .jd-card h3{font-size:.95rem}
+  .jd-card__meta{font-size:.74rem;margin:.2rem 0 .55rem}
+  .jd-card ul{font-size:.78rem;gap:.3rem}
+  .jd-card li{padding-bottom:.3rem}
+  .jd-empty{padding:1rem;font-size:.84rem;border-radius:18px}
+
+  /* harga */
+  .paket{gap:.8rem}
+  .paket__card{padding:1.1rem;border-radius:24px;gap:.7rem}
+  .paket__name{font-size:1.1rem}
+  .paket__lead{font-size:.86rem}
+  .paket__flag{font-size:.6rem;width:140px;right:-42px;top:.8rem;padding:.2rem 0}
+  .harga-row{gap:.5rem}
+  .harga-item{padding:.6rem .75rem;gap:.6rem;border-radius:14px}
+  .harga-item__label{font-size:.86rem}
+  .harga-item__label small{font-size:.7rem}
+  .harga-item__value{font-size:.95rem}
+  .harga-item__value small{font-size:.68rem}
+  .paket__list{font-size:.84rem;gap:.4rem}
+  .paket__list svg{width:17px;height:17px}
+  .paket__note{font-size:.76rem;padding:.5rem .7rem;border-radius:12px}
+
+  /* presensi */
+  .presensi__toolbar{margin-bottom:1rem}
+  .presensi__summary{flex-wrap:nowrap;gap:.4rem;margin-bottom:1.2rem}
+  .presensi__chip{flex:1 1 0;min-width:0;flex-direction:column;gap:0;padding:.5rem .2rem;border-radius:16px;font-size:.7rem;line-height:1.2}
+  .presensi__chip b{font-size:1.15rem}
+  .presensi__list{gap:.5rem}
+  .presensi__row{grid-template-columns:auto 1fr auto;gap:.65rem;padding:.7rem .85rem;border-radius:18px}
+  .presensi__row>div{min-width:0}
+  .presensi__num{grid-column:auto;width:30px;height:30px;font-size:.8rem}
+  .presensi__name{font-size:.92rem;line-height:1.25;overflow-wrap:anywhere}
+  .presensi__kelas{font-size:.72rem}
+  .presensi__status{font-size:.72rem;padding:.25rem .6rem}
+
+  /* FAQ */
+  .faq-list{gap:.5rem}
+  .faq-item{border-radius:18px}
+  .faq-item summary{padding:.85rem 1rem;font-size:.92rem;line-height:1.3}
+  .faq-item__answer{padding:0 1rem 1rem;font-size:.85rem}
+
+  /* ajakan penutup */
+  .cta{border-radius:26px;padding:2rem 1.1rem}
+  .cta h2{font-size:clamp(1.4rem,6.4vw,1.8rem)}
+  .cta p{font-size:.9rem;margin-bottom:1.2rem}
+  .cta__row{gap:.5rem}
+  .cta__row .btn{flex:1 1 9rem;padding:.7rem .6rem}
+  .cta__orb--1{width:200px;height:200px}
+  .cta__orb--2{width:220px;height:220px}
+
+  /* footer: logo penuh, lalu kolom-kolom seperti desktop */
+  .footer{border-radius:26px 26px 0 0;padding:2rem 0 1.3rem;margin-top:1.2rem}
+  .footer__grid{grid-template-columns:1fr 1fr;gap:1.3rem .9rem}
+  .footer__grid>div:first-child{grid-column:1/-1}
+  .footer__grid>div:last-child{grid-column:1/-1}
+  .footer h3{font-size:1.15rem}
+  .footer h4{font-size:.92rem;margin-bottom:.5rem}
+  .footer p,.footer a{font-size:.86rem}
+  .footer__bottom{margin-top:1.5rem;padding-top:1rem;font-size:.78rem}
+  .footer__bottom>span{flex:1 1 14rem}
+
+  /* tombol WhatsApp: aman dari bar bawah ponsel */
+  .wa-float{right:.8rem;bottom:calc(.8rem + env(safe-area-inset-bottom,0px));width:50px;height:50px}
+  .wa-float svg{width:26px;height:26px}
+
+  /* sedikit warna latar bergantian supaya halaman tidak terasa datar */
+  #jadwal,.faq{background:linear-gradient(180deg,rgba(228,240,229,0),rgba(228,240,229,.7) 12%,rgba(228,240,229,.7) 88%,rgba(228,240,229,0))}
+}
+
+@media (max-width:400px){
+  .hero__cta .btn svg{display:none}
+  .section-head h2{font-size:1.45rem}
+  .bento__item{padding:.85rem}
+  .bento__item p{font-size:.8rem}
+  .jd-card{padding:.8rem}
+}
+
 </style>
 </head>
 <body>
@@ -2319,6 +2542,31 @@ img[loading="lazy"] {
 })();
 </script>
 
+<script>
+/* indikator geser (dots) untuk carousel di HP: galeri & program */
+(function(){
+  [['.galeri__grid','.galeri__card'],['.programs','.program']].forEach(function(pair){
+    var box = document.querySelector(pair[0]);
+    if(!box) return;
+    var items = box.querySelectorAll(pair[1]);
+    if(items.length < 2) return;
+    var dots = document.createElement('div');
+    dots.className = 'swipe-dots';
+    dots.setAttribute('aria-hidden', 'true');
+    for(var i = 0; i < items.length; i++){ dots.appendChild(document.createElement('i')); }
+    box.parentNode.insertBefore(dots, box.nextSibling);
+    var d = dots.children;
+    function sync(){
+      var max = box.scrollWidth - box.clientWidth;
+      var idx = max > 0 ? Math.round(box.scrollLeft / max * (items.length - 1)) : 0;
+      for(var k = 0; k < d.length; k++) d[k].className = (k === idx) ? 'on' : '';
+    }
+    box.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    sync();
+  });
+})();
+</script>
+
 </body>
 </html>
-
