@@ -2046,7 +2046,6 @@ img[loading="lazy"] {
 </a>
 
 <script>
-/* ponytail: fetch WA dari API pengaturan, update semua link nomor utama */
 (function(){
   var API_INFO = 'https://alifbimbel.septiartojuna.workers.dev/api/public/info';
   if(!('fetch' in window)) return;
@@ -2067,7 +2066,6 @@ img[loading="lazy"] {
   'use strict';
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce) and (min-width: 99999px)').matches;
 
-  /* 1. Loading intro handwriting */
   var loading = document.getElementById('loading');
   function hideLoading(){
     if(!loading || loading.classList.contains('is-done')) return;
@@ -2089,12 +2087,10 @@ img[loading="lazy"] {
     setTimeout(hideLoading, 3200);
   }
 
-  /* 1a. Logo: pastikan tampil utuh setelah animasi (atau kalau animasi gagal di iOS) */
   setTimeout(function(){
     Array.prototype.forEach.call(document.querySelectorAll('.hw-wrap'), function(w){ w.classList.add('hw-done'); });
   }, 2600);
 
-  /* 1b. Logo handwriting replay saat klik */
   var brandLogo = document.getElementById('brandLogo');
   if(brandLogo && !reduce){
     brandLogo.addEventListener('click', function(){
@@ -2108,7 +2104,6 @@ img[loading="lazy"] {
     });
   }
 
-  /* 2. Nav shadow saat scroll */
   var nav = document.getElementById('nav');
   var ticking = false;
   function onScroll(){
@@ -2122,7 +2117,6 @@ img[loading="lazy"] {
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  /* 3. Menu mobile */
   var toggle = document.getElementById('menuToggle');
   var menu = document.getElementById('mobileMenu');
   function setMenu(open){
@@ -2139,7 +2133,6 @@ img[loading="lazy"] {
   }
   document.addEventListener('keydown', function(e){ if(e.key === 'Escape') setMenu(false); });
 
-  /* 4. Reveal saat masuk viewport */
   var revealables = document.querySelectorAll('.reveal, .stagger');
   function revealAll(){ Array.prototype.forEach.call(revealables, function(el){ el.classList.add('is-in'); }); }
   if('IntersectionObserver' in window && !reduce){
@@ -2149,9 +2142,7 @@ img[loading="lazy"] {
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     Array.prototype.forEach.call(revealables, function(el){ io.observe(el); });
-    /* sembunyikan elemen (rv-on) baru sekarang, setelah observer siap */
     document.documentElement.classList.add('rv-on');
-    /* jaring pengaman: kalau observer tak pernah terpicu, tampilkan semua */
     window.addEventListener('load', function(){
       setTimeout(function(){
         var anyIn = document.querySelector('.reveal.is-in, .stagger.is-in');
@@ -2168,7 +2159,6 @@ img[loading="lazy"] {
     Array.prototype.forEach.call(revealables, function(el){ el.classList.add('is-in'); });
   }
 
-  /* 4b. CTA spotlight & micro-tilt physics */
   var ctaCard = document.getElementById('ctaCard');
   if(ctaCard && !reduce && window.matchMedia && window.matchMedia('(pointer:fine)').matches){
     ctaCard.addEventListener('mousemove', function(e){
@@ -2184,7 +2174,6 @@ img[loading="lazy"] {
     });
   }
 
-  /* 5. Angka naik saat terlihat */
   function runCount(el){
     var target = parseInt(el.getAttribute('data-count'), 10) || 0;
     if(reduce){ el.textContent = String(target); return; }
@@ -2209,7 +2198,6 @@ img[loading="lazy"] {
     Array.prototype.forEach.call(counters, function(el){ el.textContent = el.getAttribute('data-count'); });
   }
 
-  /* 6. Jadwal aktif (data dari worker /api/public/jadwal, waktu WIB = GMT+7) */
   var API_JADWAL = 'https://alifbimbel.septiartojuna.workers.dev/api/public/jadwal';
   var HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
   var ORDER = ['Senin','Selasa','Rabu','Kamis','Jumat','Sabtu','Minggu'];
@@ -2331,7 +2319,6 @@ img[loading="lazy"] {
 
 
 <script>
-/* ponytail: fetch announcement, render marquee infinite scroll, dismissible localStorage */
 (function(){
   var API = 'https://alifbimbel.septiartojuna.workers.dev/api/public/announcement';
   var marquee = document.getElementById('marquee');
@@ -2358,7 +2345,6 @@ img[loading="lazy"] {
 </script>
 
 <script>
-/* galeri: 3 foto dari worker /api/public/galeri; fallback = foto statis di markup */
 (function(){
   var API_GALERI = 'https://alifbimbel.septiartojuna.workers.dev/api/public/galeri';
   var SLOTS = { galImg1: 'gal1', galImg2: 'gal2', galImg3: 'gal3' };
@@ -2373,7 +2359,7 @@ img[loading="lazy"] {
       var img = document.getElementById(id);
       if(!img) return;
       var orig = img.getAttribute('src');
-      img.onerror = function(){ img.onerror = null; img.src = orig; img.style.objectPosition = ''; };  // gagal dimuat -> kembali ke foto bawaan
+      img.onerror = function(){ img.onerror = null; img.src = orig; img.style.objectPosition = ''; };
       img.src = g.url;
       if(typeof g.posX === 'number' && typeof g.posY === 'number') img.style.objectPosition = g.posX + '% ' + g.posY + '%';
     });
@@ -2382,7 +2368,6 @@ img[loading="lazy"] {
 </script>
 
 <script>
-/* indikator geser (dots) untuk carousel di HP: galeri & program */
 (function(){
   [['.galeri__grid','.galeri__card'],['.programs','.program']].forEach(function(pair){
     var box = document.querySelector(pair[0]);

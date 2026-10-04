@@ -1643,14 +1643,11 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 
 <script>
 'use strict';
-/* ============================================================
-   KONFIGURASI
-   ============================================================ */
 const API_BASE  = 'https://alifbimbel.septiartojuna.workers.dev';
 const GOOGLE_CLIENT_ID = '806589013552-d10aoihf1ie00o5cpo6dcauqi5feaaiq.apps.googleusercontent.com';
 const PIN_KEY   = 'alief_admin_key';
 const CACHE_KEY = 'aliefbimbel_cache_v2';
-const OLD_KEY   = 'aliefbimbel_data_v1';      // data lama (versi localStorage)
+const OLD_KEY   = 'aliefbimbel_data_v1';
 const VIEW_KEY  = 'alief_view';
 
 const KINDS = ['siswa','guru','jadwal','bayar','absen','presensi','pengaturan','announcement','galeri'];
@@ -1671,9 +1668,6 @@ const lsGet = k => { try{ return localStorage.getItem(k); }catch(e){ return null
 const lsSet = (k,v) => { try{ localStorage.setItem(k,v); }catch(e){} };
 const lsDel = k => { try{ localStorage.removeItem(k); }catch(e){} };
 
-/* ============================================================
-   DATA & API
-   ============================================================ */
 const emptyDB = () => ({ siswa:[], guru:[], jadwal:[], bayar:[], absen:[], presensi:[], pengaturan:[], announcement:[], galeri:[] });
 function normalize(d){
   const out = emptyDB();
@@ -1710,7 +1704,6 @@ async function api(path, opts = {}){
   }
 }
 
-/* status sinkronisasi */
 function setSync(state, text){
   const label = text || ({ ok:'Tersimpan di server', busy:'Menyimpan…', err:'Gagal terhubung', load:'Menghubungkan…' }[state] || '');
   ['syncDesk','syncMobile'].forEach(id => {
@@ -1727,7 +1720,6 @@ function handleErr(e){
   showToast('Gagal: ' + (e.message || 'tidak bisa terhubung ke server'));
 }
 
-/* simpan 1 record ke server, lalu perbarui data lokal */
 async function save(kind, rec){
   if(busy) return false;
   busy = true; setSync('busy');
@@ -1758,9 +1750,6 @@ async function remove(kind, id){
   }finally{ busy = false; }
 }
 
-/* ============================================================
-   LOGIN (PIN) & LOAD
-   ============================================================ */
 function showLock(msg){
   $('lock').classList.add('show');
   const m = $('lockMsg');
@@ -1771,7 +1760,6 @@ function showLock(msg){
 }
 function hideLock(){ $('lock').classList.remove('show'); }
 
-/* ---- Login Admin via Google ---- */
 function initGoogleAdminLogin(){
   if(!window.google || !google.accounts || !google.accounts.id) return;
   google.accounts.id.initialize({
@@ -1814,7 +1802,6 @@ async function handleGoogleAdminCredential(resp){
 }
 
 window.addEventListener('load', () => {
-  // google script dimuat async, coba beberapa kali sampai siap
   let tries = 0;
   const t = setInterval(() => {
     tries++;
@@ -1866,13 +1853,11 @@ async function loadFromServer(fromLogin){
       setSync('err');
       return false;
     }
-    // saat login manual/Google: tampilkan penyebab error asli, jangan pura-pura berhasil masuk
     if(fromLogin){
       showLock('Gagal masuk: ' + (e.message || 'server tidak terjangkau'));
       setSync('err');
       return false;
     }
-    // server tidak terjangkau -> tampilkan cache terakhir (hanya lihat)
     try{ DB = normalize(JSON.parse(lsGet(CACHE_KEY) || '{}')); }catch(_){ DB = emptyDB(); }
     document.body.classList.remove('loading');
     hideLock(); renderAll(); setSync('err');
@@ -1881,10 +1866,9 @@ async function loadFromServer(fromLogin){
   }
 }
 
-/* data lama di browser (versi sebelum ada server) -> unggah ke server */
 async function offerMigration(){
   if(lsGet('alief_migrated')) return;
-  if(KINDS.some(k => DB[k].length)) return;           // server sudah berisi data
+  if(KINDS.some(k => DB[k].length)) return;
   let old; try{ old = JSON.parse(lsGet(OLD_KEY) || 'null'); }catch(e){ old = null; }
   if(!old) return;
   const data = normalize(old);
@@ -1900,9 +1884,6 @@ async function offerMigration(){
   }catch(e){ handleErr(e); }
 }
 
-/* ============================================================
-   UTIL UI
-   ============================================================ */
 function showToast(msg){
   const t = $('toast');
   t.textContent = msg;
@@ -1926,9 +1907,6 @@ function endTime(jam, durasi){
   return String(Math.floor(t/60)).padStart(2,'0') + ':' + String(t%60).padStart(2,'0');
 }
 
-/* ============================================================
-   NAVIGASI + BURGER
-   ============================================================ */
 const VIEW_TITLE = { overview:'Ringkasan', jadwal:'Jadwal', siswa:'Siswa', guru:'Guru', bayar:'Pembayaran', absen:'Absensi Guru', presensi:'Presensi Siswa', pengaturan:'Pengaturan', announcement:'Pengumuman', galeri:'Galeri Foto' };
 
 function showView(view){
@@ -1941,14 +1919,12 @@ function showView(view){
   window.scrollTo(0, 0);
   renderAll();
 }
-// Auto-close nav when clicking any section (mobile only)
 document.querySelectorAll('.view').forEach(v => {
   v.addEventListener('click', (e) => { 
     if(window.innerWidth <= 900) closeNav(); 
-  }, true); // use capture
+  }, true);
 });
 
-// Sidebar links - change view and close nav
 document.querySelectorAll('.sb-link').forEach(link => {
   link.addEventListener('click', () => { 
     showView(link.dataset.view); 
@@ -1967,9 +1943,6 @@ $('burger').addEventListener('click', () => setNav(!document.body.classList.cont
 $('sbOv').addEventListener('click', closeNav);
 window.addEventListener('resize', () => { if(window.innerWidth > 900) closeNav(); });
 
-/* ============================================================
-   RENDER: OVERVIEW
-   ============================================================ */
 function renderOverview(){
   const bulanIni = getBulanIni(), tahunIni = getTahunIni();
   const pemasukan = DB.bayar
@@ -2017,9 +1990,6 @@ function renderOverview(){
       </div>`).join('');
 }
 
-/* ============================================================
-   RENDER: JADWAL (kartu, urut Senin → Minggu)
-   ============================================================ */
 function renderJadwal(){
   if(!DB.jadwal.length){
     $('jadwalList').innerHTML = `<div class="empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><rect x="6" y="4" width="13" height="14" rx="2"/><path d="M6 10h13M9 15h6"/></svg></div><h3>Belum ada jadwal</h3>
@@ -2116,9 +2086,6 @@ async function hapusJadwal(id){
   if(await remove('jadwal', id)){ renderAll(); showToast('Jadwal dihapus'); }
 }
 
-/* ============================================================
-   RENDER: SISWA
-   ============================================================ */
 function renderSiswa(){
   if(!DB.siswa.length){
     $('siswaList').innerHTML = `<div class="empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="8.5" cy="7.5" r="3"/><circle cx="15.5" cy="7.5" r="3"/><path d="M4.5 9.5c1-3.5 2.5-5.5 5-5.5s4.6 2.3 5.9 4.4"/><path d="M11.5 9.5c1-3.5 2.5-5.5 5-5.5s4.6 2.3 5.9 4.4"/></svg></div><h3>Belum ada siswa</h3>
@@ -2203,9 +2170,6 @@ async function hapusSiswa(id){
   if(await remove('siswa', id)){ renderAll(); showToast('Siswa dihapus'); }
 }
 
-/* ============================================================
-   RENDER: GURU
-   ============================================================ */
 function renderGuru(){
   if(!DB.guru.length){
     $('guruList').innerHTML = `<div class="empty"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="7" r="2.8"/><path d="M5.6 9.4c1-3.3 2.5-5.3 5-5.3s4.6 2.3 5.8 4.2"/><rect x="15.5" y="5.5" width="6" height="9.5" rx="1.2"/><path d="M11.4 12.4l3.4 3.4"/></svg></div><h3>Belum ada guru</h3>
@@ -2284,9 +2248,6 @@ async function hapusGuru(id){
   if(await remove('guru', id)){ renderAll(); showToast('Guru dihapus'); }
 }
 
-/* ============================================================
-   RENDER: PEMBAYARAN
-   ============================================================ */
 let bayarFilter = 'all';
 document.querySelectorAll('#bayarTabs .subtab').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -2301,7 +2262,6 @@ function renderBayar(){
   let list = DB.bayar.slice();
   if(bayarFilter === 'paid')   list = list.filter(b => b.status === 'paid');
   if(bayarFilter === 'unpaid') list = list.filter(b => b.status === 'unpaid');
-  // terbaru dulu: tahun, lalu urutan bulan (bukan alfabet)
   list.sort((a,b) => (Number(b.tahun) - Number(a.tahun)) || (NAMA_BULAN.indexOf(b.bulan) - NAMA_BULAN.indexOf(a.bulan)));
 
   if(!list.length){
@@ -2373,7 +2333,6 @@ async function saveBayar(){
   if(!data.siswaId){ showToast('Pilih siswa dulu'); return; }
   if(!data.jumlah){ showToast('Jumlah wajib diisi'); return; }
 
-  // satu siswa + bulan + tahun = satu catatan
   const dup = DB.bayar.find(b => b.id !== id && b.siswaId === data.siswaId && b.bulan === data.bulan && String(b.tahun) === String(data.tahun));
   const old = id ? DB.bayar.find(x => x.id === id) : dup;
   const rec = { ...(old||{}), ...data, id: old?.id || uid('bayar') };
@@ -2390,7 +2349,6 @@ async function setStatusBayar(id, status){
 }
 const randPin = () => String(Math.floor(100000 + Math.random()*900000));
 
-/* buat tagihan bulan ini untuk semua siswa yang belum punya catatan */
 async function buatTagihan(){
   const bln = getBulanIni(), thn = getTahunIni();
   const todo = DB.siswa.filter(s => !DB.bayar.some(b => b.siswaId === s.id && b.bulan === bln && String(b.tahun) === String(thn)));
@@ -2406,9 +2364,6 @@ async function hapusBayar(id){
   if(await remove('bayar', id)){ renderAll(); showToast('Catatan dihapus'); }
 }
 
-/* ============================================================
-   RENDER: ABSENSI
-   ============================================================ */
 function renderAbsensi(){
   const tanggal = $('absenTanggal').value || getTanggalISO();
   const d = new Date(tanggal + 'T00:00:00');
@@ -2462,9 +2417,6 @@ async function clearAbsen(id){
   if(await remove('absen', id)){ renderAbsensi(); showToast('Absensi direset'); }
 }
 
-/* ============================================================
-   HELPERS
-   ============================================================ */
 function fillGuruSelect(selectId){
   const sel = $(selectId), cur = sel.value;
   sel.innerHTML = '<option value="">— Pilih Guru —</option>' +
@@ -2479,9 +2431,8 @@ function fillSiswaSelect(selectId){
 }
 
 const DEF_TARIF = { sd:450000, smp:650000, sma:850000, reguler:450000, intensif:750000, privat:1200000 };
-// kolom tarif diambil dari input yang benar-benar ada di form (id diawali "pg", selain pgWa)
 const tarifInputs = () => Array.from(document.querySelectorAll('#view-pengaturan input[id^="pg"]')).filter(el => el.id !== 'pgWa');
-const tarifKey = el => el.id.slice(2).toLowerCase();   // pgSd13 -> sd13
+const tarifKey = el => el.id.slice(2).toLowerCase();
 function renderPengaturan(){
   if(document.activeElement && document.activeElement.closest('#view-pengaturan')) return;
   const p = DB.pengaturan.find(x => x.id === 'utama') || {};
@@ -2502,9 +2453,6 @@ async function savePengaturan(){
   if(await save('pengaturan', { id:'utama', wa, tarif })){ showToast('Pengaturan disimpan'); renderAll(); }
 }
 
-/* ============================================================
-   RENDER: PRESENSI SISWA
-   ============================================================ */
 function getDistinctKelas(){
   const set = new Set();
   DB.siswa.forEach(s => set.add(s.kelas));
@@ -2576,9 +2524,6 @@ async function clearPresensi(id){
   if(await remove('presensi', id)){ renderPresensi(); showToast('Presensi direset'); }
 }
 
-/* ============================================================
-   RENDER: ANNOUNCEMENT
-   ============================================================ */
 function renderAnnouncement(){
   const list = DB.announcement.slice().sort((a,b) => (b.created_at||0) - (a.created_at||0));
   const body = $('tblAnnouncementBody');
@@ -2639,12 +2584,9 @@ async function deleteAnnouncement(id){
   if(await remove('announcement', id)){ renderAll(); showToast('Pengumuman dihapus'); }
 }
 
-/* ============================================================
-   GALERI FOTO (3 slot: gal1/gal2/gal3 — upload foto dari galeri admin ke imgBB)
-   ============================================================ */
 let galPending = null;
 
-const galPos = {};   // slot -> {x,y} posisi foto (persen), termasuk yang belum disimpan
+const galPos = {};
 const galClamp = v => Math.min(100, Math.max(0, v));
 const galNum = v => (typeof v === 'number' && isFinite(v)) ? galClamp(v) : 50;
 
@@ -2668,7 +2610,6 @@ function renderGaleri(){
   });
 }
 
-/* geser foto di dalam kotak (mouse / sentuh) untuk atur bagian yang tampil */
 function galInitDrag(){
   ['gal1','gal2','gal3'].forEach(slot => {
     const fr = $('galFrame_' + slot), img = $('galImg_' + slot);
@@ -2714,7 +2655,6 @@ function galeriResetPos(slot){
   galApplyPos(slot);
 }
 
-/* perkecil foto di browser: sisi terpanjang maks 1600px, JPEG, ukuran dijaga ±1.2 MB — kualitas tetap tajam untuk web */
 async function fileToCompressedDataURL(file, maxSide = 1280, targetBytes = 600 * 1024, hardMax = 900 * 1024){
   let bmp;
   try{ bmp = await createImageBitmap(file, { imageOrientation: 'from-image' }); }
@@ -2737,7 +2677,7 @@ async function fileToCompressedDataURL(file, maxSide = 1280, targetBytes = 600 *
     let q = 0.9; out = cv.toDataURL('image/jpeg', q);
     while(out.length > targetBytes && q > 0.55){ q -= 0.07; out = cv.toDataURL('image/jpeg', q); }
     if(out.length <= hardMax) return out;
-    side = Math.round(side * 0.8);   // masih terlalu besar -> kecilkan dimensi lagi
+    side = Math.round(side * 0.8);
   }
   throw new Error('Foto tidak bisa diperkecil cukup');
 }
@@ -2790,9 +2730,6 @@ function renderAll(){
   renderOverview(); renderJadwal(); renderSiswa(); renderGuru(); renderBayar(); renderAbsensi(); renderPresensi(); renderPengaturan(); renderAnnouncement(); renderGaleri();
 }
 
-/* ============================================================
-   INIT
-   ============================================================ */
 document.addEventListener('keydown', e => {
   if(e.key === 'Escape'){
     document.querySelectorAll('.modal-ov.show').forEach(m => m.classList.remove('show'));
@@ -2816,7 +2753,6 @@ document.addEventListener('DOMContentLoaded', () => {
 </script>
 
 <script>
-/* logo: pastikan tampil utuh walau animasi gagal */
 setTimeout(function(){Array.prototype.forEach.call(document.querySelectorAll(".hw-wrap"),function(w){w.classList.add("hw-done")})},2600);
 </script>
 </body>

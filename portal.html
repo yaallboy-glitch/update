@@ -971,9 +971,6 @@ input:-webkit-autofill{-webkit-box-shadow:0 0 0 40px #fff inset;-webkit-text-fil
 <script>
 'use strict';
 
-// ============================================
-// CONSTANTS & CONFIG
-// ============================================
 
 const API = 'https://alifbimbel.septiartojuna.workers.dev';
 let ADMIN_WA = '62882003377569';
@@ -981,9 +978,6 @@ const HARI = ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu'];
 const NAMA_HARI = ['Minggu', ...HARI.slice(0, 6)];
 const NAMA_BLN = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
-// ============================================
-// UTILITY FUNCTIONS
-// ============================================
 
 const $ = id => document.getElementById(id);
 const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -1008,9 +1002,6 @@ function showError(message) {
   setTimeout(() => { err.textContent = ''; }, 5000);
 }
 
-// ============================================
-// INPUT VALIDATION (BUG FIX #1)
-// ============================================
 
 function validatePhone(phone) {
   const cleaned = phone.trim().replace(/\D/g, '');
@@ -1028,9 +1019,6 @@ function validatePin(pin) {
   return cleaned;
 }
 
-// ============================================
-// API FUNCTIONS (BUG FIX #2 - Better Error Handling)
-// ============================================
 
 async function api(path, opts = {}) {
   try {
@@ -1059,19 +1047,13 @@ async function api(path, opts = {}) {
   }
 }
 
-// ============================================
-// STATE MANAGEMENT
-// ============================================
 
 let role = (location.hash.slice(1) === 'ortu') ? 'ortu' : 'guru';
 let token = sessionStorage.getItem('alief_tk') || '';
 let me = null;
 let tanggal = iso();
-let isSubmitting = false; // Prevent double-submit (BUG FIX #3)
+let isSubmitting = false;
 
-// ============================================
-// LOGIN DENGAN GOOGLE (guru & orang tua)
-// ============================================
 
 const GOOGLE_CLIENT_ID = '806589013552-d10aoihf1ie00o5cpo6dcauqi5feaaiq.apps.googleusercontent.com';
 
@@ -1128,9 +1110,6 @@ async function handleGoogleCredential(resp) {
   }, 150);
 })();
 
-// ============================================
-// INIT ADMIN WA (BUG FIX #4 - Race Condition Fix)
-// ============================================
 
 (async function initAdminWA() {
   try {
@@ -1141,9 +1120,6 @@ async function handleGoogleCredential(resp) {
   }
 })();
 
-// ============================================
-// LOGIN LOGIC
-// ============================================
 
 function setRole(r) {
   role = r;
@@ -1159,9 +1135,6 @@ document.querySelectorAll('.tabs .btn').forEach(b => {
 
 setRole(role);
 
-// ============================================
-// DAFTAR MANDIRI (Guru / Orang Tua)
-// ============================================
 
 function updateDaftarHint() {
   const hint = $('dNamaHint');
@@ -1223,7 +1196,7 @@ $('fDaftar').onsubmit = async e => {
 $('f').onsubmit = async e => {
   e.preventDefault();
   
-  if (isSubmitting) return; // Prevent double-submit
+  if (isSubmitting) return;
   
   const errEl = $('err');
   const goBtn = $('go');
@@ -1235,7 +1208,6 @@ $('f').onsubmit = async e => {
   showLoading(true);
   
   try {
-    // Validate inputs
     const validatedWa = validatePhone($('wa').value);
     const validatedPin = validatePin($('pin').value);
     
@@ -1295,9 +1267,6 @@ async function refresh() {
   }
 }
 
-// ============================================
-// DISPLAY FUNCTIONS
-// ============================================
 
 function show() {
   $('login').hidden = true;
@@ -1332,10 +1301,6 @@ function jadwalHtml(list, withGuru) {
 }
 
 
-// ============================================
-// PRESENSI SISWA
-// Orang tua: hanya melihat. Guru: mengisi untuk siswa di kelas yang diajarnya.
-// ============================================
 
 const PRES_BD = {
   hadir: '<span class="badge badge-success">✓ Hadir</span>',
@@ -1482,9 +1447,6 @@ async function resetPresensi(id) {
   }
 }
 
-// ============================================
-// ORANG TUA VIEW
-// ============================================
 
 function viewOrtu() {
   const { siswa = [], jadwal = [], bayar = [] } = me;
@@ -1539,9 +1501,6 @@ function waLink(s, b) {
   return 'https://wa.me/' + ADMIN_WA + '?text=' + encodeURIComponent(t);
 }
 
-// ============================================
-// GURU VIEW
-// ============================================
 
 function viewGuru() {
   const { guru, jadwal = [], absen = [] } = me;
@@ -1623,14 +1582,11 @@ function viewGuru() {
   bindPresensiGuru();
 }
 
-// ============================================
-// ABSENSI (BUG FIX #5 - Loading State)
-// ============================================
 
 let isSettingAbsen = false;
 
 async function setAbsen(jadwalId, status) {
-  if (isSettingAbsen) return; // Prevent double-click
+  if (isSettingAbsen) return;
   
   const ex = (me.absen || []).find(a => a.jadwalId === jadwalId && a.tanggal === tanggal);
   const rec = ex 
@@ -1667,9 +1623,6 @@ async function setAbsen(jadwalId, status) {
   }
 }
 
-// ============================================
-// INIT
-// ============================================
 
 if (token) {
   me = { role: sessionStorage.getItem('alief_role') || 'guru' };
@@ -1677,7 +1630,6 @@ if (token) {
 }
 </script>
 <script>
-/* logo: pastikan tampil utuh walau animasi gagal */
 setTimeout(function(){Array.prototype.forEach.call(document.querySelectorAll(".hw-wrap"),function(w){w.classList.add("hw-done")})},2600);
 </script>
 </body>
