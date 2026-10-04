@@ -129,14 +129,21 @@ section{padding:4.6rem 0;position:relative}
   position:absolute;inset:0;bottom:5px;
   background:linear-gradient(125deg,#0B5C2C 0%,#0E6E3A 38%,#157A46 72%,#0D9488 100%);
   -webkit-background-clip:text;
+  background-clip:text;
   -webkit-text-fill-color:transparent;
+  color:#157A46; /* cadangan kalau gradient text gagal */
   white-space:nowrap;
-  clip-path:inset(0 100% 0 0);
   transition:filter .3s var(--ease);
 }
 .hw-wrap.is-drawn .hw-ink{
-  animation:hwReveal 1.35s cubic-bezier(.32,.02,.22,1) forwards;
+  -webkit-animation:hwReveal 1.35s cubic-bezier(.32,.02,.22,1) both;
+  animation:hwReveal 1.35s cubic-bezier(.32,.02,.22,1) both;
 }
+/* jaring pengaman: setelah animasi selesai/gagal, logo dipaksa tampil utuh */
+.hw-wrap.hw-done .hw-ink{-webkit-clip-path:none;clip-path:none;animation:none}
+.hw-wrap.hw-done .hw-flourish-path{stroke-dashoffset:0;animation:none}
+.hw-wrap.hw-done .hw-sparkle{opacity:.95;animation:none}
+.hw-wrap.hw-done .hw-pen{display:none}
 .hw-flourish{
   position:absolute;left:-2px;right:-4px;bottom:0;
   width:calc(100% + 6px);height:14px;
@@ -144,11 +151,11 @@ section{padding:4.6rem 0;position:relative}
 }
 .hw-flourish-path{
   stroke-dasharray:140;
-  stroke-dashoffset:140;
+  stroke-dashoffset:0;
   transition:filter .3s var(--ease);
 }
 .hw-wrap.is-drawn .hw-flourish-path{
-  animation:hwFlourish .48s 1.22s cubic-bezier(.22,1,.36,1) forwards;
+  animation:hwFlourish .48s 1.22s cubic-bezier(.22,1,.36,1) both;
 }
 .hw-pen{
   position:absolute;
@@ -172,10 +179,15 @@ section{padding:4.6rem 0;position:relative}
   animation:hwSparkle .38s 1.58s var(--spring) forwards;
 }
 
+@-webkit-keyframes hwReveal{
+  0%{-webkit-clip-path:inset(0 100% 0 0);clip-path:inset(0 100% 0 0)}
+  92%{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0)}
+  100%{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0)}
+}
 @keyframes hwReveal{
-  0%{clip-path:inset(0 100% 0 0)}
-  92%{clip-path:inset(0 0% 0 0)}
-  100%{clip-path:inset(0 0% 0 0)}
+  0%{-webkit-clip-path:inset(0 100% 0 0);clip-path:inset(0 100% 0 0)}
+  92%{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0)}
+  100%{-webkit-clip-path:inset(0 0 0 0);clip-path:inset(0 0 0 0)}
 }
 @keyframes hwPenMove{
   0%{left:0;top:66%;transform:translate(-16%,-88%) rotate(-10deg) scale(.6);opacity:0}
@@ -190,6 +202,7 @@ section{padding:4.6rem 0;position:relative}
   100%{left:104%;top:48%;transform:translate(8px,-16px) rotate(-32deg) scale(.75);opacity:0}
 }
 @keyframes hwFlourish{
+  from{stroke-dashoffset:140}
   to{stroke-dashoffset:0}
 }
 @keyframes hwSparkle{
@@ -629,11 +642,11 @@ section{padding:4.6rem 0;position:relative}
   background-repeat:no-repeat;
   transition:transform .3s var(--spring);
 }
-html.js .cta.reveal .hl{
+html.rv-on .cta.reveal .hl{
   background-size:0% 100%;
   transition:background-size .75s cubic-bezier(.22,1,.36,1) .35s, transform .3s var(--spring);
 }
-html.js .cta.reveal.is-in .hl{
+html.rv-on .cta.reveal.is-in .hl{
   background-size:100% 100%;
 }
 .cta:hover .hl{
@@ -721,12 +734,12 @@ html.js .cta.reveal.is-in .hl{
 
 /* ---------- reveal & micro-interaksi ---------- */
 .reveal{transition:opacity .5s var(--ease),translate .5s var(--ease)}
-html.js .reveal{opacity:0;translate:0 14px}
-html.js .reveal.is-in{opacity:1;translate:0}
+html.rv-on .reveal{opacity:0;translate:0 14px}
+html.rv-on .reveal.is-in{opacity:1;translate:0}
 .float-slow{animation:float 7s var(--ease) infinite}
 .stagger>*{transition:opacity .45s var(--ease),translate .45s var(--ease)}
-html.js .stagger>*{opacity:0;translate:0 12px}
-html.js .stagger.is-in>*{opacity:1;translate:0}
+html.rv-on .stagger>*{opacity:0;translate:0 12px}
+html.rv-on .stagger.is-in>*{opacity:1;translate:0}
 .stagger.is-in>*:nth-child(2){transition-delay:.07s}
 .stagger.is-in>*:nth-child(3){transition-delay:.14s}
 .stagger.is-in>*:nth-child(4){transition-delay:.21s}
@@ -739,7 +752,8 @@ html.js .stagger.is-in>*{opacity:1;translate:0}
   display:none;place-items:center;justify-content:center;
   transition:opacity .55s cubic-bezier(.22,1,.36,1),visibility .55s,transform .55s cubic-bezier(.22,1,.36,1);
 }
-html.js .loading{display:grid}
+html.js .loading{display:grid;animation:loadingFailsafe .01s linear 3.6s forwards}
+@keyframes loadingFailsafe{to{opacity:0;visibility:hidden;pointer-events:none}}
 .loading.is-done{
   opacity:0;pointer-events:none;visibility:hidden;transform:scale(1.02);
 }
@@ -2070,6 +2084,11 @@ img[loading="lazy"] {
     setTimeout(hideLoading, 3200);
   }
 
+  /* 1a. Logo: pastikan tampil utuh setelah animasi (atau kalau animasi gagal di iOS) */
+  setTimeout(function(){
+    Array.prototype.forEach.call(document.querySelectorAll('.hw-wrap'), function(w){ w.classList.add('hw-done'); });
+  }, 2600);
+
   /* 1b. Logo handwriting replay saat klik */
   var brandLogo = document.getElementById('brandLogo');
   if(brandLogo && !reduce){
@@ -2077,8 +2096,10 @@ img[loading="lazy"] {
       var wrap = brandLogo.querySelector('.hw-wrap');
       if(!wrap) return;
       wrap.classList.remove('is-drawn');
+      wrap.classList.remove('hw-done');
       void wrap.offsetWidth;
       wrap.classList.add('is-drawn');
+      setTimeout(function(){ wrap.classList.add('hw-done'); }, 2600);
     });
   }
 
@@ -2115,6 +2136,7 @@ img[loading="lazy"] {
 
   /* 4. Reveal saat masuk viewport */
   var revealables = document.querySelectorAll('.reveal, .stagger');
+  function revealAll(){ Array.prototype.forEach.call(revealables, function(el){ el.classList.add('is-in'); }); }
   if('IntersectionObserver' in window && !reduce){
     var io = new IntersectionObserver(function(entries){
       entries.forEach(function(en){
@@ -2122,6 +2144,21 @@ img[loading="lazy"] {
       });
     }, { rootMargin: '0px 0px -8% 0px', threshold: 0.12 });
     Array.prototype.forEach.call(revealables, function(el){ io.observe(el); });
+    /* sembunyikan elemen (rv-on) baru sekarang, setelah observer siap */
+    document.documentElement.classList.add('rv-on');
+    /* jaring pengaman: kalau observer tak pernah terpicu, tampilkan semua */
+    window.addEventListener('load', function(){
+      setTimeout(function(){
+        var anyIn = document.querySelector('.reveal.is-in, .stagger.is-in');
+        if(!anyIn) revealAll();
+      }, 2500);
+    });
+    setTimeout(function(){
+      Array.prototype.forEach.call(revealables, function(el){
+        var r = el.getBoundingClientRect();
+        if(r.top < window.innerHeight && r.bottom > 0) el.classList.add('is-in');
+      });
+    }, 4500);
   } else {
     Array.prototype.forEach.call(revealables, function(el){ el.classList.add('is-in'); });
   }
@@ -2367,4 +2404,3 @@ img[loading="lazy"] {
 
 </body>
 </html>
-
