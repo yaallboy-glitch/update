@@ -341,7 +341,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
     height: 48px;
     border-radius: 12px;
     background: #ffffff;
-    border: 1px solid rgba(217, 119, 6, 0.15);
+    border: 1px solid rgba(21, 122, 70, 0.15);
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
     display: flex;
     flex-direction: column;
@@ -358,7 +358,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .burger:hover {
     transform: scale(1.05);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    border-color: rgba(217, 119, 6, 0.3);
+    border-color: rgba(21, 122, 70, 0.3);
   }
   
   .burger:active {
@@ -466,6 +466,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   .app{grid-template-columns:clamp(220px,18vw,260px) minmax(0,1fr)}
   .main{padding:clamp(24px,3vw,40px)}
   .topbar{align-items:center}
+}
+/* HP landscape (layar lebar tapi pendek): rapatkan sidebar supaya menu & tombol keluar tetap terjangkau */
+@media (min-width:901px) and (max-height:520px){
+  .sidebar{padding:12px 0}
+  .sb-brand{padding-bottom:12px;margin-bottom:8px}
+  .sb-link{padding:7px 12px;margin-bottom:2px}
+  .sb-footer{padding-top:8px;margin-top:8px}
+  .main{padding:18px 22px}
 }
 @media (min-width:901px) and (max-width:1180px){
   .stats{grid-template-columns:repeat(2,minmax(0,1fr))}
@@ -643,14 +651,14 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
   from{opacity:0;transform:translateY(10px)}
   to{opacity:1;transform:translateY(0)}
 }
-.sidebar{animation:slideInLeft .45s cubic-bezier(.22,1,.36,1) both}
-.main{animation:slideInUp .5s cubic-bezier(.22,1,.36,1) .05s both}
-.stat{animation:statIn .55s cubic-bezier(.34,1.56,.64,1) both}
+@media (min-width:901px){ .sidebar{animation:slideInLeft .45s cubic-bezier(.22,1,.36,1) backwards} }
+.main{animation:slideInUp .5s cubic-bezier(.22,1,.36,1) .05s backwards}
+.stat{animation:statIn .55s cubic-bezier(.34,1.56,.64,1) backwards}
 .stat:nth-child(1){animation-delay:.05s}
 .stat:nth-child(2){animation-delay:.12s}
 .stat:nth-child(3){animation-delay:.19s}
 .stat:nth-child(4){animation-delay:.26s}
-.panel{animation:panelIn .5s cubic-bezier(.22,1,.36,1) .22s both}
+.panel{animation:panelIn .5s cubic-bezier(.22,1,.36,1) .22s backwards}
 .panel:nth-child(2){animation-delay:.3s}
 .panel:nth-child(3){animation-delay:.36s}
 
@@ -666,6 +674,16 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 .gal-frame.dragging{cursor:grabbing}
 .gal-frame img{width:100%;height:100%;object-fit:cover;display:block;pointer-events:none;-webkit-user-drag:none}
 .gal-hint{display:block;margin-top:4px;font-size:11px;opacity:.65}
+.gal-frame img[hidden]{display:none}
+.gal-empty{position:absolute;inset:0;display:grid;place-items:center;font-size:13px;font-weight:700;opacity:.5;text-align:center;padding:8px}
+.gal-frame img:not([hidden]) ~ .gal-empty{display:none}
+.gal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,280px),1fr));gap:16px}
+.gal-card{background:var(--bg);border:1.5px solid var(--line);border-radius:18px;padding:14px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.gal-card .gal-frame{width:100%}
+.gal-card .gal-hint{margin:0}
+.gal-card input[type=file]{max-width:100%;min-width:0;font-size:13px}
+.gal-actions{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.gal-actions .tbl-btn{width:auto;min-width:36px;height:38px;padding:0 12px;display:inline-flex;align-items:center;justify-content:center;gap:6px;font-size:13px;font-weight:700}
 #view-galeri input[type=file]{max-width:180px;font-size:12px}
 
 /* Table row hover */
@@ -742,7 +760,7 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
 }
 
 .table-card tr:hover > td {
-  background-color: rgba(217, 119, 6, 0.05);
+  background-color: rgba(21, 122, 70, 0.05);
 }
 
 .table-card tbody tr:first-child td {
@@ -1111,45 +1129,43 @@ button:focus-visible,input:focus-visible,select:focus-visible,a:focus-visible{
       <div class="topbar">
         <div><h1>Galeri Foto</h1><p class="sub">Ganti 3 foto galeri di landing page — pilih foto lalu upload (foto besar otomatis diperkecil, maks 25 MB). Geser foto di dalam kotak untuk mengatur bagian yang tampil, lalu klik ✓</p></div>
       </div>
-      <div class="panel">
-        <table>
-          <thead><tr><th>Foto</th><th>Slot</th><th>Aksi</th></tr></thead>
-          <tbody>
-            <tr>
-              <td><div class="gal-frame" id="galFrame_gal1"><img id="galImg_gal1" alt="Foto galeri 1" hidden></div><small class="gal-hint">Geser foto untuk atur posisi</small></td>
-              <td><b>Foto 1</b><br><small>kartu galeri kiri (Kelas Interaktif)</small></td>
-              <td class="tbl-act">
-                <input type="file" id="galFile_gal1" accept="image/*" onchange="galeriPick('gal1')">
-                <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal1')" title="Upload ke imgBB">⤒</button>
-                <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal1')" title="Simpan posisi foto">✓</button>
-                <button class="tbl-btn" type="button" onclick="galeriResetPos('gal1')" title="Kembalikan posisi ke tengah">↺</button>
-                <button class="tbl-btn del" type="button" onclick="galeriClear('gal1')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="gal-frame" id="galFrame_gal2"><img id="galImg_gal2" alt="Foto galeri 2" hidden></div><small class="gal-hint">Geser foto untuk atur posisi</small></td>
-              <td><b>Foto 2</b><br><small>kartu galeri tengah (Bimbingan Personal)</small></td>
-              <td class="tbl-act">
-                <input type="file" id="galFile_gal2" accept="image/*" onchange="galeriPick('gal2')">
-                <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal2')" title="Upload ke imgBB">⤒</button>
-                <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal2')" title="Simpan posisi foto">✓</button>
-                <button class="tbl-btn" type="button" onclick="galeriResetPos('gal2')" title="Kembalikan posisi ke tengah">↺</button>
-                <button class="tbl-btn del" type="button" onclick="galeriClear('gal2')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
-              </td>
-            </tr>
-            <tr>
-              <td><div class="gal-frame" id="galFrame_gal3"><img id="galImg_gal3" alt="Foto galeri 3" hidden></div><small class="gal-hint">Geser foto untuk atur posisi</small></td>
-              <td><b>Foto 3</b><br><small>kartu galeri kanan (Percaya Diri)</small></td>
-              <td class="tbl-act">
-                <input type="file" id="galFile_gal3" accept="image/*" onchange="galeriPick('gal3')">
-                <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal3')" title="Upload ke imgBB">⤒</button>
-                <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal3')" title="Simpan posisi foto">✓</button>
-                <button class="tbl-btn" type="button" onclick="galeriResetPos('gal3')" title="Kembalikan posisi ke tengah">↺</button>
-                <button class="tbl-btn del" type="button" onclick="galeriClear('gal3')" title="Hapus foto"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="gal-grid">
+        <div class="gal-card">
+          <div><b>Foto 1</b><br><small>kartu galeri kiri (Kelas Interaktif)</small></div>
+          <div class="gal-frame" id="galFrame_gal1"><img id="galImg_gal1" alt="Foto galeri 1" hidden><span class="gal-empty">Belum ada foto</span></div>
+          <small class="gal-hint">Geser foto di dalam kotak untuk atur posisi</small>
+          <input type="file" id="galFile_gal1" accept="image/*" onchange="galeriPick('gal1')">
+          <div class="gal-actions">
+            <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal1')" title="Upload foto yang dipilih">⤒ Upload</button>
+            <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal1')" title="Simpan posisi foto">✓ Simpan posisi</button>
+            <button class="tbl-btn" type="button" onclick="galeriResetPos('gal1')" title="Kembalikan posisi ke tengah">↺ Reset</button>
+            <button class="tbl-btn del" type="button" onclick="galeriClear('gal1')" title="Hapus foto" aria-label="Hapus foto 1"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
+          </div>
+        </div>
+        <div class="gal-card">
+          <div><b>Foto 2</b><br><small>kartu galeri tengah (Bimbingan Personal)</small></div>
+          <div class="gal-frame" id="galFrame_gal2"><img id="galImg_gal2" alt="Foto galeri 2" hidden><span class="gal-empty">Belum ada foto</span></div>
+          <small class="gal-hint">Geser foto di dalam kotak untuk atur posisi</small>
+          <input type="file" id="galFile_gal2" accept="image/*" onchange="galeriPick('gal2')">
+          <div class="gal-actions">
+            <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal2')" title="Upload foto yang dipilih">⤒ Upload</button>
+            <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal2')" title="Simpan posisi foto">✓ Simpan posisi</button>
+            <button class="tbl-btn" type="button" onclick="galeriResetPos('gal2')" title="Kembalikan posisi ke tengah">↺ Reset</button>
+            <button class="tbl-btn del" type="button" onclick="galeriClear('gal2')" title="Hapus foto" aria-label="Hapus foto 2"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
+          </div>
+        </div>
+        <div class="gal-card">
+          <div><b>Foto 3</b><br><small>kartu galeri kanan (Percaya Diri)</small></div>
+          <div class="gal-frame" id="galFrame_gal3"><img id="galImg_gal3" alt="Foto galeri 3" hidden><span class="gal-empty">Belum ada foto</span></div>
+          <small class="gal-hint">Geser foto di dalam kotak untuk atur posisi</small>
+          <input type="file" id="galFile_gal3" accept="image/*" onchange="galeriPick('gal3')">
+          <div class="gal-actions">
+            <button class="tbl-btn edit" type="button" onclick="galeriUpload('gal3')" title="Upload foto yang dipilih">⤒ Upload</button>
+            <button class="tbl-btn edit" type="button" onclick="galeriSavePos('gal3')" title="Simpan posisi foto">✓ Simpan posisi</button>
+            <button class="tbl-btn" type="button" onclick="galeriResetPos('gal3')" title="Kembalikan posisi ke tengah">↺ Reset</button>
+            <button class="tbl-btn del" type="button" onclick="galeriClear('gal3')" title="Hapus foto" aria-label="Hapus foto 3"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6h12M10 6V4h4v2M7 6l1 14h8l1-14M10 10v6M14 10v6"/></svg></button>
+          </div>
+        </div>
       </div>
     </section>
 

@@ -243,7 +243,7 @@ section{padding:4.6rem 0;position:relative}
 @keyframes drop{from{transform:translateY(-14px);opacity:0}to{transform:none;opacity:1}}
 
 /* ---------- hero ---------- */
-.hero{padding:8.2rem 0 4.2rem;overflow:hidden}
+.hero{padding:8.2rem 0 4.2rem;overflow:hidden;position:relative}  /* position:relative -> blob dekoratif ikut terpotong, tidak melebarkan halaman di HP */
 .hero__grid{display:grid;grid-template-columns:1.06fr .94fr;gap:3rem;align-items:center}
 .hero h1{font-size:clamp(2.1rem,5.4vw,3.35rem);margin:1.1rem 0 1rem}
 .hero__sub{color:var(--muted);font-size:1.06rem;max-width:34rem}
@@ -773,6 +773,20 @@ html.js .loading{display:grid}
 }
 
 /* ---------- responsif ---------- */
+/* navbar: tombol menu (hamburger) harus selalu terlihat — sembunyikan link/tombol berlebih saat layar sempit */
+@media (max-width:1180px){
+  .nav-links{display:none}
+  .menu-toggle{display:grid}
+}
+@media (max-width:760px){
+  .nav-actions>a.btn-ghost{display:none}      /* "Konsultasi" tersedia di menu hamburger */
+  .nav{gap:.5rem}
+}
+@media (max-width:520px){
+  .nav-actions>a.btn-primary{display:none}    /* "Lihat Paket" tersedia di menu hamburger */
+}
+/* dekorasi (blob/glow) tidak boleh melebarkan halaman */
+.hero,.cta,.footer{overflow-x:clip}
 @media (max-width:1000px){
   .nav-links{display:none}
   .menu-toggle{display:grid}
@@ -1295,6 +1309,7 @@ img[loading="lazy"] {
     <a href="#presensi">Presensi</a>
     <a href="#harga">Harga</a>
     <a href="#faq">FAQ</a>
+    <a href="#daftar">Konsultasi</a>
     <a href="portal.html">Masuk: Portal Guru &amp; Orang Tua</a>
     <a href="dashboard.html">Masuk: Dashboard Admin</a>
     <div class="mmenu__cta">
