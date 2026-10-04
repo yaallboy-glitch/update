@@ -1414,6 +1414,12 @@ img[loading="lazy"] {
   .jd-card{padding:.8rem}
 }
 
+
+.presensi__portal{display:flex;gap:.7rem;flex-wrap:wrap;justify-content:flex-start}
+@media (max-width:760px){
+  .presensi__portal{flex-direction:column}
+  .presensi__portal .btn{width:100%}
+}
 </style>
 </head>
 <body>
@@ -1889,33 +1895,12 @@ img[loading="lazy"] {
   <div class="wrap">
     <div class="section-head">
       <span class="eyebrow">Presensi</span>
-      <h2>Kehadiran siswa <span class="hl">per pertemuan</span>.</h2>
-      <p>Orang tua bisa melihat rekapan hadir, izin, sakit, dan alpha siswa setelah admin mencatatnya.</p>
+      <h2>Kehadiran anak, <span class="hl">lihat di portal</span>.</h2>
+      <p>Rekap hadir, izin, sakit, dan alpha hanya bisa dilihat orang tua lewat akun portal masing-masing, supaya data anak tetap privat.</p>
     </div>
-
-    <div class="presensi__toolbar stagger">
-      <div class="presensi__search">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M21 21l-4.3-4.3" fill="none" stroke="currentColor" stroke-width="2"/></svg>
-        <input type="search" id="presSearch" placeholder="Cari nama siswa…" autocomplete="off">
-      </div>
-      <div class="presensi__meet" id="presMeetWrap">
-        <button type="button" class="presensi__toggle" id="presMeetToggle" aria-expanded="false" aria-controls="presMeetMenu">
-          <span id="presMeetLabel">Pertemuan ke-1</span>
-          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        </button>
-        <div class="presensi__menu" id="presMeetMenu" role="listbox" aria-label="Pilih pertemuan"></div>
-      </div>
-    </div>
-
-    <div class="presensi__summary stagger" id="presSummary">
-      <div class="presensi__chip presensi__chip--hadir"><b id="sumHadir">0</b><span>Hadir</span></div>
-      <div class="presensi__chip presensi__chip--izin"><b id="sumIzin">0</b><span>Izin</span></div>
-      <div class="presensi__chip presensi__chip--sakit"><b id="sumSakit">0</b><span>Sakit</span></div>
-      <div class="presensi__chip presensi__chip--alpha"><b id="sumAlpha">0</b><span>Alpha</span></div>
-    </div>
-
-    <div class="presensi__list" id="presList">
-      <div class="presensi__empty">Memuat data presensi…</div>
+    <div class="presensi__portal">
+      <a class="btn btn-primary" href="portal.html">Masuk Portal Orang Tua</a>
+      <a class="btn btn-ghost" href="https://wa.me/62882003377569?text=Halo%20AlifBimbel%2C%20saya%20belum%20punya%20akun%20portal%20orang%20tua" target="_blank" rel="noopener">Belum punya akun? Tanya admin</a>
     </div>
   </div>
 </section>
@@ -2182,158 +2167,6 @@ img[loading="lazy"] {
     Array.prototype.forEach.call(counters, function(el){ el.textContent = el.getAttribute('data-count'); });
   }
 
-  /* 5b. Presensi siswa (data dari worker /api/public/presensi) */
-  (function presensiLanding(){
-    var API_PRESENSI = 'https://alifbimbel.septiartojuna.workers.dev/api/public/presensi';
-    var PRES_STATUS = ['hadir','izin','sakit','alpha'];
-    var data = [];
-    var currentPertemuan = '';
-    var search = document.getElementById('presSearch');
-    var meetWrap = document.getElementById('presMeetWrap');
-    var meetToggle = document.getElementById('presMeetToggle');
-    var meetMenu = document.getElementById('presMeetMenu');
-    var meetLabel = document.getElementById('presMeetLabel');
-    var list = document.getElementById('presList');
-    var sum = { hadir:document.getElementById('sumHadir'), izin:document.getElementById('sumIzin'), sakit:document.getElementById('sumSakit'), alpha:document.getElementById('sumAlpha') };
-
-    function esc(s){
-      return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return { '&':'&amp;', '<':'&lt;', '>':'&gt;', '"':'&quot;', "'":'&#39;' }[c]; });
-    }
-    function fmtStatus(st){
-      var map = { hadir:'Hadir', izin:'Izin', sakit:'Sakit', alpha:'Alpha' };
-      return map[st] || '-';
-    }
-    function pertemuanKey(p){ return String(p.pertemuan || '1'); }
-    function listPertemuan(){
-      var set = {};
-      data.forEach(function(p){ set[pertemuanKey(p)] = true; });
-      return Object.keys(set).sort(function(a,b){ return Number(a) - Number(b); });
-    }
-    function findLatestPertemuan(){
-      var all = listPertemuan();
-      return all.length ? all[all.length-1] : '1';
-    }
-    function renderSummary(rows){
-      var counts = { hadir:0, izin:0, sakit:0, alpha:0 };
-      rows.forEach(function(r){ if(counts[r.status] != null) counts[r.status]++; });
-      PRES_STATUS.forEach(function(st){ if(sum[st]) sum[st].textContent = String(counts[st]); });
-    }
-    function renderList(){
-      if(!list) return;
-      var rows = data.filter(function(p){ return pertemuanKey(p) === currentPertemuan; });
-      var q = search ? String(search.value || '').toLowerCase().trim() : '';
-      if(q) rows = rows.filter(function(p){ return String(p.nama).toLowerCase().indexOf(q) > -1 || String(p.kelas).toLowerCase().indexOf(q) > -1; });
-      rows.sort(function(a,b){ return String(a.nama).localeCompare(String(b.nama)); });
-      renderSummary(rows);
-      if(!rows.length){
-        list.innerHTML = '<div class="presensi__empty">Belum ada data presensi untuk pertemuan ini.</div>';
-        return;
-      }
-      list.innerHTML = rows.map(function(p, i){
-        var st = PRES_STATUS.indexOf(p.status) > -1 ? p.status : 'hadir';
-        var dateStr = p.tanggal ? new Date(p.tanggal + 'T00:00:00').toLocaleDateString('id-ID',{day:'numeric', month:'short'}) : '';
-        return '<div class="presensi__row" style="animation-delay:' + (i*0.05) + 's">' +
-          '<span class="presensi__num">' + (i+1) + '</span>' +
-          '<div><div class="presensi__name" style="cursor:pointer" onclick="openModalSiswa(\'' + esc(p.nama) + '\',\'' + esc(p.kelas || '-') + '\')">' + esc(p.nama) + '</div><div class="presensi__kelas">' + esc(p.kelas || '-') + (dateStr ? ' · ' + dateStr : '') + '</div></div>' +
-          '<span class="presensi__status presensi__status--' + st + '">' + esc(fmtStatus(st)) + '</span>' +
-        '</div>';
-      }).join('');
-    }
-    function renderMenu(){
-      if(!meetMenu) return;
-      var all = listPertemuan();
-      if(!all.length) all = ['1'];
-      meetMenu.innerHTML = all.map(function(k){
-        return '<button type="button" role="option" data-value="' + esc(k) + '" aria-selected="' + (k === currentPertemuan ? 'true' : 'false') + '">Pertemuan ke-' + esc(k) + '</button>';
-      }).join('');
-      if(meetLabel) meetLabel.textContent = 'Pertemuan ke-' + currentPertemuan;
-    }
-    function openMenu(open){
-      if(!meetToggle || !meetMenu) return;
-      meetToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-      meetMenu.classList.toggle('is-open', open);
-    }
-    if(meetToggle && meetMenu){
-      meetToggle.addEventListener('click', function(){ var open = meetToggle.getAttribute('aria-expanded') !== 'true'; openMenu(open); });
-      meetMenu.addEventListener('click', function(e){
-        var btn = e.target.closest('button[data-value]');
-        if(!btn) return;
-        currentPertemuan = btn.getAttribute('data-value');
-        renderMenu(); renderList(); openMenu(false);
-      });
-      document.addEventListener('click', function(e){ if(meetWrap && !meetWrap.contains(e.target)) openMenu(false); });
-      document.addEventListener('keydown', function(e){ if(e.key === 'Escape') openMenu(false); });
-    }
-    if(search) search.addEventListener('input', renderList);
-
-    if('fetch' in window){
-      fetch(API_PRESENSI).then(function(r){ if(!r.ok) throw new Error('HTTP ' + r.status); return r.json(); }).then(function(d){
-        data = (d && Array.isArray(d.presensi)) ? d.presensi : [];
-        currentPertemuan = findLatestPertemuan();
-        renderMenu(); renderList();
-      }).catch(function(){
-        if(list) list.innerHTML = '<div class="presensi__empty">Data presensi belum bisa dimuat. Tanya admin lewat WhatsApp.</div>';
-      });
-    } else {
-      if(list) list.innerHTML = '<div class="presensi__empty">Browser tidak mendukung pemuatan presensi.</div>';
-    }
-
-    /* ponytail: openModalSiswa global, bisa dipanggil dari onclick inline */
-    window.openModalSiswa = function(nama, kelas){
-      var modal = document.getElementById('modalSiswa');
-      var namaEl = document.getElementById('modalSiswaNama');
-      var kelasEl = document.getElementById('modalSiswaKelas');
-      var tbody = document.getElementById('modalSiswaTableBody');
-      var progressText = document.getElementById('modalProgressText');
-      var progressFill = document.getElementById('modalProgressFill');
-      if(!modal) return;
-      if(namaEl) namaEl.textContent = nama;
-      if(kelasEl) kelasEl.textContent = kelas;
-      var rows = data.filter(function(p){ return p.nama === nama; });
-      rows.sort(function(a,b){ return Number(pertemuanKey(a)) - Number(pertemuanKey(b)); });
-      if(!rows.length){
-        if(tbody) tbody.innerHTML = '<tr><td colspan="4" class="modal-siswa__empty">Tidak ada riwayat presensi.</td></tr>';
-        if(progressText) progressText.textContent = '0%';
-        if(progressFill) progressFill.style.width = '0';
-      } else {
-        var hadir = rows.filter(function(r){ return r.status === 'hadir'; }).length;
-        var pct = Math.round((hadir / rows.length) * 100);
-        if(progressText) progressText.textContent = pct + '% (' + hadir + '/' + rows.length + ')';
-        if(progressFill) progressFill.style.width = pct + '%';
-        if(tbody){
-          tbody.innerHTML = rows.map(function(r, i){
-            var st = PRES_STATUS.indexOf(r.status) > -1 ? r.status : 'hadir';
-            var dateStr = r.tanggal ? new Date(r.tanggal + 'T00:00:00').toLocaleDateString('id-ID',{day:'numeric', month:'short', year:'numeric'}) : '-';
-            var badgeClass = 'presensi__status presensi__status--' + st;
-            return '<tr>' +
-              '<td class="col-num">' + (i+1) + '</td>' +
-              '<td class="col-pertemuan">Pertemuan ' + esc(pertemuanKey(r)) + '</td>' +
-              '<td class="col-tanggal">' + dateStr + '</td>' +
-              '<td class="col-status"><span class="' + badgeClass + '">' + esc(fmtStatus(st)) + '</span></td>' +
-            '</tr>';
-          }).join('');
-        }
-      }
-      modal.classList.add('show');
-      document.body.style.overflow = 'hidden';
-    };
-    window.closeModalSiswa = function(){
-      var modal = document.getElementById('modalSiswa');
-      if(!modal) return;
-      modal.classList.remove('show');
-      document.body.style.overflow = '';
-    };
-    document.addEventListener('keydown', function(e){
-      if(e.key === 'Escape') window.closeModalSiswa();
-    });
-    var modalSiswa = document.getElementById('modalSiswa');
-    if(modalSiswa){
-      modalSiswa.addEventListener('click', function(e){
-        if(e.target === modalSiswa) window.closeModalSiswa();
-      });
-    }
-  })();
-
   /* 6. Jadwal aktif (data dari worker /api/public/jadwal, waktu WIB = GMT+7) */
   var API_JADWAL = 'https://alifbimbel.septiartojuna.workers.dev/api/public/jadwal';
   var HARI = ['Minggu','Senin','Selasa','Rabu','Kamis','Jumat','Sabtu'];
@@ -2455,42 +2288,6 @@ img[loading="lazy"] {
 </script>
 
 
-<div class="modal-siswa" id="modalSiswa">
-  <div class="modal-siswa__card">
-    <div class="modal-siswa__head">
-      <div>
-        <div class="modal-siswa__title" id="modalSiswaNama">—</div>
-        <div class="modal-siswa__subtitle" id="modalSiswaKelas">—</div>
-      </div>
-      <button class="modal-siswa__close" type="button" onclick="closeModalSiswa()" aria-label="Tutup">×</button>
-    </div>
-    <div class="modal-siswa__body">
-      <div class="modal-siswa__progress">
-        <div class="modal-siswa__progress-label">
-          <strong>Progress Mapel</strong>
-          <span id="modalProgressText">0%</span>
-        </div>
-        <div class="modal-siswa__progress-bar">
-          <div class="modal-siswa__progress-fill" id="modalProgressFill" style="width:0"></div>
-        </div>
-      </div>
-      <table class="modal-siswa__table">
-        <thead>
-          <tr>
-            <th class="col-num">#</th>
-            <th class="col-pertemuan">Pertemuan</th>
-            <th class="col-tanggal">Tanggal</th>
-            <th class="col-status">Status</th>
-          </tr>
-        </thead>
-        <tbody id="modalSiswaTableBody">
-          <tr><td colspan="4" class="modal-siswa__empty">Memuat data...</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
 <script>
 /* ponytail: fetch announcement, render marquee infinite scroll, dismissible localStorage */
 (function(){
@@ -2570,3 +2367,4 @@ img[loading="lazy"] {
 
 </body>
 </html>
+
