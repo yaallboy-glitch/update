@@ -2262,7 +2262,7 @@ img[loading="lazy"] {
 
   function tickClock(){
     var n = wib();
-    if(badgeEl) badgeEl.textContent = p2(n.getUTCHours()) + ':' + p2(n.getUTCMinutes());
+    if(badgeEl) badgeEl.textContent = p2(n.getUTCHours()) + ':' + p2(n.getUTCMinutes()) + ':' + p2(n.getUTCSeconds());
     if(badgeSubEl) badgeSubEl.textContent = 'WIB';
   }
 
@@ -2285,7 +2285,8 @@ img[loading="lazy"] {
   if(tabs && list){
     buildTabs();
     tickClock();
-    setInterval(function(){ tickClock(); if(jadwal && selected) renderDay(selected); }, 30000);
+    setInterval(function(){ tickClock(); }, 1000);
+    setInterval(function(){ if(jadwal && selected) renderDay(selected); }, 30000);
     if('fetch' in window){
       fetch(API_JADWAL).then(function(r){
         if(!r.ok) throw new Error('HTTP ' + r.status);
