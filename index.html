@@ -23,6 +23,10 @@
   --hard:4px 5px 0 var(--ink);
   --hard-sm:2.5px 3px 0 var(--ink);
   --pad:clamp(18px,4vw,56px);
+  --photo-radius:18px;
+  --photo-ink:2.5px solid var(--ink);
+  --photo-shadow:6px 8px 0 var(--ink);
+  --photo-tilt:rotate(-1.2deg);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
@@ -171,7 +175,37 @@ h1 .hl.c{background:var(--coral)}
 .hero-note{font-family:var(--mono);font-size:11px;letter-spacing:.06em;text-transform:uppercase}
 .hero-note b{color:var(--coral)}
 
-.hero-cards{position:relative;min-height:480px}
+.hero-cards{position:relative;min-height:520px}
+.hero-photo{
+  position:absolute;right:max(16px,2.8vw);top:auto;bottom:10px;z-index:2;
+  width:min(230px,30vw);aspect-ratio:3/4;object-fit:cover;transform:var(--photo-tilt);
+  border:var(--photo-ink);border-radius:var(--photo-radius);box-shadow:var(--photo-shadow);
+  filter:contrast(1.04) saturate(0.92);
+  transition:transform .35s cubic-bezier(.22,.68,.21,1.2), filter .35s ease;
+  will-change:transform;
+}
+.hero-photo:hover{transform:rotate(-1deg) translateY(-10px) scale(1.02);filter:contrast(1.06) saturate(1)}
+.photo-rail,.why-photo{
+  position:relative;overflow:hidden;border-radius:22px 18px 24px 20px;
+  border:var(--photo-ink);box-shadow:var(--photo-shadow);
+  aspect-ratio:4/3;object-fit:cover;
+  filter:contrast(1.04) saturate(0.92);
+  transition:transform .35s cubic-bezier(.22,.68,.21,1.2), filter .35s ease;
+  will-change:transform;
+}
+.photo-rail{
+  width:min(260px,62vw);justify-self:start;
+  grid-column:1/-1;margin:0 auto 22px;
+}
+.why-photo{
+  grid-column:1/-1;width:100%;max-height:360px;
+}
+.photo-rail:hover,.why-photo:hover{transform:translateY(-8px) scale(1.008);filter:contrast(1.06) saturate(1)}
+.photo-grain{
+  position:absolute;inset:0;pointer-events:none;mix-blend-mode:multiply;opacity:.38;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.95' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .14 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+.photo-rail::after,.why-photo::after{content:"";position:absolute;inset:0}
 .card{
   position:absolute;border:2.5px solid var(--ink);border-radius:16px;background:var(--paper-2);
   box-shadow:var(--hard);padding:18px 20px;will-change:transform;
@@ -428,6 +462,7 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
       <div class="av">K</div>
       <div><div class="m1">Kak Kirana</div><div class="m2">Mentor MTK &amp; Sains</div></div>
     </div>
+    <img class="hero-photo" src="img/hero-candid.jpg" alt="Anak belajar bareng tutor CerdasBanget">
   </div>
 </section>
 
@@ -453,6 +488,9 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
     </div>
     <span class="prog-count">KELAS PENUH = TUTUP PENDAFTARAN</span>
   </div>
+  <figure class="photo-rail" aria-hidden="true">
+    <img src="img/program-session.jpg" alt="Sesi belajar CerdasBanget">
+  </figure>
   <div class="prog-grid">
     <article class="prog">
       <span class="idx">01</span>
@@ -521,6 +559,9 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
 <section class="section why">
   <span class="sec-tag">Kenapa CerdasBanget</span>
   <h2 class="sec-h">Bukan bimbel biasa, <span class="serif">kayak punya mentor pribadi</span> di rumah.</h2>
+  <figure class="why-photo" aria-hidden="true">
+    <img src="img/why-parent-kid.jpg" alt="Ortu dan murid CerdasBanget">
+  </figure>
   <div class="why-grid">
     <div class="whyc"><div class="ic">M</div><div><div class="wt">Mentor yang disukai anak</div><div class="wd">Direkrut lewat demo mengajar, bukan cuma tes tulis. Anak nyaman bertanya, gurunya juga senang ketemu murid.</div></div></div>
     <div class="whyc"><div class="ic">10</div><div><div class="wt">Kelas kecil, maks 10</div><div class="wd">Makin sedikit murid, makin banyak perhatian. Tiap anak kebagian giliran maju &amp; ditanya.</div></div></div>
