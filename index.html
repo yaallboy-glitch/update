@@ -183,6 +183,22 @@ h1 .hl.c{background:var(--coral)}
   filter:contrast(1.04) saturate(0.92);
   transition:transform .35s cubic-bezier(.22,.68,.21,1.2), filter .35s ease;
   will-change:transform;
+  loading:lazy;
+}
+.hero-photo::after{
+  content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  box-shadow:inset 0 0 0 2.5px var(--ink), inset 0 0 20px rgba(0,0,0,.08);
+}
+.hero-photo .badge{
+  position:absolute;left:10px;top:10px;z-index:3;background:var(--lime);color:var(--ink);
+  font-family:var(--mono);font-size:10.5px;font-weight:800;letter-spacing:.12em;
+  text-transform:uppercase;border:2px solid var(--ink);border-radius:999px;
+  padding:4px 10px;box-shadow:2px 2px 0 var(--ink);
+}
+@media(max-width:720px){
+  .hero-photo{width:min(170px,52vw);bottom:8px;filter:contrast(1.04) saturate(0.96)}
+  .photo-rail{width:min(220px,74vw);margin-bottom:18px}
+  .why-photo{max-height:220px}
 }
 .hero-photo:hover{transform:rotate(-1deg) translateY(-10px) scale(1.02);filter:contrast(1.06) saturate(1)}
 .photo-rail,.why-photo{
@@ -462,7 +478,11 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
       <div class="av">K</div>
       <div><div class="m1">Kak Kirana</div><div class="m2">Mentor MTK &amp; Sains</div></div>
     </div>
-    <img class="hero-photo" src="img/hero-candid.jpg" alt="Anak belajar bareng tutor CerdasBanget">
+    <figure class="hero-photo" aria-hidden="true">
+      <img src="img/hero-class.svg" alt="Kelas kecil bimbel, anak-anak mengerjakan soal" loading="lazy">
+      <span class="badge">real moment</span>
+      <div class="photo-grain" aria-hidden="true"></div>
+    </figure>
   </div>
 </section>
 
@@ -489,7 +509,9 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
     <span class="prog-count">KELAS PENUH = TUTUP PENDAFTARAN</span>
   </div>
   <figure class="photo-rail" aria-hidden="true">
-    <img src="img/program-session.jpg" alt="Sesi belajar CerdasBanget">
+    <img src="img/program-alat.svg" alt="Meja belajar dengan buku, alat peraga, dan lembar kerja" loading="lazy">
+    <span class="badge">sesi live</span>
+    <div class="photo-grain" aria-hidden="true"></div>
   </figure>
   <div class="prog-grid">
     <article class="prog">
@@ -560,7 +582,9 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
   <span class="sec-tag">Kenapa CerdasBanget</span>
   <h2 class="sec-h">Bukan bimbel biasa, <span class="serif">kayak punya mentor pribadi</span> di rumah.</h2>
   <figure class="why-photo" aria-hidden="true">
-    <img src="img/why-parent-kid.jpg" alt="Ortu dan murid CerdasBanget">
+    <img src="img/why-progress.svg" alt="Mentor mengecek lembar nilai dan grafik kemajuan siswa" loading="lazy">
+    <span class="badge">tanpa filter berlebih</span>
+    <div class="photo-grain" aria-hidden="true"></div>
   </figure>
   <div class="why-grid">
     <div class="whyc"><div class="ic">M</div><div><div class="wt">Mentor yang disukai anak</div><div class="wd">Direkrut lewat demo mengajar, bukan cuma tes tulis. Anak nyaman bertanya, gurunya juga senang ketemu murid.</div></div></div>
@@ -735,6 +759,16 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
 
     gsap.to('.hero-cards',{yPercent:-12,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
     gsap.to('.rapor',{yPercent:-8,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+
+    $$('.hero-photo,.photo-rail,.why-photo').forEach(el=>{
+      gsap.set(el,{autoAlpha:0,y:28});
+      ScrollTrigger.create({trigger:el,start:'top 88%',once:true,onEnter:()=>gsap.to(el,{autoAlpha:1,y:0,duration:.8,ease:'power3.out'})});
+    });
+    if(!reduceMotion){
+      gsap.to('.hero-photo img',{yPercent:-14,ease:'none',scrollTrigger:{trigger:'.hero',start:'top top',end:'bottom top',scrub:true}});
+      gsap.to('.photo-rail img',{yPercent:-10,ease:'none',scrollTrigger:{trigger:'#program',start:'top bottom',end:'bottom top',scrub:true}});
+      gsap.to('.why-photo img',{yPercent:-10,ease:'none',scrollTrigger:{trigger:'#cara',start:'top bottom',end:'bottom top',scrub:true}});
+    }
 
     gsap.to('.sticker.s1',{y:-14,rotation:-5,repeat:-1,yoyo:true,duration:2.3,ease:'sine.inOut'});
     gsap.to('.sticker.s2',{y:-10,repeat:-1,yoyo:true,duration:1.9,ease:'sine.inOut'});
