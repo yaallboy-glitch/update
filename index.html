@@ -338,6 +338,8 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
   .nav-links{display:none}
   .hamb{display:grid;place-items:center;width:42px;height:42px;border:2.5px solid var(--ink);border-radius:12px;background:var(--lime);box-shadow:var(--hard-sm);font-family:var(--mono);font-size:16px}
   .nav-cta{display:none}
+  header.open .nav-links{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--paper);border-bottom:2.5px solid var(--ink);padding:18px var(--pad);box-shadow:var(--hard)}
+  header.open .nav-links li{margin:8px 0}
 }
 @media(max-width:600px){
   .stats-grid{grid-template-columns:1fr 1fr}
@@ -437,10 +439,10 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
 
 <section class="section stats">
   <div class="stats-grid">
-    <div class="stat"><div class="n" data-count="13"><span class="sfx"> thn</span></div><div class="l">pengalaman mengajar</div></div>
+    <div class="stat"><div class="n" data-count="13">0<span class="sfx"> thn</span></div><div class="l">pengalaman mengajar</div></div>
     <div class="stat"><div class="n" data-count="3400">+</div><div class="l">alumni naik kelas</div></div>
     <div class="stat"><div class="n" data-count="97">%</div><div class="l">nilai naik min. 1 jenjang</div></div>
-    <div class="stat"><div class="n" data-count="4.9"><span class="sfx">/5</span></div><div class="l">rating dari orang tua</div></div>
+    <div class="stat"><div class="n" data-count="4.9">0,0<span class="sfx">/5</span></div><div class="l">rating dari orang tua</div></div>
   </div>
 </section>
 <section class="section" id="program">
@@ -597,12 +599,6 @@ footer{border-top:2.5px solid var(--ink);background:var(--ink);color:var(--paper
     <span>Senin–Sabtu • 09.00–20.00</span>
   </div>
 </footer>
-<style>
-@media(max-width:940px){
-  header.open .nav-links{display:flex;flex-direction:column;position:absolute;top:100%;left:0;right:0;background:var(--paper);border-bottom:2.5px solid var(--ink);padding:18px var(--pad);box-shadow:var(--hard)}
-  header.open .nav-links li{margin:8px 0}
-}
-</style>
 
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
